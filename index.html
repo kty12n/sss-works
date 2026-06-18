@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>서정대학교 학생성공처 업무현황 시스템 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+  :root {
+    --navy:    #1a2744;
+    --navy-mid:#253360;
+    --blue:    #2e5bff;
+    --blue-lt: #e8eeff;
+    --teal:    #00b6a8;
+    --teal-lt: #e0f7f5;
+    --amber:   #f5a623;
+    --amber-lt:#fff4e0;
+    --red:     #e53935;
+    --red-lt:  #fdecea;
+    --green:   #29a745;
+    --green-lt:#e8f5e9;
+    --gray-0:  #f7f8fc;
+    --gray-1:  #eef0f5;
+    --gray-2:  #d6dae6;
+    --gray-3:  #9ba3b8;
+    --gray-4:  #6b738a;
+    --text:    #1e2640;
+    --white:   #ffffff;
+    --shadow:  0 2px 12px rgba(26,39,68,.10);
+    --shadow-lg: 0 8px 32px rgba(26,39,68,.16);
+    --radius:  10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans KR', sans-serif; background: var(--gray-0); color: var(--text); min-height: 100vh; }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px; position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,.3);
+  }
+  .site-header .brand { color: var(--white); font-size: 15px; font-weight: 700; display:flex;align-items:center;gap:10px; }
+  .site-header .brand span { background: var(--teal); color: var(--white); font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+  .header-actions { display: flex; gap: 10px; align-items: center; }
+  .btn { padding: 7px 16px; border-radius: 6px; border: none; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 500; transition: all .18s; }
+  .btn-ghost { background: transparent; color: var(--gray-2); border: 1px solid var(--gray-4); }
+  .btn-ghost:hover { background: rgba(255,255,255,.1); color: var(--white); }
+  .btn-primary { background: var(--blue); color: var(--white); }
+  .btn-primary:hover { background: #1a44e8; }
+  .btn-teal { background: var(--teal); color: var(--white); }
+  .btn-teal:hover { background: #009e92; }
+  .btn-sm { padding: 4px 10px; font-size: 12px; }
+  .btn-danger { background: var(--red); color: var(--white); }
+  .btn-danger:hover { background: #c62828; }
+
+  /* ── SCREEN ROUTER ── */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── AUTH SCREEN ── */
+  #screen-auth {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #1e3a6e 100%);
+  }
+  .auth-card {
+    background: var(--white); border-radius: 16px; padding: 48px 40px;
+    width: 420px; box-shadow: var(--shadow-lg);
+  }
+  .auth-logo { text-align: center; margin-bottom: 32px; }
+  .auth-logo .univ { font-size: 13px; color: var(--gray-4); font-weight: 500; margin-bottom: 4px; }
+  .auth-logo .system-title { font-size: 20px; font-weight: 900; color: var(--navy); line-height: 1.3; }
+  .auth-logo .badge { display: inline-block; background: var(--teal); color: var(--white); font-size: 11px; padding: 2px 10px; border-radius: 20px; margin-top: 8px; font-weight: 600; }
+  .auth-tabs { display: flex; border-bottom: 2px solid var(--gray-1); margin-bottom: 28px; }
+  .auth-tab { flex: 1; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; cursor: pointer; color: var(--gray-3); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .18s; }
+  .auth-tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--gray-4); margin-bottom: 6px; }
+  .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1.5px solid var(--gray-2); border-radius: 7px; font-family: inherit; font-size: 14px; color: var(--text); transition: border .18s; }
+  .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--blue); }
+  .auth-submit { width: 100%; padding: 12px; background: var(--navy); color: var(--white); border: none; border-radius: 8px; font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background .18s; }
+  .auth-submit:hover { background: var(--blue); }
+  .auth-note { font-size: 12px; color: var(--gray-3); text-align: center; margin-top: 16px; }
+  .pending-notice { background: var(--amber-lt); border: 1px solid var(--amber); border-radius: 8px; padding: 12px; font-size: 13px; color: #7a5000; margin-top: 12px; text-align: center; }
+
+  /* ── ADMIN APPROVAL SCREEN ── */
+  #screen-admin { min-height: 100vh; background: var(--gray-0); }
+  .admin-layout { display: flex; min-height: calc(100vh - 60px); }
+  .sidebar { width: 220px; background: var(--white); border-right: 1px solid var(--gray-1); padding: 24px 0; flex-shrink: 0; }
+  .sidebar-menu { list-style: none; }
+  .sidebar-menu li a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 11px 24px; font-size: 14px; font-weight: 500; color: var(--gray-4);
+    cursor: pointer; text-decoration: none; transition: all .15s;
+  }
+  .sidebar-menu li a:hover, .sidebar-menu li a.active { background: var(--blue-lt); color: var(--blue); border-left: 3px solid var(--blue); padding-left: 21px; }
+  .sidebar-menu li a .ico { font-size: 16px; }
+  .main-content { flex: 1; padding: 32px; overflow-x: auto; }
+
+  /* ── DASHBOARD ── */
+  .page-title { font-size: 22px; font-weight: 900; color: var(--navy); margin-bottom: 4px; }
+  .page-subtitle { font-size: 13px; color: var(--gray-4); margin-bottom: 24px; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: var(--white); border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow); }
+  .stat-card .label { font-size: 12px; font-weight: 600; color: var(--gray-4); margin-bottom: 8px; }
+  .stat-card .value { font-size: 28px; font-weight: 900; color: var(--navy); font-family: 'IBM Plex Mono', monospace; }
+  .stat-card .sub { font-size: 11px; color: var(--gray-3); margin-top: 4px; }
+  .stat-card.accent-teal .value { color: var(--teal); }
+  .stat-card.accent-blue .value { color: var(--blue); }
+  .stat-card.accent-amber .value { color: var(--amber); }
+
+  /* ── FILTER BAR ── */
+  .filter-bar { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; align-items: center; }
+  .filter-bar select, .filter-bar input { padding: 7px 12px; border: 1.5px solid var(--gray-2); border-radius: 7px; font-family: inherit; font-size: 13px; color: var(--text); background: var(--white); }
+  .filter-bar select:focus, .filter-bar input:focus { outline: none; border-color: var(--blue); }
+  .filter-bar .spacer { flex: 1; }
+
+  /* ── TABLE ── */
+  .table-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { background: var(--navy); color: var(--white); padding: 10px 12px; text-align: left; font-weight: 600; font-size: 12px; white-space: nowrap; }
+  .data-table td { padding: 10px 12px; border-bottom: 1px solid var(--gray-1); vertical-align: middle; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--gray-0); }
+
+  /* ── STATUS BADGES ── */
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .badge-done { background: var(--green-lt); color: #1a6e2e; }
+  .badge-doing { background: var(--blue-lt); color: var(--blue); }
+  .badge-todo { background: var(--gray-1); color: var(--gray-4); }
+  .badge-pass { background: var(--teal-lt); color: #007a70; }
+  .badge-admin { background: var(--amber-lt); color: #8a6000; }
+  .badge-pending { background: var(--amber-lt); color: #8a6000; }
+  .badge-approved { background: var(--green-lt); color: #1a6e2e; }
+  .badge-rejected { background: var(--red-lt); color: var(--red); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap { display: flex; align-items: center; gap: 8px; }
+  .progress-bar { flex: 1; height: 6px; background: var(--gray-1); border-radius: 3px; overflow: hidden; min-width: 60px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--blue)); border-radius: 3px; transition: width .3s; }
+  .progress-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--gray-4); white-space: nowrap; }
+
+  /* ── 5-STAGE STEPS ── */
+  .steps-row { display: flex; gap: 4px; align-items: center; }
+  .step-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+  .step-dot.done { background: var(--green); color: var(--white); }
+  .step-dot.doing { background: var(--blue); color: var(--white); }
+  .step-dot.todo { background: var(--gray-2); color: var(--gray-4); }
+  .step-dot.pass { background: var(--teal); color: var(--white); }
+  .step-arrow { color: var(--gray-3); font-size: 10px; }
+
+  /* ── MODAL ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 200; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 14px; width: 780px; max-width: 95vw; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
+  .modal-header { padding: 22px 28px 16px; border-bottom: 1px solid var(--gray-1); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--white); z-index: 1; }
+  .modal-header h3 { font-size: 17px; font-weight: 800; color: var(--navy); }
+  .modal-close { background: none; border: none; font-size: 22px; cursor: pointer; color: var(--gray-3); }
+  .modal-body { padding: 24px 28px; }
+  .modal-footer { padding: 16px 28px; border-top: 1px solid var(--gray-1); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: var(--white); }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row.full { grid-template-columns: 1fr; }
+  .modal-section { margin-bottom: 20px; }
+  .modal-section-title { font-size: 12px; font-weight: 700; color: var(--gray-4); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--gray-1); }
+
+  /* Stage checklist */
+  .stage-block { border: 1.5px solid var(--gray-1); border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
+  .stage-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--gray-0); cursor: pointer; }
+  .stage-head .stage-num { width: 24px; height: 24px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .stage-head .stage-label { font-size: 13px; font-weight: 700; color: var(--navy); flex: 1; }
+  .stage-head .stage-status { font-size: 12px; }
+  .stage-body { padding: 12px 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .check-item { display: flex; align-items: center; gap: 8px; }
+  .check-item label { font-size: 13px; color: var(--text); cursor: pointer; }
+  .check-item select { padding: 4px 8px; border: 1px solid var(--gray-2); border-radius: 5px; font-size: 12px; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 28px; right: 28px; background: var(--navy); color: var(--white); padding: 13px 20px; border-radius: 8px; font-size: 14px; box-shadow: var(--shadow-lg); z-index: 999; opacity: 0; transform: translateY(12px); transition: all .25s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { background: var(--green); }
+  .toast.error { background: var(--red); }
+
+  /* ── USER DASHBOARD ── */
+  .my-tasks-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .section-title { font-size: 16px; font-weight: 800; color: var(--navy); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .stat-grid { grid-template-columns: repeat(2,1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-3); }
+  .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  .chip { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: var(--blue-lt); color: var(--blue); font-weight: 600; }
+  .chip-green { background: var(--green-lt); color: var(--green); }
+  .chip-gray { background: var(--gray-1); color: var(--gray-4); }
+
+  .tabs { display: flex; gap: 0; border-bottom: 2px solid var(--gray-1); margin-bottom: 20px; }
+  .tab-btn { padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--gray-4); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .15s; background: none; border-top: none; border-left: none; border-right: none; font-family: inherit; }
+  .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     AUTH SCREEN (로그인/회원가입)
+═══════════════════════════════════════════ -->
+<div id="screen-auth" class="screen active">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="univ">서정대학교 학생성공처</div>
+      <div class="system-title">업무현황 관리시스템</div>
+      <div class="badge">2026년도</div>
+    </div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login')">로그인</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')">회원가입</div>
+    </div>
+
+    <!-- 로그인 폼 -->
+    <div id="tab-login">
+      <div class="form-group">
+        <label>아이디 (이메일)</label>
+        <input type="email" id="login-email" placeholder="example@seojeong.ac.kr" />
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="login-pw" placeholder="비밀번호 입력" />
+      </div>
+      <button class="auth-submit" onclick="doLogin()">로그인</button>
+      <div class="auth-note">⚡ 테스트: admin@sj.ac.kr / admin1234 (관리자) &nbsp;|&nbsp; user1@sj.ac.kr / user1234 (담당자)</div>
+    </div>
+
+    <!-- 회원가입 폼 -->
+    <div id="tab-register" style="display:none">
+      <div class="form-group">
+        <label>이름</label>
+        <input type="text" id="reg-name" placeholder="홍길동" />
+      </div>
+      <div class="form-group">
+        <label>아이디 (이메일)</label>
+        <input type="email" id="reg-email" placeholder="example@seojeong.ac.kr" />
+      </div>
+      <div class="form-group">
+        <label>소속 센터</label>
+        <select id="reg-center">
+          <option value="">소속 센터 선택</option>
+          <option>취업지원센터</option>
+          <option>학생상담센터</option>
+          <option>학생복지팀</option>
+          <option>국제학생지원팀</option>
+          <option>Visa Plus 센터</option>
+          <option>학생성공처 본부</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>직위</label>
+        <input type="text" id="reg-position" placeholder="직위 (예: 주임, 담당자)" />
+      </div>
+      <div class="form-group">
+        <label>비밀번호</label>
+        <input type="password" id="reg-pw" placeholder="8자 이상" />
+      </div>
+      <button class="auth-submit" onclick="doRegister()">회원가입 신청</button>
+      <div class="auth-note">관리자 승인 후 로그인이 가능합니다</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SITE HEADER (로그인 후 표시)
+═══════════════════════════════════════════ -->
+<header class="site-header" id="site-header" style="display:none">
+  <div class="brand">
+    🎓 서정대학교 학생성공처 업무현황
+    <span id="header-role-badge">관리자</span>
+  </div>
+  <div class="header-actions">
+    <span style="color:var(--gray-2);font-size:13px;" id="header-username"></span>
+    <button class="btn btn-ghost btn-sm" onclick="doLogout()">로그아웃</button>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     ADMIN SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-admin" class="screen">
+  <div class="admin-layout">
+    <nav class="sidebar">
+      <ul class="sidebar-menu">
+        <li><a class="active" onclick="adminTab('dashboard')"><span class="ico">📊</span> 전체 현황판</a></li>
+        <li><a onclick="adminTab('tasks')"><span class="ico">📋</span> 업무 목록</a></li>
+        <li><a onclick="adminTab('users')"><span class="ico">👥</span> 사용자 관리</a></li>
+        <li><a onclick="adminTab('budget')"><span class="ico">💰</span> 예산 현황</a></li>
+        <li><a onclick="adminTab('participants')"><span class="ico">👤</span> 참여자 통계</a></li>
+        <li><a onclick="adminTab('assignments')"><span class="ico">📌</span> 업무분장 관리</a></li>
+      </ul>
+    </nav>
+    <div class="main-content" id="admin-content">
+      <!-- 내용은 JS로 렌더링 -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     USER SCREEN
+═══════════════════════════════════════════ -->
+<div id="screen-user" class="screen">
+  <div class="admin-layout">
+    <nav class="sidebar">
+      <ul class="sidebar-menu">
+        <li><a class="active" onclick="userTab('my-tasks')"><span class="ico">📋</span> 내 업무</a></li>
+        <li><a onclick="userTab('all-tasks')"><span class="ico">📊</span> 전체 현황</a></li>
+        <li><a onclick="userTab('add-task')"><span class="ico">➕</span> 업무 추가</a></li>
+      </ul>
+    </nav>
+    <div class="main-content" id="user-content"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     MODALS
+═══════════════════════════════════════════ -->
+
+<!-- 업무 입력/수정 모달 -->
+<div class="modal-overlay" id="modal-task">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-task-title">업무 입력</h3>
+      <button class="modal-close" onclick="closeModal('modal-task')">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- 기본 정보 -->
+      <div class="modal-section">
+        <div class="modal-section-title">📌 프로그램 기본 정보</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>구분</label>
+            <select id="f-category">
+              <option>학생복지</option><option>취업통계</option><option>취업지원</option>
+              <option>학생자치활동지원</option><option>학생자치활동</option><option>국제학생지원</option>
+              <option>학사의례 및 행사</option><option>학생의견수렴</option><option>학생시상</option>
+              <option>위원회</option><option>부서운영</option><option>학과지원</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>담당자</label>
+            <select id="f-manager"></select>
+          </div>
+        </div>
+        <div class="form-row full">
+          <div class="form-group">
+            <label>프로그램명</label>
+            <input type="text" id="f-name" placeholder="프로그램명 입력" />
+          </div>
+        </div>
+        <div class="form-row triple">
+          <div class="form-group">
+            <label>학기</label>
+            <select id="f-semester">
+              <option>1학기</option><option>2학기</option><option>상시</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>시작 날짜</label>
+            <input type="date" id="f-start" />
+          </div>
+          <div class="form-group">
+            <label>종료 날짜</label>
+            <input type="date" id="f-end" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>장소</label>
+            <input type="text" id="f-place" placeholder="행사 장소" />
+          </div>
+          <div class="form-group">
+            <label>진행 업체</label>
+            <input type="text" id="f-vendor" placeholder="업체명 (없으면 -)" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 예산 -->
+      <div class="modal-section">
+        <div class="modal-section-title">💰 예산 내역</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>교비 계획액 (원)</label>
+            <input type="number" id="f-budget-edu" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>국비 계획액 (원)</label>
+            <input type="number" id="f-budget-gov" placeholder="0" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>교비 집행액 (원)</label>
+            <input type="number" id="f-spend-edu" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>국비 집행액 (원)</label>
+            <input type="number" id="f-spend-gov" placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 참여 인원 -->
+      <div class="modal-section">
+        <div class="modal-section-title">👤 참여 인원</div>
+        <div class="form-row" style="grid-template-columns:1fr 1fr 1fr 1fr">
+          <div class="form-group">
+            <label>학령기</label>
+            <input type="number" id="f-p-school" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>성인학습자</label>
+            <input type="number" id="f-p-adult" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>국제학생</label>
+            <input type="number" id="f-p-intl" placeholder="0" />
+          </div>
+          <div class="form-group">
+            <label>기타</label>
+            <input type="number" id="f-p-other" placeholder="0" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 5단계 진행현황 -->
+      <div class="modal-section">
+        <div class="modal-section-title">🔄 5단계 업무 진행현황</div>
+
+        <div class="stage-block">
+          <div class="stage-head">
+            <div class="stage-num">1</div>
+            <div class="stage-label">계획 수립 단계</div>
+          </div>
+          <div class="stage-body">
+            <div class="check-item"><select id="s1-1"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>계획 수립</label></div>
+            <div class="check-item"><select id="s1-2"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>계정과목 및 예산 확보 (교비)</label></div>
+            <div class="check-item"><select id="s1-3"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>계정과목 및 예산 확보 (국비)</label></div>
+            <div class="check-item"><select id="s1-4"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>예산 집행 부서 협의</label></div>
+            <div class="check-item"><select id="s1-5"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>입찰 승인의 건</label></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <div class="stage-head">
+            <div class="stage-num">2</div>
+            <div class="stage-label">시행문 작성 단계</div>
+          </div>
+          <div class="stage-body">
+            <div class="check-item"><select id="s2-1"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>시행 구비서류 취합</label></div>
+            <div class="check-item"><select id="s2-2"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>시행문 작성</label></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <div class="stage-head">
+            <div class="stage-num">3</div>
+            <div class="stage-label">의사결정 단계</div>
+          </div>
+          <div class="stage-body">
+            <div class="check-item"><select id="s3-1"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>학생성공처 결재</label></div>
+            <div class="check-item"><select id="s3-2"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>협조부서 결재</label></div>
+            <div class="check-item"><select id="s3-3"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>부총장 결재</label></div>
+            <div class="check-item"><select id="s3-4"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>총장 결재</label></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <div class="stage-head">
+            <div class="stage-num">4</div>
+            <div class="stage-label">시행 준비 단계</div>
+          </div>
+          <div class="stage-body">
+            <div class="check-item"><select id="s4-1"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>타 부서(학과) 협조문 발송</label></div>
+            <div class="check-item"><select id="s4-2"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>시설 확보</label></div>
+            <div class="check-item"><select id="s4-3"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>참여자 확보</label></div>
+            <div class="check-item"><select id="s4-4"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>기타 확보 및 준비 완료</label></div>
+          </div>
+        </div>
+
+        <div class="stage-block">
+          <div class="stage-head">
+            <div class="stage-num">5</div>
+            <div class="stage-label">결과 분석 및 환류 단계</div>
+          </div>
+          <div class="stage-body">
+            <div class="check-item"><select id="s5-1"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>프로그램 운영(안전교육·만족도 포함)</label></div>
+            <div class="check-item"><select id="s5-2"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>예산 지출 (교비)</label></div>
+            <div class="check-item"><select id="s5-3"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>예산 지출 (국비)</label></div>
+            <div class="check-item"><select id="s5-4"><option value="미진행">미진행</option><option value="진행중">진행중</option><option value="완료">완료</option><option value="PASS">PASS</option></select><label>결과보고</label></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-task')">취소</button>
+      <button class="btn btn-primary" onclick="saveTask()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 사용자 승인 모달 -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal" style="width:520px">
+    <div class="modal-header">
+      <h3>사용자 승인 / 관리</h3>
+      <button class="modal-close" onclick="closeModal('modal-user')">✕</button>
+    </div>
+    <div class="modal-body" id="modal-user-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-user')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+// ─────────────────────────────────────────────
+//  GOOGLE APPS SCRIPT WEBHOOK URL
+//  아래 URL을 실제 Apps Script 웹앱 URL로 교체하세요
+// ─────────────────────────────────────────────
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwswUBEkcI2dRZh91Gw1BV_8-Z3Uk85RXTpXeSR-TUineDiBai9OD7snamDZMK9l8st/exec';
+
+// ── 상태 ──
+let currentUser = null;
+let editingTaskId = null;
+let tasks = [];
+let users = [];
+let assignments = []; // 업무분장
+
+// ── 테스트용 더미 데이터 ──
+const dummyUsers = [
+  { id:'u0', email:'admin@sj.ac.kr', pw:'admin1234', name:'관리자', role:'admin', center:'학생성공처 본부', position:'처장', status:'approved' },
+  { id:'u1', email:'user1@sj.ac.kr', pw:'user1234', name:'이지혜', role:'user', center:'학생복지팀', position:'주임', status:'approved' },
+  { id:'u2', email:'user2@sj.ac.kr', pw:'user2234', name:'양승아', role:'user', center:'학생성공처 본부', position:'담당자', status:'approved' },
+  { id:'u3', email:'user3@sj.ac.kr', pw:'user3234', name:'남윤서', role:'user', center:'국제학생지원팀', position:'주임', status:'approved' },
+  { id:'u4', email:'user4@sj.ac.kr', pw:'user4234', name:'홍선영', role:'user', center:'취업지원센터', position:'담당자', status:'approved' },
+  { id:'u5', email:'user5@sj.ac.kr', pw:'user5234', name:'김태엽', role:'user', center:'취업지원센터', position:'담당자', status:'approved' },
+  { id:'u9', email:'pending@sj.ac.kr', pw:'pending1', name:'신입담당자', role:'user', center:'학생상담센터', position:'주임', status:'pending' },
+];
+
+const dummyTasks = [
+  {
+    id:'t1', category:'학생복지', name:'1학기 스쿨버스 운영', manager:'이지혜', semester:'1학기',
+    startDate:'2026-03-04', endDate:'2026-12-31', place:'각 정류장', vendor:'아주관광고속',
+    budgetEdu:850000000, budgetGov:0, spendEdu:434150000, spendGov:0,
+    pSchool:0, pAdult:0, pIntl:0, pOther:0,
+    stages:{s1_1:'완료',s1_2:'완료',s1_3:'PASS',s1_4:'완료',s1_5:'완료',s2_1:'완료',s2_2:'완료',s3_1:'완료',s3_2:'완료',s3_3:'완료',s3_4:'완료',s4_1:'PASS',s4_2:'PASS',s4_3:'PASS',s4_4:'완료',s5_1:'완료',s5_2:'완료',s5_3:'PASS',s5_4:'완료'},
+    updatedAt: new Date().toISOString(), createdBy:'u1'
+  },
+  {
+    id:'t2', category:'학사의례 및 행사', name:'2026학년도 신입생 입학식 (학령기·국제학생)', manager:'양승아', semester:'1학기',
+    startDate:'2026-03-04', endDate:'2026-03-04', place:'공학관5층 콘서트홀', vendor:'베라노',
+    budgetEdu:10000000, budgetGov:7131500, spendEdu:9930000, spendGov:7131500,
+    pSchool:500, pAdult:0, pIntl:80, pOther:0,
+    stages:{s1_1:'완료',s1_2:'완료',s1_3:'완료',s1_4:'완료',s1_5:'완료',s2_1:'완료',s2_2:'완료',s3_1:'완료',s3_2:'완료',s3_3:'완료',s3_4:'완료',s4_1:'완료',s4_2:'완료',s4_3:'완료',s4_4:'완료',s5_1:'완료',s5_2:'완료',s5_3:'완료',s5_4:'완료'},
+    updatedAt: new Date().toISOString(), createdBy:'u2'
+  },
+  {
+    id:'t3', category:'국제학생지원', name:'1학기 학과 주도형 국제 학생 지원(VISA)_뷰티', manager:'남윤서', semester:'1학기',
+    startDate:'2026-04-01', endDate:'2026-04-01', place:'제3세미나실', vendor:'한국비자이민센터',
+    budgetEdu:0, budgetGov:341379, spendEdu:0, spendGov:341379,
+    pSchool:0, pAdult:0, pIntl:38, pOther:0,
+    stages:{s1_1:'완료',s1_2:'PASS',s1_3:'완료',s1_4:'완료',s1_5:'PASS',s2_1:'완료',s2_2:'완료',s3_1:'완료',s3_2:'완료',s3_3:'완료',s3_4:'PASS',s4_1:'PASS',s4_2:'완료',s4_3:'완료',s4_4:'완료',s5_1:'완료',s5_2:'PASS',s5_3:'완료',s5_4:'완료'},
+    updatedAt: new Date().toISOString(), createdBy:'u3'
+  },
+  {
+    id:'t4', category:'학생의견수렴', name:'2학기 총장님과의 간담회', manager:'양승아', semester:'2학기',
+    startDate:'2026-11-20', endDate:'2026-11-20', place:'보건복지관 연회장', vendor:'-',
+    budgetEdu:0, budgetGov:5000000, spendEdu:0, spendGov:0,
+    pSchool:23, pAdult:9, pIntl:7, pOther:0,
+    stages:{s1_1:'완료',s1_2:'PASS',s1_3:'완료',s1_4:'완료',s1_5:'PASS',s2_1:'완료',s2_2:'완료',s3_1:'완료',s3_2:'완료',s3_3:'진행중',s3_4:'미진행',s4_1:'PASS',s4_2:'진행중',s4_3:'진행중',s4_4:'진행중',s5_1:'미진행',s5_2:'미진행',s5_3:'미진행',s5_4:'미진행'},
+    updatedAt: new Date().toISOString(), createdBy:'u2'
+  },
+  {
+    id:'t5', category:'취업지원', name:'1학기 학과별 취업 현황 조사 및 취업컨설팅(DB구축)', manager:'홍선영', semester:'1학기',
+    startDate:'2026-03-10', endDate:'2026-06-30', place:'-', vendor:'CJS교육센터',
+    budgetEdu:0, budgetGov:32000000, spendEdu:0, spendGov:32000000,
+    pSchool:0, pAdult:0, pIntl:0, pOther:0,
+    stages:{s1_1:'완료',s1_2:'PASS',s1_3:'완료',s1_4:'PASS',s1_5:'완료',s2_1:'완료',s2_2:'완료',s3_1:'완료',s3_2:'완료',s3_3:'완료',s3_4:'완료',s4_1:'PASS',s4_2:'완료',s4_3:'완료',s4_4:'완료',s5_1:'완료',s5_2:'PASS',s5_3:'완료',s5_4:'완료'},
+    updatedAt: new Date().toISOString(), createdBy:'u4'
+  },
+];
+
+// 업무분장 더미 (특정 담당자에게 미리 배정된 프로그램명)
+const dummyAssignments = [
+  { id:'a1', manager:'이지혜', taskName:'2학기 스쿨버스 운영', semester:'2학기', category:'학생복지', note:'예산 집행 주의' },
+  { id:'a2', manager:'양승아', taskName:'제22회 전기 학위수여식', semester:'2학기', category:'학사의례 및 행사', note:'' },
+  { id:'a3', manager:'남윤서', taskName:'2학기 지역특화형(F-2-R) 탐방', semester:'2학기', category:'국제학생지원', note:'' },
+];
+
+// ─────────────────────────────────────────────
+//  UTILITY
+// ─────────────────────────────────────────────
+function $(id) { return document.getElementById(id); }
+function toast(msg, type='') {
+  const t = $('toast'); t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2800);
+}
+
+function calcProgress(stages) {
+  const vals = Object.values(stages);
+  const total = vals.length;
+  const done = vals.filter(v => v === '완료' || v === 'PASS').length;
+  return Math.round(done / total * 100);
+}
+
+function stageOverall(stages) {
+  const vals = Object.values(stages);
+  if (vals.every(v => v === '완료' || v === 'PASS')) return '완료';
+  if (vals.some(v => v === '진행중' || v === '완료')) return '진행중';
+  return '미진행';
+}
+
+function fmtMoney(n) {
+  if (!n) return '-';
+  return Number(n).toLocaleString('ko-KR') + '원';
+}
+
+function statusBadge(s) {
+  const map = { '완료':'badge-done', '진행중':'badge-doing', '미진행':'badge-todo', 'PASS':'badge-pass' };
+  return `<span class="badge ${map[s]||'badge-todo'}">${s}</span>`;
+}
+
+function getUsers() { return JSON.parse(localStorage.getItem('sj_users') || 'null') || dummyUsers; }
+function getTasks() { return JSON.parse(localStorage.getItem('sj_tasks') || 'null') || dummyTasks; }
+function getAssignments() { return JSON.parse(localStorage.getItem('sj_assignments') || 'null') || dummyAssignments; }
+function saveUsers(u) { localStorage.setItem('sj_users', JSON.stringify(u)); }
+function saveTasks(t) { localStorage.setItem('sj_tasks', JSON.stringify(t)); }
+function saveAssignments(a) { localStorage.setItem('sj_assignments', JSON.stringify(a)); }
+
+function approvedUsers() { return getUsers().filter(u => u.status === 'approved' && u.role === 'user'); }
+
+// ─────────────────────────────────────────────
+//  AUTH
+// ─────────────────────────────────────────────
+function switchAuthTab(tab) {
+  $('tab-login').style.display = tab === 'login' ? '' : 'none';
+  $('tab-register').style.display = tab === 'register' ? '' : 'none';
+  document.querySelectorAll('.auth-tab').forEach((el,i) => el.classList.toggle('active', (i===0) === (tab==='login')));
+}
+
+function doLogin() {
+  const email = $('login-email').value.trim();
+  const pw = $('login-pw').value;
+  const u = getUsers().find(u => u.email === email && u.pw === pw);
+  if (!u) { toast('아이디 또는 비밀번호가 올바르지 않습니다.','error'); return; }
+  if (u.status === 'pending') { toast('관리자 승인 대기 중입니다.','error'); return; }
+  if (u.status === 'rejected') { toast('승인이 거부된 계정입니다.','error'); return; }
+  currentUser = u;
+  enterApp();
+}
+
+function doRegister() {
+  const name = $('reg-name').value.trim();
+  const email = $('reg-email').value.trim();
+  const center = $('reg-center').value;
+  const position = $('reg-position').value.trim();
+  const pw = $('reg-pw').value;
+  if (!name||!email||!center||!pw) { toast('모든 필드를 입력해 주세요.','error'); return; }
+  const us = getUsers();
+  if (us.find(u => u.email === email)) { toast('이미 가입된 이메일입니다.','error'); return; }
+  const newU = { id:'u'+Date.now(), email, pw, name, role:'user', center, position, status:'pending' };
+  us.push(newU);
+  saveUsers(us);
+  toast('회원가입 신청 완료! 관리자 승인을 기다려 주세요.','success');
+  switchAuthTab('login');
+}
+
+function doLogout() {
+  currentUser = null;
+  showScreen('screen-auth');
+  $('site-header').style.display = 'none';
+}
+
+function enterApp() {
+  $('site-header').style.display = 'flex';
+  $('header-username').textContent = currentUser.name + ' (' + currentUser.center + ')';
+  $('header-role-badge').textContent = currentUser.role === 'admin' ? '관리자' : '담당자';
+  if (currentUser.role === 'admin') {
+    showScreen('screen-admin');
+    adminTab('dashboard');
+  } else {
+    showScreen('screen-user');
+    userTab('my-tasks');
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+// ─────────────────────────────────────────────
+//  ADMIN TABS
+// ─────────────────────────────────────────────
+function adminTab(tab) {
+  document.querySelectorAll('.sidebar-menu li a').forEach(a => a.classList.remove('active'));
+  event && event.currentTarget && event.currentTarget.classList.add('active');
+
+  const c = $('admin-content');
+  if (tab === 'dashboard') c.innerHTML = renderAdminDashboard();
+  else if (tab === 'tasks') c.innerHTML = renderTaskList(true);
+  else if (tab === 'users') c.innerHTML = renderUserAdmin();
+  else if (tab === 'budget') c.innerHTML = renderBudget();
+  else if (tab === 'participants') c.innerHTML = renderParticipants();
+  else if (tab === 'assignments') c.innerHTML = renderAssignments();
+}
+
+function renderAdminDashboard() {
+  const ts = getTasks();
+  const total = ts.length;
+  const done = ts.filter(t => stageOverall(t.stages) === '완료').length;
+  const doing = ts.filter(t => stageOverall(t.stages) === '진행중').length;
+  const totalBudget = ts.reduce((s,t) => s + (Number(t.budgetEdu)||0) + (Number(t.budgetGov)||0), 0);
+  const totalSpend = ts.reduce((s,t) => s + (Number(t.spendEdu)||0) + (Number(t.spendGov)||0), 0);
+  const totalPart = ts.reduce((s,t) => s + (Number(t.pSchool)||0)+(Number(t.pAdult)||0)+(Number(t.pIntl)||0)+(Number(t.pOther)||0), 0);
+  const pendingUsers = getUsers().filter(u => u.status === 'pending').length;
+
+  // manager summary
+  const managers = {};
+  ts.forEach(t => {
+    if (!managers[t.manager]) managers[t.manager] = { done:0, doing:0, todo:0, total:0 };
+    const s = stageOverall(t.stages);
+    managers[t.manager].total++;
+    managers[t.manager][s === '완료' ? 'done' : s === '진행중' ? 'doing' : 'todo']++;
+  });
+
+  const managerRows = Object.entries(managers).map(([name, m]) => {
+    const pct = Math.round(m.done / m.total * 100);
+    return `<tr>
+      <td><strong>${name}</strong></td>
+      <td>${m.total}</td>
+      <td><span class="badge badge-done">${m.done}</span></td>
+      <td><span class="badge badge-doing">${m.doing}</span></td>
+      <td><span class="badge badge-todo">${m.todo}</span></td>
+      <td>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <span class="progress-label">${pct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <div class="page-title">📊 전체 업무 현황판</div>
+  <div class="page-subtitle">2026학년도 학생성공처 업무진행 종합 모니터링</div>
+
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="label">전체 업무</div>
+      <div class="value">${total}</div>
+      <div class="sub">등록된 프로그램</div>
+    </div>
+    <div class="stat-card accent-teal">
+      <div class="label">완료</div>
+      <div class="value">${done}</div>
+      <div class="sub">완료율 ${total?Math.round(done/total*100):0}%</div>
+    </div>
+    <div class="stat-card accent-blue">
+      <div class="label">진행중</div>
+      <div class="value">${doing}</div>
+      <div class="sub">총 ${total-done-doing}건 미진행</div>
+    </div>
+    <div class="stat-card accent-amber">
+      <div class="label">총 참여자</div>
+      <div class="value">${totalPart.toLocaleString()}</div>
+      <div class="sub">명 (누계)</div>
+    </div>
+  </div>
+
+  ${pendingUsers > 0 ? `<div style="background:var(--amber-lt);border:1px solid var(--amber);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:#7a5000;">
+    ⚠️ 승인 대기 중인 신규 가입자가 <strong>${pendingUsers}명</strong> 있습니다. <a href="#" onclick="adminTab('users')" style="color:var(--blue);font-weight:700;">사용자 관리</a>에서 승인해 주세요.
+  </div>` : ''}
+
+  <div class="section-title" style="margin-bottom:14px">담당자별 업무 현황</div>
+  <div class="table-wrap" style="margin-bottom:28px">
+    <table class="data-table">
+      <thead><tr>
+        <th>담당자</th><th>전체</th><th>완료</th><th>진행중</th><th>미진행</th><th>진행률</th>
+      </tr></thead>
+      <tbody>${managerRows}</tbody>
+    </table>
+  </div>
+
+  <div class="section-title" style="margin-bottom:14px">예산 집행 현황</div>
+  <div class="stat-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card">
+      <div class="label">총 계획 예산</div>
+      <div class="value" style="font-size:18px">${Math.round(totalBudget/10000).toLocaleString()}<span style="font-size:14px;font-weight:400;font-family:inherit"> 만원</span></div>
+    </div>
+    <div class="stat-card accent-teal">
+      <div class="label">총 집행 예산</div>
+      <div class="value" style="font-size:18px">${Math.round(totalSpend/10000).toLocaleString()}<span style="font-size:14px;font-weight:400;font-family:inherit"> 만원</span></div>
+    </div>
+    <div class="stat-card accent-blue">
+      <div class="label">집행률</div>
+      <div class="value">${totalBudget ? Math.round(totalSpend/totalBudget*100) : 0}<span style="font-size:16px;font-weight:400;font-family:inherit">%</span></div>
+    </div>
+  </div>`;
+}
+
+function renderTaskList(isAdmin) {
+  const ts = getTasks();
+  const rows = ts.map(t => {
+    const pct = calcProgress(t.stages);
+    const overall = stageOverall(t.stages);
+    const totalBudget = (Number(t.budgetEdu)||0)+(Number(t.budgetGov)||0);
+    const totalSpend = (Number(t.spendEdu)||0)+(Number(t.spendGov)||0);
+    return `<tr>
+      <td>${t.semester}</td>
+      <td><span class="chip">${t.category}</span></td>
+      <td style="max-width:220px"><strong>${t.name}</strong></td>
+      <td>${t.manager}</td>
+      <td>${statusBadge(overall)}</td>
+      <td>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <span class="progress-label">${pct}%</span>
+        </div>
+      </td>
+      <td style="font-size:12px;color:var(--gray-4)">${totalBudget?Math.round(totalSpend/totalBudget*100)+'%':'-'}</td>
+      <td>
+        <button class="btn btn-teal btn-sm" onclick="openTaskModal('${t.id}')">수정</button>
+        ${isAdmin ? `<button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')" style="margin-left:4px">삭제</button>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+    <div><div class="page-title">📋 업무 목록</div><div class="page-subtitle">전체 ${ts.length}건</div></div>
+    <button class="btn btn-primary" onclick="openTaskModal(null)">➕ 업무 추가</button>
+  </div>
+  <div class="filter-bar">
+    <select onchange="filterTasks(this.value,'semester')" id="filter-sem">
+      <option value="">전체 학기</option><option>1학기</option><option>2학기</option><option>상시</option>
+    </select>
+    <select onchange="filterTasks(this.value,'manager')" id="filter-mgr">
+      <option value="">전체 담당자</option>
+      ${approvedUsers().map(u=>`<option>${u.name}</option>`).join('')}
+    </select>
+    <select onchange="filterTasks(this.value,'status')" id="filter-status">
+      <option value="">전체 상태</option><option>완료</option><option>진행중</option><option>미진행</option>
+    </select>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table" id="task-table">
+      <thead><tr>
+        <th>학기</th><th>구분</th><th>프로그램명</th><th>담당자</th><th>상태</th><th>진행률</th><th>예산집행률</th><th>작업</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderUserAdmin() {
+  const us = getUsers();
+  const rows = us.map(u => `<tr>
+    <td><strong>${u.name}</strong></td>
+    <td>${u.email}</td>
+    <td>${u.center}</td>
+    <td>${u.position||'-'}</td>
+    <td>${u.role === 'admin' ? '<span class="badge badge-admin">관리자</span>' : '<span class="badge badge-doing">담당자</span>'}</td>
+    <td>${u.status === 'approved' ? '<span class="badge badge-approved">승인됨</span>' : u.status === 'pending' ? '<span class="badge badge-pending">대기중</span>' : '<span class="badge badge-rejected">거부됨</span>'}</td>
+    <td>
+      ${u.status === 'pending' ? `<button class="btn btn-teal btn-sm" onclick="approveUser('${u.id}')">승인</button> <button class="btn btn-danger btn-sm" onclick="rejectUser('${u.id}')">거부</button>` : ''}
+      ${u.status === 'approved' && u.id !== currentUser.id ? `<button class="btn btn-ghost btn-sm" onclick="deleteUser('${u.id}')">삭제</button>` : ''}
+    </td>
+  </tr>`).join('');
+
+  return `
+  <div class="page-title">👥 사용자 관리</div>
+  <div class="page-subtitle">회원가입 승인 및 계정 관리</div>
+  <div class="table-wrap" style="margin-top:20px">
+    <table class="data-table">
+      <thead><tr><th>이름</th><th>이메일</th><th>소속</th><th>직위</th><th>권한</th><th>상태</th><th>작업</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderBudget() {
+  const ts = getTasks();
+  const rows = ts.map(t => {
+    const eduRate = t.budgetEdu ? Math.round((t.spendEdu||0)/t.budgetEdu*100) : null;
+    const govRate = t.budgetGov ? Math.round((t.spendGov||0)/t.budgetGov*100) : null;
+    return `<tr>
+      <td>${t.manager}</td>
+      <td style="max-width:200px">${t.name}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${fmtMoney(t.budgetEdu)}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${fmtMoney(t.spendEdu)}</td>
+      <td>${eduRate !== null ? `<span class="${eduRate>=100?'chip chip-green':eduRate>50?'chip':'chip chip-gray'}">${eduRate}%</span>` : '-'}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${fmtMoney(t.budgetGov)}</td>
+      <td style="font-family:'IBM Plex Mono',monospace;font-size:12px">${fmtMoney(t.spendGov)}</td>
+      <td>${govRate !== null ? `<span class="${govRate>=100?'chip chip-green':govRate>50?'chip':'chip chip-gray'}">${govRate}%</span>` : '-'}</td>
+    </tr>`;
+  }).join('');
+
+  const totalEduBudget = ts.reduce((s,t)=>s+(Number(t.budgetEdu)||0),0);
+  const totalEduSpend = ts.reduce((s,t)=>s+(Number(t.spendEdu)||0),0);
+  const totalGovBudget = ts.reduce((s,t)=>s+(Number(t.budgetGov)||0),0);
+  const totalGovSpend = ts.reduce((s,t)=>s+(Number(t.spendGov)||0),0);
+
+  return `
+  <div class="page-title">💰 예산 집행 현황</div>
+  <div class="page-subtitle">교비 및 국비 예산 집행 현황</div>
+  <div class="stat-grid" style="margin-top:20px">
+    <div class="stat-card"><div class="label">교비 총 계획</div><div class="value" style="font-size:18px">${Math.round(totalEduBudget/10000).toLocaleString()}만</div></div>
+    <div class="stat-card accent-teal"><div class="label">교비 집행액</div><div class="value" style="font-size:18px">${Math.round(totalEduSpend/10000).toLocaleString()}만</div></div>
+    <div class="stat-card"><div class="label">국비 총 계획</div><div class="value" style="font-size:18px">${Math.round(totalGovBudget/10000).toLocaleString()}만</div></div>
+    <div class="stat-card accent-blue"><div class="label">국비 집행액</div><div class="value" style="font-size:18px">${Math.round(totalGovSpend/10000).toLocaleString()}만</div></div>
+  </div>
+  <div class="table-wrap" style="margin-top:8px">
+    <table class="data-table">
+      <thead><tr><th>담당자</th><th>프로그램명</th><th>교비계획</th><th>교비집행</th><th>교비율</th><th>국비계획</th><th>국비집행</th><th>국비율</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderParticipants() {
+  const ts = getTasks();
+  let tS=0,tA=0,tI=0,tO=0;
+  ts.forEach(t => { tS+=Number(t.pSchool)||0; tA+=Number(t.pAdult)||0; tI+=Number(t.pIntl)||0; tO+=Number(t.pOther)||0; });
+  const total = tS+tA+tI+tO;
+  const rows = ts.filter(t=>(Number(t.pSchool)||0)+(Number(t.pAdult)||0)+(Number(t.pIntl)||0)+(Number(t.pOther)||0)>0).map(t=>`<tr>
+    <td>${t.name}</td><td>${t.manager}</td>
+    <td>${t.pSchool||'-'}</td><td>${t.pAdult||'-'}</td><td>${t.pIntl||'-'}</td><td>${t.pOther||'-'}</td>
+    <td><strong>${(Number(t.pSchool)||0)+(Number(t.pAdult)||0)+(Number(t.pIntl)||0)+(Number(t.pOther)||0)}</strong></td>
+  </tr>`).join('');
+
+  return `
+  <div class="page-title">👤 참여자 통계</div>
+  <div class="page-subtitle">학령기 / 성인학습자 / 국제학생 참여 현황</div>
+  <div class="stat-grid" style="margin-top:20px">
+    <div class="stat-card"><div class="label">학령기</div><div class="value">${tS.toLocaleString()}</div><div class="sub">명</div></div>
+    <div class="stat-card accent-blue"><div class="label">성인학습자</div><div class="value">${tA.toLocaleString()}</div><div class="sub">명</div></div>
+    <div class="stat-card accent-teal"><div class="label">국제학생</div><div class="value">${tI.toLocaleString()}</div><div class="sub">명</div></div>
+    <div class="stat-card accent-amber"><div class="label">총 참여자</div><div class="value">${total.toLocaleString()}</div><div class="sub">명 (누계)</div></div>
+  </div>
+  <div class="table-wrap" style="margin-top:8px">
+    <table class="data-table">
+      <thead><tr><th>프로그램명</th><th>담당자</th><th>학령기</th><th>성인</th><th>국제학생</th><th>기타</th><th>합계</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderAssignments() {
+  const as = getAssignments();
+  const rows = as.map(a => `<tr>
+    <td>${a.manager}</td>
+    <td><span class="chip">${a.category}</span></td>
+    <td>${a.taskName}</td>
+    <td>${a.semester}</td>
+    <td>${a.note||'-'}</td>
+    <td><button class="btn btn-danger btn-sm" onclick="deleteAssignment('${a.id}')">삭제</button></td>
+  </tr>`).join('');
+
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+    <div><div class="page-title">📌 업무분장 관리</div><div class="page-subtitle">담당자별 사전 배정 업무</div></div>
+    <button class="btn btn-primary" onclick="openAssignModal()">➕ 업무분장 추가</button>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>담당자</th><th>구분</th><th>프로그램명</th><th>학기</th><th>비고</th><th>작업</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────
+//  USER TABS
+// ─────────────────────────────────────────────
+function userTab(tab) {
+  document.querySelectorAll('#screen-user .sidebar-menu li a').forEach(a => a.classList.remove('active'));
+  const c = $('user-content');
+  if (tab === 'my-tasks') c.innerHTML = renderMyTasks();
+  else if (tab === 'all-tasks') c.innerHTML = renderTaskList(false);
+  else if (tab === 'add-task') { c.innerHTML = renderTaskList(false); openTaskModal(null); }
+}
+
+function renderMyTasks() {
+  const ts = getTasks().filter(t => t.manager === currentUser.name);
+  const as = getAssignments().filter(a => a.manager === currentUser.name);
+
+  const taskRows = ts.length ? ts.map(t => {
+    const pct = calcProgress(t.stages);
+    const overall = stageOverall(t.stages);
+    return `<tr>
+      <td>${t.semester}</td>
+      <td><span class="chip">${t.category}</span></td>
+      <td><strong>${t.name}</strong></td>
+      <td>${statusBadge(overall)}</td>
+      <td>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <span class="progress-label">${pct}%</span>
+        </div>
+      </td>
+      <td><button class="btn btn-teal btn-sm" onclick="openTaskModal('${t.id}')">수정</button></td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6"><div class="empty-state"><div class="icon">📭</div><p>등록된 업무가 없습니다</p></div></td></tr>`;
+
+  const assignRows = as.length ? as.map(a => {
+    const existing = getTasks().find(t => t.name === a.taskName && t.manager === a.manager);
+    return `<tr>
+      <td>${a.semester}</td>
+      <td><span class="chip">${a.category}</span></td>
+      <td>${a.taskName}</td>
+      <td>${a.note||'-'}</td>
+      <td>${existing ? '<span class="badge badge-done">입력 완료</span>' : '<span class="badge badge-todo">미입력</span>'}</td>
+      <td>${!existing ? `<button class="btn btn-primary btn-sm" onclick="openTaskModalWithAssign('${a.id}')">입력하기</button>` : `<button class="btn btn-teal btn-sm" onclick="openTaskModal('${existing.id}')">수정</button>`}</td>
+    </tr>`;
+  }).join('') : `<tr><td colspan="6"><div class="empty-state"><div class="icon">📋</div><p>배정된 업무분장이 없습니다</p></div></td></tr>`;
+
+  const done = ts.filter(t => stageOverall(t.stages)==='완료').length;
+  const doing = ts.filter(t => stageOverall(t.stages)==='진행중').length;
+
+  return `
+  <div class="page-title">📋 내 업무</div>
+  <div class="page-subtitle">${currentUser.name}님의 업무 현황</div>
+
+  <div class="stat-grid" style="margin-top:16px;grid-template-columns:repeat(3,1fr)">
+    <div class="stat-card"><div class="label">전체 업무</div><div class="value">${ts.length}</div></div>
+    <div class="stat-card accent-teal"><div class="label">완료</div><div class="value">${done}</div></div>
+    <div class="stat-card accent-blue"><div class="label">진행중</div><div class="value">${doing}</div></div>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:24px 0 14px">
+    <div class="section-title">📌 배정된 업무분장</div>
+  </div>
+  <div class="table-wrap" style="margin-bottom:24px">
+    <table class="data-table">
+      <thead><tr><th>학기</th><th>구분</th><th>프로그램명</th><th>비고</th><th>입력상태</th><th>작업</th></tr></thead>
+      <tbody>${assignRows}</tbody>
+    </table>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+    <div class="section-title">🗂 내가 입력한 업무</div>
+    <button class="btn btn-primary" onclick="openTaskModal(null)">➕ 업무 직접 추가</button>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th>학기</th><th>구분</th><th>프로그램명</th><th>상태</th><th>진행률</th><th>작업</th></tr></thead>
+      <tbody>${taskRows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ─────────────────────────────────────────────
+//  TASK MODAL
+// ─────────────────────────────────────────────
+function openTaskModal(taskId) {
+  editingTaskId = taskId;
+  $('modal-task-title').textContent = taskId ? '업무 수정' : '업무 추가';
+
+  // 담당자 드롭다운 채우기
+  const sel = $('f-manager');
+  sel.innerHTML = approvedUsers().map(u => `<option>${u.name}</option>`).join('');
+
+  if (taskId) {
+    const t = getTasks().find(x => x.id === taskId);
+    if (!t) return;
+    $('f-category').value = t.category;
+    $('f-manager').value = t.manager;
+    $('f-name').value = t.name;
+    $('f-semester').value = t.semester;
+    $('f-start').value = t.startDate || '';
+    $('f-end').value = t.endDate || '';
+    $('f-place').value = t.place || '';
+    $('f-vendor').value = t.vendor || '';
+    $('f-budget-edu').value = t.budgetEdu || '';
+    $('f-budget-gov').value = t.budgetGov || '';
+    $('f-spend-edu').value = t.spendEdu || '';
+    $('f-spend-gov').value = t.spendGov || '';
+    $('f-p-school').value = t.pSchool || '';
+    $('f-p-adult').value = t.pAdult || '';
+    $('f-p-intl').value = t.pIntl || '';
+    $('f-p-other').value = t.pOther || '';
+    // stages
+    Object.entries(t.stages).forEach(([k,v]) => {
+      const el = $(k.replace('_','-'));
+      if (el) el.value = v;
+    });
+  } else {
+    // 일반 담당자면 본인 이름 기본값
+    if (currentUser.role === 'user') $('f-manager').value = currentUser.name;
+    ['f-category','f-name','f-semester','f-start','f-end','f-place','f-vendor','f-budget-edu','f-budget-gov','f-spend-edu','f-spend-gov','f-p-school','f-p-adult','f-p-intl','f-p-other'].forEach(id => { const el=$(id); if(el) el.value=''; });
+    ['s1-1','s1-2','s1-3','s1-4','s1-5','s2-1','s2-2','s3-1','s3-2','s3-3','s3-4','s4-1','s4-2','s4-3','s4-4','s5-1','s5-2','s5-3','s5-4'].forEach(id => { const el=$(id); if(el) el.value='미진행'; });
+  }
+
+  $('modal-task').classList.add('open');
+}
+
+function openTaskModalWithAssign(assignId) {
+  const a = getAssignments().find(x => x.id === assignId);
+  if (!a) return;
+  openTaskModal(null);
+  setTimeout(() => {
+    $('f-name').value = a.taskName;
+    $('f-category').value = a.category;
+    $('f-semester').value = a.semester;
+    $('f-manager').value = a.manager;
+  }, 50);
+}
+
+function saveTask() {
+  const name = $('f-name').value.trim();
+  if (!name) { toast('프로그램명을 입력해 주세요.','error'); return; }
+
+  const stages = {};
+  ['s1-1','s1-2','s1-3','s1-4','s1-5','s2-1','s2-2','s3-1','s3-2','s3-3','s3-4','s4-1','s4-2','s4-3','s4-4','s5-1','s5-2','s5-3','s5-4'].forEach(id => {
+    const key = id.replace('-','_');
+    stages[key] = $(id).value;
+  });
+
+  const taskData = {
+    category: $('f-category').value,
+    manager: $('f-manager').value,
+    name,
+    semester: $('f-semester').value,
+    startDate: $('f-start').value,
+    endDate: $('f-end').value,
+    place: $('f-place').value,
+    vendor: $('f-vendor').value,
+    budgetEdu: Number($('f-budget-edu').value) || 0,
+    budgetGov: Number($('f-budget-gov').value) || 0,
+    spendEdu: Number($('f-spend-edu').value) || 0,
+    spendGov: Number($('f-spend-gov').value) || 0,
+    pSchool: Number($('f-p-school').value) || 0,
+    pAdult: Number($('f-p-adult').value) || 0,
+    pIntl: Number($('f-p-intl').value) || 0,
+    pOther: Number($('f-p-other').value) || 0,
+    stages,
+    updatedAt: new Date().toISOString(),
+    createdBy: currentUser.id,
+  };
+
+  const ts = getTasks();
+  if (editingTaskId) {
+    const idx = ts.findIndex(t => t.id === editingTaskId);
+    ts[idx] = { ...ts[idx], ...taskData };
+  } else {
+    taskData.id = 't' + Date.now();
+    ts.push(taskData);
+  }
+  saveTasks(ts);
+
+  // Google Apps Script로 전송
+  sendToSheet(taskData, editingTaskId ? 'update' : 'insert');
+
+  closeModal('modal-task');
+  toast('저장되었습니다 ✓', 'success');
+  refreshCurrentView();
+}
+
+function deleteTask(id) {
+  if (!confirm('이 업무를 삭제하시겠습니까?')) return;
+  const ts = getTasks().filter(t => t.id !== id);
+  saveTasks(ts);
+  toast('삭제되었습니다.', 'success');
+  adminTab('tasks');
+}
+
+// ─────────────────────────────────────────────
+//  USER MANAGEMENT
+// ─────────────────────────────────────────────
+function approveUser(id) {
+  const us = getUsers(); const u = us.find(x => x.id === id);
+  if (u) { u.status = 'approved'; saveUsers(us); toast(u.name + '님 승인 완료', 'success'); adminTab('users'); }
+}
+function rejectUser(id) {
+  const us = getUsers(); const u = us.find(x => x.id === id);
+  if (u && confirm('거부하시겠습니까?')) { u.status = 'rejected'; saveUsers(us); toast('거부 처리되었습니다.'); adminTab('users'); }
+}
+function deleteUser(id) {
+  if (!confirm('사용자를 삭제하시겠습니까?')) return;
+  const us = getUsers().filter(u => u.id !== id); saveUsers(us); adminTab('users');
+}
+
+// ─────────────────────────────────────────────
+//  ASSIGNMENTS
+// ─────────────────────────────────────────────
+function openAssignModal() {
+  const managers = approvedUsers().map(u => `<option>${u.name}</option>`).join('');
+  const body = document.createElement('div');
+  body.innerHTML = `
+    <div class="form-row">
+      <div class="form-group"><label>담당자</label><select id="a-manager">${managers}</select></div>
+      <div class="form-group"><label>학기</label><select id="a-sem"><option>1학기</option><option>2학기</option><option>상시</option></select></div>
+    </div>
+    <div class="form-group"><label>구분</label>
+      <select id="a-cat"><option>학생복지</option><option>취업통계</option><option>취업지원</option><option>학생자치활동지원</option><option>국제학생지원</option><option>학사의례 및 행사</option><option>학생의견수렴</option><option>위원회</option><option>부서운영</option></select>
+    </div>
+    <div class="form-group"><label>프로그램명</label><input type="text" id="a-name" placeholder="업무명 입력"/></div>
+    <div class="form-group"><label>비고</label><input type="text" id="a-note" placeholder="참고사항"/></div>
+    <div style="margin-top:16px;display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn btn-ghost" onclick="closeModal('modal-user')">취소</button>
+      <button class="btn btn-primary" onclick="saveAssignment()">저장</button>
+    </div>`;
+  $('modal-user-body').innerHTML = '';
+  $('modal-user-body').appendChild(body);
+  document.querySelector('#modal-user .modal-header h3').textContent = '업무분장 추가';
+  document.querySelector('#modal-user .modal-footer').style.display = 'none';
+  $('modal-user').classList.add('open');
+}
+
+function saveAssignment() {
+  const name = document.getElementById('a-name').value.trim();
+  if (!name) { toast('프로그램명을 입력해 주세요.','error'); return; }
+  const as = getAssignments();
+  as.push({ id:'a'+Date.now(), manager: document.getElementById('a-manager').value, category: document.getElementById('a-cat').value, taskName: name, semester: document.getElementById('a-sem').value, note: document.getElementById('a-note').value });
+  saveAssignments(as);
+  closeModal('modal-user');
+  toast('업무분장이 추가되었습니다.', 'success');
+  adminTab('assignments');
+}
+
+function deleteAssignment(id) {
+  if (!confirm('삭제하시겠습니까?')) return;
+  saveAssignments(getAssignments().filter(a => a.id !== id));
+  adminTab('assignments');
+}
+
+// ─────────────────────────────────────────────
+//  MODAL HELPERS
+// ─────────────────────────────────────────────
+function closeModal(id) {
+  $(id).classList.remove('open');
+  document.querySelector('#modal-user .modal-footer').style.display = 'flex';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); });
+});
+
+// ─────────────────────────────────────────────
+//  REFRESH VIEW
+// ─────────────────────────────────────────────
+function refreshCurrentView() {
+  if (currentUser.role === 'admin') adminTab('tasks');
+  else userTab('my-tasks');
+}
+
+// ─────────────────────────────────────────────
+//  GOOGLE APPS SCRIPT 연동
+//  실제 Apps Script URL 설정 후 동작합니다.
+// ─────────────────────────────────────────────
+function sendToSheet(data, action) {
+  if (APPS_SCRIPT_URL.includes('YOUR_SCRIPT_ID')) return; // 미설정 시 skip
+  const payload = { action, ...data };
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    mode: 'no-cors'
+  }).catch(e => console.warn('Apps Script 전송 실패:', e));
+}
+</script>
+</body>
+</html>
