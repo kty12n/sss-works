@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무 및 성과 관리 시스템 - 중장기발전계획</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+:root{
+  --navy:#1a2744;--navy-mid:#253360;--blue:#2e5bff;--blue-lt:#e8eeff;
+  --teal:#00b6a8;--teal-lt:#e0f7f5;--amber:#f5a623;--amber-lt:#fff4e0;
+  --red:#e53935;--red-lt:#fdecea;--green:#29a745;--green-lt:#e8f5e9;
+  --purple:#7c3aed;--purple-lt:#ede9fe;
+  --gray-0:#f7f8fc;--gray-1:#eef0f5;--gray-2:#d6dae6;--gray-3:#9ba3b8;
+  --gray-4:#6b738a;--text:#1e2640;--white:#fff;
+  --shadow:0 2px 12px rgba(26,39,68,.10);--shadow-lg:0 8px 32px rgba(26,39,68,.16);
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter','SF Pro Display',system-ui,sans-serif;background:var(--gray-0);color:var(--text);}
+
+.header{background:var(--navy);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.3);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.back-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;}
+.back-btn:hover{background:rgba(255,255,255,.2);}
+.header-title{color:#fff;font-size:15px;font-weight:700;}
+.header-badge{background:var(--purple);color:#fff;font-size:10px;padding:2px 8px;border-radius:20px;font-weight:600;}
+.sync-btn{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;}
+
+.layout{display:flex;min-height:calc(100vh - 60px);}
+.sidebar{width:240px;background:var(--white);border-right:1px solid var(--gray-1);padding:16px 0;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.sidebar-section{padding:10px 16px 4px;font-size:10px;font-weight:700;color:var(--gray-3);letter-spacing:.08em;text-transform:uppercase;}
+.sidebar-menu{list-style:none;}
+.sidebar-menu li a{display:flex;align-items:center;gap:8px;padding:9px 18px;font-size:13px;font-weight:500;color:var(--gray-4);cursor:pointer;border-left:3px solid transparent;transition:all .15s;}
+.sidebar-menu li a:hover,.sidebar-menu li a.active{background:var(--purple-lt);color:var(--purple);border-left-color:var(--purple);}
+.sidebar-menu li a.sub{padding-left:32px;font-size:12px;}
+
+.content{flex:1;padding:24px 28px;overflow-x:hidden;}
+.page-title{font-size:20px;font-weight:300;letter-spacing:-.4px;color:var(--navy);margin-bottom:4px;}
+.page-subtitle{font-size:12px;color:var(--gray-4);margin-bottom:20px;}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 24px;margin-bottom:18px;}
+.card-title{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+
+/* 전략 카드 */
+.strategy-card{background:var(--white);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+.strategy-header{padding:14px 20px;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;}
+.strategy-title{font-size:14px;font-weight:800;}
+.strategy-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:3px;}
+.task-row{padding:14px 20px;border-bottom:1px solid var(--gray-1);display:flex;align-items:center;gap:12px;}
+.task-row:last-child{border-bottom:none;}
+.task-num{background:var(--purple-lt);color:var(--purple);font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;flex-shrink:0;}
+.task-name{font-size:13px;font-weight:600;flex:1;color:var(--text);}
+.task-progress{display:flex;align-items:center;gap:8px;min-width:140px;}
+.prog-bar{flex:1;height:8px;background:var(--gray-1);border-radius:4px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:4px;background:var(--purple);}
+.prog-label{font-size:12px;font-weight:700;font-feature-settings:'tnum';letter-spacing:-.02em;color:var(--purple);white-space:nowrap;}
+
+/* 지표 테이블 */
+.ind-table{width:100%;border-collapse:collapse;font-size:13px;}
+.ind-table th{background:var(--ink);color:#fff;padding:10px 12px;text-align:left;font-size:12px;font-weight:600;}
+.ind-table td{padding:10px 12px;border-bottom:1px solid var(--gray-1);vertical-align:top;}
+.ind-table tr:last-child td{border-bottom:none;}
+.ind-table tr:hover td{background:var(--gray-0);}
+
+/* stat */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.stat-card{background:var(--white);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);border-top:4px solid var(--purple);}
+.stat-label{font-size:11px;font-weight:600;color:var(--gray-4);margin-bottom:6px;}
+.stat-value{font-size:24px;font-weight:900;font-feature-settings:'tnum';letter-spacing:-.02em;color:var(--navy);}
+.stat-sub{font-size:11px;color:var(--gray-3);margin-top:4px;}
+
+/* badge */
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-purple{background:var(--purple-lt);color:var(--purple);}
+.badge-green{background:var(--green-lt);color:#1a6e2e;}
+.badge-amber{background:var(--amber-lt);color:#7a5000;}
+.badge-blue{background:var(--blue-lt);color:var(--blue);}
+.badge-gray{background:var(--gray-1);color:var(--gray-4);}
+
+/* 입력 모달 */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-start;justify-content:center;padding:20px 0;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:14px;width:720px;max-width:96vw;margin:auto;box-shadow:var(--shadow-lg);}
+.modal-header{padding:18px 22px 12px;border-bottom:1px solid var(--gray-1);display:flex;align-items:center;justify-content:space-between;}
+.modal-header h3{font-size:16px;font-weight:800;color:var(--navy);}
+.modal-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-3);}
+.modal-body{padding:18px 22px;}
+.modal-footer{padding:12px 22px;border-top:1px solid var(--gray-1);display:flex;justify-content:flex-end;gap:10px;}
+.form-group{margin-bottom:14px;}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--gray-4);margin-bottom:5px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1.5px solid var(--gray-2);border-radius:7px;font-family:inherit;font-size:13px;color:var(--text);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--purple);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-row.triple{grid-template-columns:1fr 1fr 1fr;}
+.btn{padding:7px 16px;border-radius:6px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:all .18s;}
+.btn-primary{background:var(--purple);color:#fff;}
+.btn-primary:hover{background:#6326cc;}
+.btn-ghost{background:transparent;color:var(--gray-4);border:1px solid var(--gray-2);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-sm{padding:5px 12px;font-size:12px;}
+.btn-xs{padding:3px 8px;font-size:11px;}
+
+/* progress circle */
+.prog-circle{position:relative;width:80px;height:80px;}
+.prog-circle svg{transform:rotate(-90deg);}
+.prog-circle-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;font-feature-settings:'tnum';letter-spacing:-.02em;color:var(--navy);}
+
+/* chart */
+.chart-container{position:relative;height:240px;}
+
+/* info popup */
+.info-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:600;align-items:flex-start;justify-content:center;padding:30px;overflow-y:auto;}
+.info-overlay.open{display:flex;}
+.info-box{background:var(--white);border-radius:14px;width:700px;max-width:96vw;margin:auto;box-shadow:var(--shadow-lg);}
+.info-header{background:linear-gradient(135deg,var(--navy),var(--navy-mid));padding:18px 22px;border-radius:14px 14px 0 0;display:flex;justify-content:space-between;align-items:center;}
+.info-header h3{color:#fff;font-size:16px;font-weight:800;}
+.info-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;}
+.info-body{padding:20px 22px;max-height:70vh;overflow-y:auto;}
+.info-section{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--gray-1);}
+.info-section:last-child{border-bottom:none;}
+.info-section-title{font-size:11px;font-weight:700;color:var(--gray-4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.info-section-body{font-size:13px;color:var(--text);line-height:1.8;white-space:pre-wrap;}
+
+/* toast */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--ink);color:#fff;padding:12px 20px;border-radius:8px;font-size:14px;box-shadow:var(--shadow-lg);z-index:999;opacity:0;transform:translateY(12px);transition:all .25s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateY(0);}
+.toast.success{background:var(--green);}
+
+/* 해밍거 */
+.hamburger-mid{display:none;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:7px 10px;border-radius:6px;font-size:18px;cursor:pointer;}
+.sidebar-overlay-mid{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;}
+
+@media(max-width:768px){
+  .hamburger-mid{display:flex;align-items:center;justify-content:center;}
+  .sidebar{position:fixed!important;top:0;left:0;bottom:0;width:260px!important;z-index:60;transform:translateX(-100%);transition:transform .28s;height:100vh;padding-top:16px;}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay-mid.show{display:block;}
+  .layout{display:block;}
+  .content{padding:14px 12px;overflow-x:hidden;}
+  .stat-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px!important;}
+  .form-row,.form-row.triple{grid-template-columns:1fr!important;}
+  .modal{width:96vw!important;}
+  .header-badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay-mid" id="mid-overlay" onclick="closeMidSidebar()"></div>
+
+<header class="header">
+  <div class="header-left">
+    <button class="hamburger-mid" onclick="toggleMidSidebar()">☰</button>
+    <button class="back-btn" onclick="goBack()">← 메인으로</button>
+    <div class="header-title">📋 중장기발전계획 성과관리</div>
+    <span class="header-badge">전략방향 2</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px">
+    <span id="mid-sync-status" style="font-size:11px;color:rgba(255,255,255,.6)">✓ 연동됨</span>
+    <button class="sync-btn" onclick="refreshAll()">🔄 새로고침</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="mid-sidebar">
+    <ul class="sidebar-menu">
+      <div class="sidebar-section">개요</div>
+      <li><a onclick="showTab('overview')" class="active">📊 전체 현황</a></li>
+      <li><a onclick="showTab('chart')">📈 차트 분석</a></li>
+      <div class="sidebar-section">전략과제 2-1</div>
+      <li><a onclick="showTab('t211')" class="sub">2-1-1 AI 기반 맞춤형 지원</a></li>
+      <li><a onclick="showTab('t212')" class="sub">2-1-2 통합 운영 체계 고도화</a></li>
+      <li><a onclick="showTab('t213')" class="sub">2-1-3 성과관리 체계 구축</a></li>
+      <div class="sidebar-section">전략과제 2-2</div>
+      <li><a onclick="showTab('t221')" class="sub">2-2-1 취업지원 체계 고도화</a></li>
+      <li><a onclick="showTab('t222')" class="sub">2-2-2 취창업 프로그램 개발</a></li>
+      <li><a onclick="showTab('t223')" class="sub">2-2-3 유학생 취업지원 강화</a></li>
+      <div class="sidebar-section">관리</div>
+      <li><a onclick="showTab('settings-mid')">⚙️ 목표값 설정</a></li>
+    </ul>
+  </nav>
+  <div class="content" id="mid-content"></div>
+</div>
+
+<!-- 입력 모달 -->
+<div class="modal-overlay" id="modal-mid-input">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modal-mid-title">실행과제 현재값 입력</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-mid-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveMidInput()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 상세 설명 팝업 -->
+<div class="info-overlay" id="info-overlay">
+  <div class="info-box">
+    <div class="info-header">
+      <h3 id="info-title">실행과제 상세</h3>
+      <button class="info-close" onclick="closeInfo()">✕</button>
+    </div>
+    <div class="info-body" id="info-body"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── Firebase 설정 ──
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wjam9XhdH88XErD_Ky7medMaLIytxgA",
+  authDomain: "sss-works.firebaseapp.com",
+  databaseURL: "https://sss-works-default-rtdb.firebaseio.com",
+  projectId: "sss-works",
+  storageBucket: "sss-works.firebasestorage.app",
+  messagingSenderId: "301156213383",
+  appId: "1:301156213383:web:bd895fcd5a7483e4060e22"
+};
+firebase.initializeApp(firebaseConfig);
+const _db = firebase.database();
+
+// ── 중장기발전계획 데이터 구조 ──
+const MID_PLAN = {
+  id: 'aid',
+  name: 'AID(AI-DIGITAL) 기반의 학생성공체계 구축',
+  direction: '전략방향 2',
+  tasks: [
+    {
+      id: 't21', num: '2-1', name: 'AI 기반 학생성공지원 선순환 강화',
+      subtasks: [
+        {
+          id: 't211', num: '2-1-1',
+          name: 'AI 기반 학습자 맞춤형 학생성공지원 서비스 효율화',
+          definition: 'AI 기반 학습자 맞춤형 학생성공지원 서비스 개발 및 운영\n학습자 진단 기반 맞춤형 학생성공지원 체계 구축\n학업·진로·취업·역량개발 연계 지원체계 강화\n학생성공지원 데이터 기반 모니터링 및 상담체계 운영\n학생 성장단계별 맞춤형 지원 및 환류체계 고도화',
+          formula: 'AI 기반 학습자 진단 및 학습성과 분석 추진율 × α\n+ AI 기반 학습자 맞춤형 로드맵 설계율 × β\n+ AI 기반 학습자 맞춤형 로드맵 운영율 × γ\n+ AI 기반 학습자 맞춤형 운영 효율화율 × δ',
+          checkCycle: '학기별',
+          targets: {'26': null, '27': null, '28': null},
+          indicators: [
+            {id:'i2111', name:'AI 기반 학습자 진단 및 학습성과 분석 추진율', unit:'%'},
+            {id:'i2112', name:'AI 기반 학습자 맞춤형 로드맵 설계율', unit:'%'},
+            {id:'i2113', name:'AI 기반 학습자 맞춤형 로드맵 운영율', unit:'%'},
+            {id:'i2114', name:'AI 기반 학습자 맞춤형 운영 효율화율', unit:'%'},
+          ]
+        },
+        {
+          id: 't212', num: '2-1-2',
+          name: '학생성공지원 서비스 통합 운영 체계 고도화',
+          definition: '학생성공지원 프로그램 통합 운영체계 구축 및 고도화\n학습·상담·진로·취업 지원 프로그램 간 연계 강화\n학생지원 서비스의 통합 관리 및 운영 효율성 제고\n학생성공지원 정보 공유 및 활용체계 구축\n수요자 중심의 통합 학생지원 서비스 제공',
+          formula: 'AI 기반 원스톱 플랫폼 구축율 × α\n+ AI 기반 원스톱 플랫폼 운영율 × β\n+ 학습자 맞춤형 프로그램 재구조화율 × γ\n+ 챗봇 운영율 × δ\n+ 복지 인프라 운영 만족도 × ε',
+          checkCycle: '학기별',
+          targets: {'26': null, '27': null, '28': null},
+          indicators: [
+            {id:'i2121', name:'AI 기반 원스톱 플랫폼 구축율', unit:'%'},
+            {id:'i2122', name:'AI 기반 원스톱 플랫폼 운영율', unit:'%'},
+            {id:'i2123', name:'학습자 맞춤형 프로그램 재구조화율', unit:'%'},
+            {id:'i2124', name:'챗봇 운영율', unit:'%'},
+            {id:'i2125', name:'복지 인프라 운영 만족도', unit:'%'},
+          ]
+        },
+        {
+          id: 't213', num: '2-1-3',
+          name: '학생성공지원 서비스 성과관리 체계 구축 및 운영',
+          definition: '데이터 기반의 학생성공지원 서비스 성과관리 체계 구축 및 운영\n학생성공지원 프로그램의 지속적인 개선 및 환류체계 강화\n학생지원 프로그램 성과분석 및 모니터링 강화\n학생지원 프로그램 참여 학습자 역량 향상도 분석\n학생성공지원 서비스의 지속적인 품질 향상 지원',
+          formula: '학생성공지원 서비스 성과관리 추진율 × α\n+ 학습자 맞춤형 프로그램 운영 목표 달성율 × β\n+ 학습자 역량 향상 목표 달성율 × γ\n+ 학습자 맞춤형 프로그램 개선율 × δ',
+          checkCycle: '학기별',
+          targets: {'26': null, '27': null, '28': null},
+          indicators: [
+            {id:'i2131', name:'성과관리 추진율', unit:'%'},
+            {id:'i2132', name:'프로그램 운영 목표 달성율', unit:'%'},
+            {id:'i2133', name:'학습자 역량 향상 목표 달성율', unit:'%'},
+            {id:'i2134', name:'프로그램 개선율', unit:'%'},
+          ]
+        }
+      ]
+    },
+    {
+      id: 't22', num: '2-2', name: '학습자 전주기 취·창업 지원 강화',
+      subtasks: [
+        {
+          id: 't221', num: '2-2-1',
+          name: '학습자 역량기반 취업 지원체계 고도화',
+          definition: '학습자 역량 기반 취업지원 체계 구축 및 운영\n진로설계부터 취업까지 단계별 취업지원 서비스 강화\n전공 및 직무역량 기반 취업역량 진단체계 운영\n취업성과 분석 기반 맞춤형 취업지원 확대\n취업지원 서비스의 성과관리 및 환류체계 고도화',
+          formula: 'AIDX 기반 취업지원 시스템 구축율 × α\n+ AIDX 기반 학습이력 연계 취업정보 제공율 × β\n+ 맞춤형 로드맵 연계 취업지원 프로그램 운영율 × γ\n+ 취업지원 프로그램 교원 참여율 × δ\n+ 대학 전체 취업률 × ε',
+          checkCycle: '학기별',
+          targets: {'26': null, '27': null, '28': null},
+          indicators: [
+            {id:'i2211', name:'AIDX 기반 취업지원 시스템 구축율', unit:'%'},
+            {id:'i2212', name:'학습이력 연계 취업정보 제공율', unit:'%'},
+            {id:'i2213', name:'로드맵 연계 취업지원 프로그램 운영율', unit:'%'},
+            {id:'i2214', name:'취업지원 프로그램 교원 참여율', unit:'%'},
+            {id:'i2215', name:'대학 전체 취업률', unit:'%'},
+          ]
+        },
+        {
+          id: 't222', num: '2-2-2',
+          name: '학습자 맞춤형 취·창업 지원 프로그램 개발 및 운영',
+          definition: '학습자의 진로 및 취업 수요를 반영한 맞춤형 취창업 지원 프로그램 개발 및 운영\n진로설계, 취업역량 강화, 창업역량 개발 등 성장단계별 지원체계 구축\n전공 및 산업수요 연계 취창업 프로그램 운영 확대\n취창업 지원 프로그램의 참여 확대 및 성과관리 강화\n학습자의 취업 경쟁력 및 창업역량 향상 지원',
+          formula: '학습자 맞춤형 취창업 지원 프로그램 운영 목표 달성율 × α\n+ 취업지원 프로그램 신규 개발율 × β\n+ 창업지원 프로그램 신규 개발율 × γ\n+ 취창업지원 프로그램 만족도 × δ',
+          checkCycle: '학기별',
+          targets: {'26': null, '27': null, '28': null},
+          indicators: [
+            {id:'i2221', name:'취창업 프로그램 운영 목표 달성율', unit:'%'},
+            {id:'i2222', name:'취업지원 프로그램 신규 개발율', unit:'%'},
+            {id:'i2223', name:'창업지원 프로그램 신규 개발율', unit:'%'},
+            {id:'i2224', name:'취창업지원 프로그램 만족도', unit:'%'},
+          ]
+        },
+        {
+          id: 't223', num: '2-2-3',
+          name: '외국인 유학생 지역 정주 연계 취업지원 강화',
+          definition: '외국인 유학생 대상 지역 정주형 취업지원 체계 강화\n지역산업체 연계 취업 및 현장실습 프로그램 확대\n외국인 유학생 대상 취업역량 강화 교육 운영\n비자전환 및 취업지원 서비스 강화\n지역 정착 및 취업 연계 지원체계 고도화',
+          formula: '외국인 유학생 지역 정주 연계 취업지원 프로그램 운영 목표 달성율 × α\n+ 취업지원 프로그램 운영율 × β\n+ 취업지원 프로그램 참여율 × γ\n+ 외국인 유학생 맞춤형 취업정보 제공율 × δ',
+          checkCycle: '학기별',
+          targets: {'26': null, '27': null, '28': null},
+          indicators: [
+            {id:'i2231', name:'취업지원 프로그램 운영 목표 달성율', unit:'%'},
+            {id:'i2232', name:'취업지원 프로그램 운영율', unit:'%'},
+            {id:'i2233', name:'취업지원 프로그램 참여율', unit:'%'},
+            {id:'i2234', name:'외국인 유학생 맞춤형 취업정보 제공율', unit:'%'},
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+
+// ── 지표별 세부 입력 필드 정의 ──
+const IND_FIELDS = {
+  i2111: { formula:'(분자 / 분모) × 100', fields:[
+    {id:'num', label:'AI 기반 학습자 진단 및 학습성과 분석 학생 수', unit:'명'},
+    {id:'den', label:'AI 기반 학습자 진단 및 학습성과 분석 학생 목표 수', unit:'명'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2112: { formula:'(로드맵 설계 건수 / 설계 목표 건수) × 100', fields:[
+    {id:'num', label:'AI 기반 맞춤형 학생성공지원 로드맵 설계 건수', unit:'건'},
+    {id:'den', label:'AI 기반 맞춤형 학생성공지원 로드맵 설계 목표 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2113: { formula:'(로드맵 운영 건수 / 설계 건수) × 100', fields:[
+    {id:'num', label:'AI 기반 맞춤형 학생성공지원 로드맵 운영 건수', unit:'건'},
+    {id:'den', label:'AI 기반 맞춤형 학생성공지원 로드맵 설계 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2114: { formula:'[(참여학생수/목표) × 50%] + [(예산집행/예산총액) × 50%]', fields:[
+    {id:'student_num', label:'맞춤형 학생성공지원 참여 학생 수', unit:'명'},
+    {id:'student_den', label:'맞춤형 학생성공지원 참여 학생 목표 수', unit:'명'},
+    {id:'budget_num', label:'맞춤형 학생성공지원 예산 집행 총액', unit:'원'},
+    {id:'budget_den', label:'맞춤형 학생성공지원 예산 총액', unit:'원'},
+  ], calc: d => {
+    const s = d.student_den>0 ? d.student_num/d.student_den : 0;
+    const b = d.budget_den>0 ? d.budget_num/d.budget_den : 0;
+    return Math.round((s*0.5+b*0.5)*1000)/10;
+  }},
+  i2121: { formula:'구축완료=100%, 미구축=0%', fields:[
+    {id:'built', label:'플랫폼 구축 여부 (1=구축완료, 0=미구축)', unit:'', type:'select', options:['0','1']},
+  ], calc: d => d.built*100 },
+  i2122: { formula:'(운영 건수 / 목표 운영 건수) × 100', fields:[
+    {id:'num', label:'원스톱 플랫폼 운영 건수', unit:'건'},
+    {id:'den', label:'원스톱 플랫폼 목표 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2123: { formula:'(신규·수정 프로그램 건수 / 운영 총 건수) × 100', fields:[
+    {id:'num', label:'신규 및 수정 프로그램 운영 건수', unit:'건'},
+    {id:'den', label:'프로그램 운영 총 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2124: { formula:'(챗봇 접속자 수 / 참여 학생 수) × 100', fields:[
+    {id:'num', label:'챗봇 접속자 수', unit:'명'},
+    {id:'den', label:'프로그램 운영 지원 참여 학생 수', unit:'명'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2125: { formula:'만족도 평균(0~5점) / 5 × 100', fields:[
+    {id:'avg', label:'복지 인프라 운영 만족도 평균 (0~5점)', unit:'점'},
+  ], calc: d => Math.round(d.avg/5*1000)/10 },
+  i2131: { formula:'(성과평가 추진 건수 / 프로그램 운영 건수) × 100', fields:[
+    {id:'num', label:'학생성공지원 프로그램 성과평가 추진 건수', unit:'건'},
+    {id:'den', label:'학생성공지원 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2132: { formula:'(목표 달성 건수 / 프로그램 운영 건수) × 100', fields:[
+    {id:'num', label:'맞춤형 프로그램 운영 목표 달성 건수', unit:'건'},
+    {id:'den', label:'맞춤형 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2133: { formula:'당해연도 역량향상도 / 직전년도 × 100', fields:[
+    {id:'prev', label:'직전년도 학생성공지원 프로그램 참여 학습자 역량 향상도 평균 (%)', unit:'%'},
+    {id:'curr', label:'당해연도 학생성공지원 프로그램 참여 학습자 역량 향상도 평균 (%)', unit:'%'},
+  ], calc: d => d.prev>0 ? Math.round(d.curr/d.prev*1000)/10 : null },
+  i2134: { formula:'(개선 건수 / 운영 건수) × 100', fields:[
+    {id:'num', label:'맞춤형 프로그램 개선 건수', unit:'건'},
+    {id:'den', label:'맞춤형 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2211: { formula:'구축완료=100%, 미구축=0%', fields:[
+    {id:'built', label:'AIDX 기반 취업지원 시스템 구축 여부 (1=구축완료, 0=미구축)', unit:'', type:'select', options:['0','1']},
+  ], calc: d => d.built*100 },
+  i2212: { formula:'(취업정보 제공 건수 / 목표 건수) × 100', fields:[
+    {id:'num', label:'AIDX 기반 학습이력 연계 취업정보 제공 건수', unit:'건'},
+    {id:'den', label:'AIDX 기반 학습이력 연계 취업정보 제공 목표 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2213: { formula:'(운영 건수 / 목표 건수) × 100', fields:[
+    {id:'num', label:'맞춤형 로드맵 연계 취업지원 프로그램 운영 건수', unit:'건'},
+    {id:'den', label:'맞춤형 로드맵 연계 취업지원 프로그램 운영 목표 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2214: { formula:'(참여 교원 수 / 목표 교원 수) × 100', fields:[
+    {id:'num', label:'취업지원 프로그램 참여 교원 수', unit:'명'},
+    {id:'den', label:'취업지원 프로그램 참여 목표 교원 수', unit:'명'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2215: { formula:'대학 정보공시 취업률 데이터 입력', fields:[
+    {id:'direct', label:'대학 전체 취업률 (%)', unit:'%'},
+  ], calc: d => d.direct },
+  i2221: { formula:'(목표 달성 건수 / 운영 건수) × 100', fields:[
+    {id:'num', label:'취창업 지원 프로그램 운영 목표 달성 건수', unit:'건'},
+    {id:'den', label:'취창업 지원 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2222: { formula:'(신규 개발 건수 / 운영 건수) × 100', fields:[
+    {id:'num', label:'맞춤형 취업지원 프로그램 신규 개발 건수', unit:'건'},
+    {id:'den', label:'맞춤형 취업지원 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2223: { formula:'(신규 개발 건수 / 운영 건수) × 100', fields:[
+    {id:'num', label:'맞춤형 창업지원 프로그램 신규 개발 건수', unit:'건'},
+    {id:'den', label:'맞춤형 창업지원 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2224: { formula:'만족도 평균(0~5점) / 5 × 100', fields:[
+    {id:'avg', label:'취창업지원 프로그램 참여 학생 만족도 평균 (0~5점)', unit:'점'},
+  ], calc: d => Math.round(d.avg/5*1000)/10 },
+  i2231: { formula:'(목표 달성 건수 / 운영 건수) × 100', fields:[
+    {id:'num', label:'외국인 유학생 취업지원 프로그램 운영 목표 달성 건수', unit:'건'},
+    {id:'den', label:'외국인 유학생 취업지원 프로그램 운영 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2232: { formula:'(운영 건수 / 목표 건수) × 100', fields:[
+    {id:'num', label:'외국인 유학생 지역정주 연계 취업지원 프로그램 운영 건수', unit:'건'},
+    {id:'den', label:'외국인 유학생 지역정주 연계 취업지원 프로그램 목표 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2233: { formula:'(참여 학생 수 / 목표 학생 수) × 100', fields:[
+    {id:'num', label:'외국인 유학생 취업지원 프로그램 참여 학생 수', unit:'명'},
+    {id:'den', label:'외국인 유학생 취업지원 프로그램 참여 목표 학생 수', unit:'명'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+  i2234: { formula:'(취업정보 제공 건수 / 목표 건수) × 100', fields:[
+    {id:'num', label:'외국인 유학생 맞춤형 취업정보 제공 건수', unit:'건'},
+    {id:'den', label:'외국인 유학생 맞춤형 취업정보 제공 목표 건수', unit:'건'},
+  ], calc: d => d.den>0 ? Math.round(d.num/d.den*1000)/10 : null },
+};
+
+// 세부 필드 자동계산
+function calcIndField(indId) {
+  const def = IND_FIELDS[indId];
+  if (!def) return;
+  const vals = {};
+  def.fields.forEach(f => {
+    const el = document.getElementById('if-'+indId+'-'+f.id);
+    vals[f.id] = el ? (parseFloat(el.value)||0) : 0;
+  });
+  const result = def.calc ? def.calc(vals) : null;
+  const resEl = document.getElementById('if-'+indId+'-result');
+  if (resEl && result !== null) {
+    resEl.textContent = '→ ' + result + '%';
+    resEl.style.color = result>=100?'var(--green)':result>=80?'var(--blue)':'var(--amber)';
+    // 지표 결과 input에도 자동 반영
+    const valEl = document.getElementById('ind-'+indId);
+    if (valEl) valEl.value = result;
+  }
+}
+
+// 세부 필드 렌더링
+function renderIndDetailFields(indId, savedVals) {
+  const def = IND_FIELDS[indId];
+  if (!def) return '';
+  const sv = savedVals || {};
+  const fieldHtml = def.fields.map(f => {
+    const val = sv[f.id] !== undefined ? sv[f.id] : '';
+    if (f.type === 'select') {
+      return `<div class="form-group" style="margin-bottom:8px">
+        <label style="font-size:11px;color:var(--gray-4)">${f.label}</label>
+        <select id="if-${indId}-${f.id}" onchange="calcIndField('${indId}')" style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-2);border-radius:6px;font-size:13px">
+          <option value="0" ${val==0?'selected':''}>0 (미구축)</option>
+          <option value="1" ${val==1?'selected':''}>1 (구축완료)</option>
+        </select>
+      </div>`;
+    }
+    return `<div class="form-group" style="margin-bottom:8px">
+      <label style="font-size:11px;color:var(--gray-4)">${f.label} ${f.unit?'('+f.unit+')':''}</label>
+      <input type="number" id="if-${indId}-${f.id}" value="${val}" placeholder="0" step="0.1"
+        oninput="calcIndField('${indId}')"
+        style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-2);border-radius:6px;font-size:13px"/>
+    </div>`;
+  }).join('');
+  return `<div style="background:var(--blue-lt);border-radius:8px;padding:12px;margin-top:8px">
+    <div style="font-size:11px;color:var(--gray-4);margin-bottom:8px">📐 산출식: ${def.formula}</div>
+    ${fieldHtml}
+    <div id="if-${indId}-result" style="font-size:13px;font-weight:700;margin-top:6px;padding:6px 10px;background:var(--white);border-radius:5px"></div>
+  </div>`;
+}
+
+// ── 저장소 ──
+let _midData = {};
+let _charts = {};
+let _curTab = 'overview';
+let _editingId = null;
+
+function getMidData(id) { return _midData[id] || {}; }
+function saveMidData(id, data) {
+  _midData[id] = { ..._midData[id], ...data, updatedAt: new Date().toISOString() };
+  _db.ref('sj_v1/midterm/' + id).set(_midData[id]);
+  toast('저장되었습니다 ✓', 'success');
+}
+
+function getSubtask(id) {
+  for (const t of MID_PLAN.tasks)
+    for (const s of t.subtasks)
+      if (s.id === id) return s;
+  return null;
+}
+
+function getAchieveRate(subtaskId) {
+  const d = getMidData(subtaskId);
+  const st = getSubtask(subtaskId);
+  if (!st || !d.currentVal || !st.targets['26']) return null;
+  return Math.round(d.currentVal / st.targets['26'] * 100);
+}
+
+function getRateColor(rate) {
+  if (!rate) return 'var(--gray-3)';
+  if (rate >= 100) return 'var(--green)';
+  if (rate >= 80) return 'var(--blue)';
+  if (rate >= 60) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+// ── 탭 렌더링 ──
+const $c = () => document.getElementById('mid-content');
+
+function showTab(tab) {
+  _curTab = tab;
+  if (window.innerWidth <= 768) closeMidSidebar();
+  document.querySelectorAll('.sidebar-menu li a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('onclick')?.includes("'"+tab+"'"));
+  });
+  Object.values(_charts).forEach(c => { try { c.destroy(); } catch(e) {} });
+  _charts = {};
+
+  const renders = {
+    overview: renderOverview,
+    chart: renderChart,
+    t211: () => renderSubtask('t211'),
+    t212: () => renderSubtask('t212'),
+    t213: () => renderSubtask('t213'),
+    t221: () => renderSubtask('t221'),
+    t222: () => renderSubtask('t222'),
+    t223: () => renderSubtask('t223'),
+    'settings-mid': renderSettings,
+  };
+  $c().innerHTML = (renders[tab] || renderOverview)();
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    if (tab === 'chart') drawCharts();
+  }));
+}
+
+function renderOverview() {
+  const allSubs = MID_PLAN.tasks.flatMap(t => t.subtasks);
+  const achieved = allSubs.filter(s => (getAchieveRate(s.id)||0) >= 100).length;
+  const entered  = allSubs.filter(s => getMidData(s.id).currentVal != null).length;
+
+  const taskCards = MID_PLAN.tasks.map(t => {
+    const rows = t.subtasks.map(s => {
+      const d = getMidData(s.id);
+      const rate = getAchieveRate(s.id);
+      const color = getRateColor(rate);
+      const pct = Math.min(rate||0, 100);
+      return `<div class="task-row">
+        <span class="task-num">${s.num}</span>
+        <span class="task-name">${s.name}</span>
+        <div class="task-progress">
+          <div class="prog-bar"><div class="prog-fill" style="width:${pct}%;background:${color}"></div></div>
+          <span class="prog-label" style="color:${color}">${rate!=null?rate+'%':'-'}</span>
+        </div>
+        <button class="btn btn-xs" style="background:var(--amber-lt);color:#7a5000;border:1px solid var(--amber);margin-right:4px" onclick="openInfo('${s.id}')">📖</button>
+        <button class="btn btn-xs" style="background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple)" onclick="openInput('${s.id}')">✏️ 입력</button>
+      </div>`;
+    }).join('');
+    return `<div class="strategy-card">
+      <div class="strategy-header">
+        <div class="strategy-title">전략과제 ${t.num}: ${t.name}</div>
+        <div class="strategy-sub">실행과제 ${t.subtasks.length}개</div>
+      </div>
+      ${rows}
+    </div>`;
+  }).join('');
+
+  return `
+  <div class="page-title">📋 ${MID_PLAN.direction}: ${MID_PLAN.name}</div>
+  <div class="page-subtitle">중장기발전계획 실행과제별 성과관리 현황 (${new Date().toLocaleDateString('ko-KR')} 기준)</div>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-label">전체 실행과제</div><div class="stat-value">${allSubs.length}</div><div class="stat-sub">전략과제 2개</div></div>
+    <div class="stat-card" style="border-top-color:var(--green)"><div class="stat-label">목표 달성</div><div class="stat-value" style="color:var(--green)">${achieved}</div><div class="stat-sub">100% 이상</div></div>
+    <div class="stat-card" style="border-top-color:var(--blue)"><div class="stat-label">값 입력됨</div><div class="stat-value" style="color:var(--blue)">${entered}</div><div class="stat-sub">/ ${allSubs.length}개</div></div>
+    <div class="stat-card" style="border-top-color:var(--amber)"><div class="stat-label">미입력</div><div class="stat-value" style="color:var(--amber)">${allSubs.length - entered}</div><div class="stat-sub">입력 필요</div></div>
+  </div>
+  <div class="card" style="background:var(--blue-lt);border:1px solid var(--blue);margin-bottom:18px">
+    <div style="font-size:13px;color:var(--blue)">💡 <strong>✏️ 입력</strong> 버튼으로 각 실행과제의 현재값과 연도별 목표를 입력하세요. <strong>📖</strong> 버튼으로 실행과제 상세 정보를 확인할 수 있습니다.</div>
+  </div>
+  ${taskCards}`;
+}
+
+function renderChart() {
+  const allSubs = MID_PLAN.tasks.flatMap(t => t.subtasks);
+  return `
+  <div class="page-title">📈 차트 분석</div>
+  <div class="page-subtitle">실행과제별 달성률 시각화</div>
+  <div class="card">
+    <div class="card-title">📊 전체 실행과제 달성률</div>
+    <div class="chart-container" style="height:${allSubs.length*45+60}px"><canvas id="chart-hbar"></canvas></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card">
+      <div class="card-title">🍩 달성 현황 분포</div>
+      <div class="chart-container"><canvas id="chart-doughnut"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📅 연도별 목표 (2026~2028)</div>
+      <div class="chart-container"><canvas id="chart-year"></canvas></div>
+    </div>
+  </div>`;
+}
+
+function drawCharts() {
+  const allSubs = MID_PLAN.tasks.flatMap(t => t.subtasks);
+  // 수평 막대
+  const hbarEl = document.getElementById('chart-hbar');
+  if (hbarEl) {
+    _charts.hbar = new Chart(hbarEl, {
+      type: 'bar',
+      data: {
+        labels: allSubs.map(s => s.num + ' ' + s.name.slice(0,20) + (s.name.length>20?'…':'')),
+        datasets: [{
+          label: '달성률 (%)',
+          data: allSubs.map(s => getAchieveRate(s.id)||0),
+          backgroundColor: allSubs.map(s => {
+            const r = getAchieveRate(s.id)||0;
+            return r>=100?'rgba(41,167,69,.7)':r>=80?'rgba(46,91,255,.7)':r>=60?'rgba(245,166,35,.7)':'rgba(124,58,237,.4)';
+          }),
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: { min: 0, max: 150, ticks: { callback: v => v+'%' } }, y: { ticks: { font: { size: 11 } } } }
+      }
+    });
+  }
+  // 도넛
+  const dEl = document.getElementById('chart-doughnut');
+  if (dEl) {
+    const achieved = allSubs.filter(s => (getAchieveRate(s.id)||0) >= 100).length;
+    const near = allSubs.filter(s => { const r=getAchieveRate(s.id)||0; return r>=80&&r<100; }).length;
+    const low = allSubs.filter(s => (getAchieveRate(s.id)||0) < 80 && getMidData(s.id).currentVal!=null).length;
+    const none = allSubs.filter(s => getMidData(s.id).currentVal==null).length;
+    _charts.doughnut = new Chart(dEl, {
+      type: 'doughnut',
+      data: {
+        labels: ['달성(100%+)', '근접(80~99%)', '미달(<80%)', '미입력'],
+        datasets: [{ data: [achieved,near,low,none], backgroundColor: ['#29a745','#2e5bff','#f5a623','#d6dae6'], borderWidth: 0 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } } }
+    });
+  }
+  // 연도별
+  const yEl = document.getElementById('chart-year');
+  if (yEl) {
+    const hastarget = allSubs.filter(s => getSubtask(s.id)?.targets['26']);
+    _charts.year = new Chart(yEl, {
+      type: 'bar',
+      data: {
+        labels: hastarget.map(s => s.num),
+        datasets: [
+          { label: '\'26 목표', data: hastarget.map(s => getSubtask(s.id)?.targets['26']||0), backgroundColor: 'rgba(124,58,237,.4)', borderColor: '#7c3aed', borderWidth: 1 },
+          { label: '\'26 현재', data: hastarget.map(s => getMidData(s.id).currentVal||0), backgroundColor: 'rgba(0,182,168,.5)', borderColor: '#00b6a8', borderWidth: 1 },
+          { label: '\'27 목표', data: hastarget.map(s => getSubtask(s.id)?.targets['27']||0), backgroundColor: 'rgba(46,91,255,.2)', borderColor: '#2e5bff', borderWidth: 1 },
+        ]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }, scales: { y: { beginAtZero: true } } }
+    });
+  }
+}
+
+function renderSubtask(id) {
+  const st = getSubtask(id);
+  if (!st) return '<div>찾을 수 없습니다.</div>';
+  const d = getMidData(id);
+  const rate = getAchieveRate(id);
+  const color = getRateColor(rate);
+
+  const indRows = st.indicators.map(ind => {
+    const val = d.indicators?.[ind.id];
+    const def = IND_FIELDS[ind.id];
+    const detail = d.indDetail?.[ind.id] || {};
+    // 세부 필드 행
+    const detailRows = def ? def.fields.map(f => {
+      const v = detail[f.id];
+      return `<tr style="background:var(--gray-0)">
+        <td style="padding-left:24px;font-size:12px;color:var(--gray-4)">
+          <span style="color:var(--gray-2);margin-right:6px">└</span>${f.label}
+        </td>
+        <td style="text-align:center;font-size:12px;color:var(--gray-3)">-</td>
+        <td style="font-feature-settings:'tnum';letter-spacing:-.02em;text-align:center;font-size:12px;font-weight:600;color:var(--navy)">
+          ${v!=null ? v.toLocaleString()+(f.unit?' '+f.unit:'') : '<span style="color:var(--gray-3)">미입력</span>'}
+        </td>
+        <td style="text-align:center;font-size:12px;color:var(--gray-3)">-</td>
+      </tr>`;
+    }).join('') : '';
+
+    const rateColor = val!=null&&d.targets?.['26'] ?
+      (Math.round(val/d.targets['26']*100)>=100?'var(--green)':Math.round(val/d.targets['26']*100)>=80?'var(--blue)':'var(--red)') : 'var(--gray-3)';
+    const w = d.weights?.[ind.id];
+    const greekLetters = ['α','β','γ','δ','ε','ζ'];
+    const letter = greekLetters[st.indicators.indexOf(ind)] || 'w';
+
+    return `<tr style="border-top:2px solid var(--gray-1)">
+      <td style="font-size:13px;font-weight:600;color:var(--navy)">${ind.name}
+        <span style="font-size:10px;font-weight:400;color:var(--gray-3);display:block;margin-top:2px">📐 ${def?.formula||''}</span>
+      </td>
+      <td style="text-align:center">
+        <span style="font-size:13px;font-weight:700;color:var(--purple)">${letter}</span>
+        <span style="font-feature-settings:'tnum';letter-spacing:-.02em;font-size:12px;color:var(--gray-4);margin-left:3px">${w!=null?w+'%':'-'}</span>
+      </td>
+      <td style="font-feature-settings:'tnum';letter-spacing:-.02em;text-align:center;font-weight:700">${d.targets?.['26']!=null?d.targets['26']+'%':'-'}</td>
+      <td style="font-feature-settings:'tnum';letter-spacing:-.02em;text-align:center;font-weight:700;color:var(--purple)">${val!=null?val+'%':'<span style="color:var(--gray-3)">미입력</span>'}</td>
+      <td style="text-align:center;font-weight:700;color:${rateColor}">${val!=null&&d.targets?.['26']?Math.round(val/d.targets['26']*100)+'%':'-'}</td>
+    </tr>${detailRows}`;
+  }).join('');
+
+  return `
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px">
+    <div>
+      <div class="page-title">${st.num}: ${st.name}</div>
+      <div class="page-subtitle">이행점검: ${st.checkCycle} | 전략과제: ${MID_PLAN.tasks.find(t=>t.subtasks.includes(st))?.name}</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn" style="background:var(--amber-lt);color:#7a5000;border:1px solid var(--amber)" onclick="openInfo('${id}')">📖 상세 설명</button>
+      <button class="btn" style="background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple)" onclick="openInput('${id}')">✏️ 목표/실적 입력</button>
+    </div>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card" style="border-top-color:${color}">
+      <div class="stat-label">현재 달성값</div>
+      <div class="stat-value" style="color:${color}">${d.currentVal!=null?d.currentVal+'%':'-'}</div>
+      <div class="stat-sub">${d.updatedAt?new Date(d.updatedAt).toLocaleDateString('ko-KR'):'미입력'}</div>
+    </div>
+    <div class="stat-card"><div class="stat-label">2026년 목표</div><div class="stat-value">${d.targets?.['26']!=null?d.targets['26']+'%':'-'}</div></div>
+    <div class="stat-card" style="border-top-color:${color}"><div class="stat-label">달성률</div><div class="stat-value" style="color:${color}">${rate!=null?rate+'%':'-'}</div></div>
+    <div class="stat-card"><div class="stat-label">이행점검</div><div class="stat-value" style="font-size:16px">${st.checkCycle}</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">📋 실행과제 정의</div>
+      <div style="font-size:13px;color:var(--text);line-height:1.9;white-space:pre-wrap">${st.definition}</div>
+      <div style="margin-top:12px">
+        <div style="font-size:12px;font-weight:700;color:var(--gray-4);margin-bottom:6px">산출식</div>
+        <div style="background:var(--gray-0);border-radius:7px;padding:10px 14px;font-size:12px;color:var(--gray-4);line-height:1.8;white-space:pre-wrap">${st.formula}</div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">달성 현황</div>
+      <div style="position:relative;width:120px;height:120px">
+        <svg width="120" height="120" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="var(--gray-1)" stroke-width="12"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="${color}" stroke-width="12"
+            stroke-dasharray="${Math.min(rate||0,100)*3.14} 314"
+            stroke-linecap="round" transform="rotate(-90 60 60)"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;letter-spacing:-.4px;font-feature-settings:'tnum';letter-spacing:-.02em;color:${color}">${rate!=null?rate+'%':'-'}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎯 세부 지표별 현황</div>
+    <table class="ind-table">
+      <thead><tr><th>지표명 / 세부 항목</th><th style="text-align:center">가중치</th><th style="text-align:center">목표(2026)</th><th style="text-align:center">현재값</th><th style="text-align:center">달성률</th></tr></thead>
+      <tbody>${indRows||'<tr><td colspan="5" style="text-align:center;color:var(--gray-3);padding:20px">입력된 데이터가 없습니다</td></tr>'}</tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📅 연도별 목표</div>
+    <table class="ind-table">
+      <thead><tr><th>구분</th><th>기준점 수준 (착수 시점)</th><th>2026년 목표</th><th>2027년 목표</th><th>2028년 목표</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>종합 성과지표 (%)</td>
+          <td style="font-feature-settings:'tnum';letter-spacing:-.02em">${d.currentLevel!=null?d.currentLevel+'%':'-'}</td>
+          <td style="font-feature-settings:'tnum';letter-spacing:-.02em;font-weight:700;color:var(--purple)">${d.targets?.['26']!=null?d.targets['26']+'%':'-'}</td>
+          <td style="font-feature-settings:'tnum';letter-spacing:-.02em">${d.targets?.['27']!=null?d.targets['27']+'%':'-'}</td>
+          <td style="font-feature-settings:'tnum';letter-spacing:-.02em">${d.targets?.['28']!=null?d.targets['28']+'%':'-'}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+
+function renderSettings() {
+  const allSubs = MID_PLAN.tasks.flatMap(t => t.subtasks);
+  const rows = allSubs.map(s => {
+    const d = getMidData(s.id);
+    return `<tr>
+      <td><span class="badge badge-purple">${s.num}</span></td>
+      <td style="max-width:200px;font-size:13px">${s.name}</td>
+      <td style="font-feature-settings:'tnum';letter-spacing:-.02em;text-align:center">${d.targets?.['26']!=null?d.targets['26']+'%':'-'}</td>
+      <td style="font-feature-settings:'tnum';letter-spacing:-.02em;text-align:center">${d.targets?.['27']!=null?d.targets['27']+'%':'-'}</td>
+      <td style="font-feature-settings:'tnum';letter-spacing:-.02em;text-align:center">${d.targets?.['28']!=null?d.targets['28']+'%':'-'}</td>
+      <td><button class="btn btn-sm" style="background:var(--purple-lt);color:var(--purple);border:1px solid var(--purple)" onclick="openInput('${s.id}')">✏️ 수정</button></td>
+    </tr>`;
+  }).join('');
+  return `
+  <div class="page-title">⚙️ 목표값 설정</div>
+  <div class="page-subtitle">각 실행과제의 연도별 목표값을 설정합니다</div>
+  <div class="card">
+    <table class="ind-table">
+      <thead><tr><th>과제번호</th><th>실행과제명</th><th>2026 목표</th><th>2027 목표</th><th>2028 목표</th><th>수정</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+// ── 입력 모달 ──
+function openInput(id) {
+  _editingId = id;
+  const st = getSubtask(id);
+  if (!st) return;
+  const d = getMidData(id);
+  const weights = d.weights || {};
+  // 기본 균등 가중치
+  const n = st.indicators.length;
+  const defaultW = Math.round(100/n);
+
+  document.getElementById('modal-mid-title').textContent = '✏️ ' + st.num + ': ' + st.name;
+
+  // 가중치 합계 표시용
+  const weightFields = st.indicators.map((ind, i) => {
+    const greekLetters = ['α','β','γ','δ','ε','ζ'];
+    const letter = greekLetters[i] || 'w'+(i+1);
+    const w = weights[ind.id] !== undefined ? weights[ind.id] : defaultW;
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="width:20px;font-weight:700;color:var(--purple);font-size:14px">${letter}</span>
+      <span style="flex:1;font-size:12px;color:var(--gray-4)">${ind.name}</span>
+      <div style="display:flex;align-items:center;gap:4px">
+        <input type="number" id="w-${ind.id}" value="${w}" min="0" max="100" step="1"
+          style="width:60px;padding:5px 8px;border:1.5px solid var(--gray-2);border-radius:5px;font-size:13px;text-align:center"
+          oninput="updateWeightSum('${id}')"/>
+        <span style="font-size:12px;color:var(--gray-4)">%</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  const indFields = st.indicators.map(ind => {
+    const val = d.indicators?.[ind.id];
+    const savedDetail = d.indDetail?.[ind.id] || {};
+    return `<div style="border:1.5px solid var(--gray-1);border-radius:8px;padding:12px;margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <label style="font-size:13px;font-weight:600;color:var(--navy)">${ind.name}</label>
+        <span style="font-feature-settings:'tnum';letter-spacing:-.02em;font-size:12px;font-weight:700;color:var(--purple);background:var(--purple-lt);padding:2px 8px;border-radius:4px">${val!=null?val+'%':'미입력'}</span>
+      </div>
+      <div class="form-group" style="margin-bottom:4px">
+        <label style="font-size:11px;color:var(--gray-4)">자동계산 결과값 (%) <span style="color:var(--gray-3)">세부 입력 시 자동계산</span></label>
+        <input type="number" id="ind-${ind.id}" value="${val??''}" step="0.1"
+          placeholder="세부 입력 후 자동계산 또는 직접 입력"
+          style="width:100%;padding:8px 10px;border:1.5px solid var(--gray-2);border-radius:6px;font-size:13px"
+          oninput="calcComposite('${id}')"/>
+      </div>
+      ${renderIndDetailFields(ind.id, savedDetail)}
+    </div>`;
+  }).join('');
+
+  document.getElementById('modal-mid-body').innerHTML = `
+    <div style="background:var(--gray-0);border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--gray-4)">
+      <strong>산출식:</strong><br><span style="white-space:pre-wrap">${st.formula}</span>
+    </div>
+
+    <!-- 가중치 설정 -->
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--gray-1)">
+      ⚖️ 지표별 가중치 설정
+    </div>
+    <div style="background:var(--purple-lt);border-radius:8px;padding:14px;margin-bottom:14px">
+      ${weightFields}
+      <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(124,58,237,.2);padding-top:8px;margin-top:4px">
+        <span style="font-size:12px;font-weight:700;color:var(--purple)">가중치 합계</span>
+        <span id="weight-sum-${id}" style="font-size:14px;font-weight:900;font-feature-settings:'tnum';letter-spacing:-.02em;color:var(--purple)">
+          ${st.indicators.reduce((s,ind) => s+(weights[ind.id]??defaultW), 0)}%
+        </span>
+      </div>
+      <div id="weight-warn-${id}" style="font-size:11px;color:var(--red);margin-top:4px;display:none">⚠️ 가중치 합계가 100%가 아닙니다</div>
+    </div>
+
+    <!-- 현재값 -->
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--gray-1)">📊 현재값 및 현재수준</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>현재 달성값 (%) <span style="font-size:11px;color:var(--gray-3)">← 세부 지표 입력 시 자동계산</span></label>
+        <input type="number" id="mid-current-val" value="${d.currentVal??''}" step="0.1"
+          placeholder="자동계산 또는 직접 입력"
+          style="background:var(--blue-lt);font-weight:700;color:var(--navy)"/>
+        <div style="font-size:11px;color:var(--gray-4);margin-top:3px">가중치 × 세부지표값 합산 결과 · 목표 대비 달성률 계산에 사용</div>
+      </div>
+      <div class="form-group">
+        <label>기준점 수준 (%) <span style="font-size:11px;color:var(--gray-3)">사업 착수 시점</span></label>
+        <input type="number" id="mid-current-level" value="${d.currentLevel??''}" step="0.1" placeholder="목표 설정 근거가 되는 전년도/착수 시점 값"/>
+        <div style="font-size:11px;color:var(--gray-4);margin-top:3px">목표 설정 근거 · 사업 첫 해 입력 후 고정</div>
+      </div>
+    </div>
+
+    <!-- 연도별 목표 -->
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--gray-1)">🎯 연도별 목표값 (%)</div>
+    <div class="form-row triple">
+      <div class="form-group"><label>2026년 목표</label><input type="number" id="mid-target-26" value="${d.targets?.['26']??''}" step="0.1"/></div>
+      <div class="form-group"><label>2027년 목표</label><input type="number" id="mid-target-27" value="${d.targets?.['27']??''}" step="0.1"/></div>
+      <div class="form-group"><label>2028년 목표</label><input type="number" id="mid-target-28" value="${d.targets?.['28']??''}" step="0.1"/></div>
+    </div>
+
+    <!-- 세부 지표 -->
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin:14px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--gray-1)">🔍 세부 지표별 현재값</div>
+    ${indFields}
+
+    <div class="form-group">
+      <label>메모</label>
+      <textarea id="mid-memo" rows="2" placeholder="비고 사항">${d.memo||''}</textarea>
+    </div>`;
+  document.getElementById('modal-mid-input').classList.add('open');
+  // 초기 자동계산
+  setTimeout(() => calcComposite(id), 100);
+}
+
+function saveMidInput() {
+  const id = _editingId;
+  const st = getSubtask(id);
+  if (!st) return;
+
+  // 가중치 저장
+  const weights = {};
+  st.indicators.forEach(ind => {
+    const w = document.getElementById('w-'+ind.id)?.value;
+    if (w !== undefined) weights[ind.id] = parseFloat(w)||0;
+  });
+
+  const indicators = {};
+  const indDetail = {};
+  st.indicators.forEach(ind => {
+    const val = document.getElementById('ind-'+ind.id)?.value;
+    if (val !== '') indicators[ind.id] = Number(val);
+    const def = IND_FIELDS[ind.id];
+    if (def) {
+      const detail = {};
+      def.fields.forEach(f => {
+        const el = document.getElementById('if-'+ind.id+'-'+f.id);
+        if (el && el.value !== '') detail[f.id] = parseFloat(el.value)||0;
+      });
+      if (Object.keys(detail).length) indDetail[ind.id] = detail;
+    }
+  });
+  const t26 = document.getElementById('mid-target-26')?.value;
+  const t27 = document.getElementById('mid-target-27')?.value;
+  const t28 = document.getElementById('mid-target-28')?.value;
+  if (t26) st.targets['26'] = Number(t26);
+  if (t27) st.targets['27'] = Number(t27);
+  if (t28) st.targets['28'] = Number(t28);
+  saveMidData(id, {
+    currentVal: document.getElementById('mid-current-val')?.value !== '' ? Number(document.getElementById('mid-current-val').value) : null,
+    currentLevel: document.getElementById('mid-current-level')?.value !== '' ? Number(document.getElementById('mid-current-level').value) : null,
+    targets: { '26': t26?Number(t26):null, '27': t27?Number(t27):null, '28': t28?Number(t28):null },
+    weights,
+    indicators,
+    indDetail,
+    memo: document.getElementById('mid-memo')?.value || ''
+  });
+  closeModal();
+  showTab(_curTab);
+}
+
+function closeModal() {
+  document.getElementById('modal-mid-input').classList.remove('open');
+}
+
+// ── 가중치 합계 표시 ──
+function updateWeightSum(subtaskId) {
+  const st = getSubtask(subtaskId);
+  if (!st) return;
+  const total = st.indicators.reduce((s, ind) => {
+    return s + (parseFloat(document.getElementById('w-'+ind.id)?.value)||0);
+  }, 0);
+  const sumEl = document.getElementById('weight-sum-'+subtaskId);
+  const warnEl = document.getElementById('weight-warn-'+subtaskId);
+  if (sumEl) { sumEl.textContent = Math.round(total*10)/10 + '%'; sumEl.style.color = Math.abs(total-100)<0.1?'var(--green)':'var(--red)'; }
+  if (warnEl) warnEl.style.display = Math.abs(total-100)<0.1 ? 'none' : 'block';
+  calcComposite(subtaskId);
+}
+
+// ── 종합 성과지표 자동계산 (가중치 × 세부지표값 합산) ──
+function calcComposite(subtaskId) {
+  const st = getSubtask(subtaskId);
+  if (!st) return;
+  let composite = 0;
+  let hasAll = true;
+  st.indicators.forEach(ind => {
+    const w = parseFloat(document.getElementById('w-'+ind.id)?.value)||0;
+    const v = parseFloat(document.getElementById('ind-'+ind.id)?.value);
+    if (isNaN(v)) { hasAll = false; return; }
+    composite += (v * w / 100);
+  });
+  if (hasAll) {
+    const result = Math.round(composite * 10) / 10;
+    const curEl = document.getElementById('mid-current-val');
+    if (curEl) curEl.value = result;
+  }
+}
+
+// calcIndField도 composite 자동계산 연동
+const _origCalcIndField = calcIndField;
+function calcIndField(indId) {
+  _origCalcIndField(indId);
+  // 어느 subtask 소속인지 찾아서 composite 재계산
+  for (const t of MID_PLAN.tasks) {
+    for (const s of t.subtasks) {
+      if (s.indicators.some(i => i.id === indId)) {
+        setTimeout(() => calcComposite(s.id), 50);
+        return;
+      }
+    }
+  }
+}
+
+// ── 상세 설명 팝업 ──
+function openInfo(id) {
+  const st = getSubtask(id);
+  if (!st) return;
+  document.getElementById('info-title').textContent = st.num + ': ' + st.name;
+  document.getElementById('info-body').innerHTML = `
+    <div class="info-section">
+      <div class="info-section-title">실행과제 정의</div>
+      <div class="info-section-body">${st.definition}</div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">산출식</div>
+      <div class="info-section-body" style="background:var(--gray-0);border-radius:7px;padding:12px">${st.formula}</div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">세부 지표</div>
+      <div>${st.indicators.map((ind,i) => `<div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--gray-1);font-size:13px"><span style="color:var(--purple);font-weight:700;min-width:20px">${i+1}</span><span>${ind.name}</span><span style="color:var(--gray-4);font-size:12px">(${ind.unit})</span></div>`).join('')}</div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">이행점검 주기</div>
+      <div class="info-section-body">${st.checkCycle}</div>
+    </div>`;
+  document.getElementById('info-overlay').classList.add('open');
+}
+function closeInfo() { document.getElementById('info-overlay').classList.remove('open'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeInfo(); } });
+
+// ── 토스트 ──
+function toast(msg, type='') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 2800);
+}
+
+// ── 모바일 사이드바 ──
+function toggleMidSidebar() {
+  const sb = document.getElementById('mid-sidebar');
+  const ov = document.getElementById('mid-overlay');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+}
+function closeMidSidebar() {
+  document.getElementById('mid-sidebar').classList.remove('open');
+  document.getElementById('mid-overlay').classList.remove('show');
+}
+
+// ── 메인으로 ──
+function goBack() { window.location.href = 'index.html'; }
+
+// ── Firebase 로드 ──
+async function refreshAll() {
+  try {
+    const snap = await _db.ref('sj_v1/midterm').once('value');
+    _midData = snap.val() || {};
+    showTab(_curTab);
+    toast('갱신됨', 'success');
+  } catch(e) { console.warn('로드 실패:', e.message); }
+}
+
+// ── 초기화 ──
+(async () => {
+  await refreshAll();
+  // 실시간 리스너
+  _db.ref('sj_v1/midterm').on('value', snap => {
+    _midData = snap.val() || {};
+    showTab(_curTab);
+  });
+})();
+</script>
+</body>
+</html>
