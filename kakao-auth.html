@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>카카오 알림 연동 — 학생성공처</title>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:linear-gradient(135deg,#1c1e54 0%,#2d1b69 50%,#1c1e54 100%);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.card{background:#fff;border-radius:20px;padding:44px 38px;width:440px;max-width:96vw;box-shadow:0 24px 64px rgba(0,0,0,.35);}
+.icon{font-size:48px;text-align:center;margin-bottom:14px;}
+h1{font-size:20px;font-weight:700;color:#1c1e54;text-align:center;margin-bottom:6px;}
+.sub{font-size:13px;color:#64748d;text-align:center;line-height:1.7;margin-bottom:28px;}
+.kakao-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;background:#FEE500;color:#191919;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;transition:all .18s;margin-bottom:12px;}
+.kakao-btn:hover{background:#f0d900;transform:translateY(-1px);box-shadow:0 4px 16px rgba(254,229,0,.4);}
+.kakao-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.status{margin-top:16px;padding:14px 16px;border-radius:10px;font-size:13px;line-height:1.6;display:none;text-align:center;}
+.status.success{background:#e3f9ef;color:#1a6e2e;display:block;}
+.status.error{background:#fde8ef;color:#ea2261;display:block;}
+.status.loading{background:#eeeeff;color:#533afd;display:block;}
+.divider{border:none;border-top:1px solid #e3e8ee;margin:22px 0;}
+.info-box{background:#f6f9fc;border-radius:10px;padding:14px 16px;}
+.info-box p{font-size:12px;color:#64748d;line-height:1.9;}
+.info-box strong{color:#1c1e54;}
+.back-btn{display:block;text-align:center;margin-top:18px;padding:10px;border-radius:9999px;background:#1c1e54;color:#fff;font-size:13px;cursor:pointer;border:none;text-decoration:none;transition:background .18s;}
+.back-btn:hover{background:#533afd;}
+.token-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:8px;font-size:12px;margin-bottom:16px;}
+.token-status.linked{background:#e3f9ef;color:#1a6e2e;}
+.token-status.unlinked{background:#fff3e0;color:#b45309;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🔔</div>
+  <h1>카카오톡 알림 연동</h1>
+  <p class="sub">담당자/관리자가 업무를 저장할 때<br><strong>헤드 관리자 카카오톡</strong>으로 알림이 발송됩니다.</p>
+
+  <div id="token-status" class="token-status unlinked" style="display:none">
+    <span id="token-icon">⚠️</span>
+    <span id="token-msg">연동 정보 확인 중...</span>
+  </div>
+
+  <button class="kakao-btn" id="kakao-login-btn" onclick="kakaoLogin()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="#191919">
+      <path d="M12 3C7.03 3 3 6.36 3 10.5c0 2.7 1.8 5.07 4.5 6.39L6.75 21l4.62-3.09C11.16 17.97 11.58 18 12 18c4.97 0 9-3.36 9-7.5S16.97 3 12 3z"/>
+    </svg>
+    카카오 계정으로 연동하기
+  </button>
+
+  <button class="kakao-btn" id="kakao-test-btn" onclick="testKakaoMessage()" style="background:#533afd;color:#fff;display:none">
+    📨 테스트 메시지 발송
+  </button>
+
+  <div id="status" class="status"></div>
+
+  <hr class="divider"/>
+
+  <div class="info-box">
+    <p>
+      <strong>📌 안내사항</strong><br>
+      • 헤드 관리자 카카오 계정으로 1회 연동하면 됩니다<br>
+      • 토큰은 Firebase에 저장되어 자동으로 사용됩니다<br>
+      • 토큰 만료(약 2시간) 시 재연동이 필요합니다<br>
+      • 연동 후 테스트 버튼으로 정상 작동을 확인하세요
+    </p>
+  </div>
+
+  <a href="index.html" class="back-btn">← 메인으로 돌아가기</a>
+</div>
+
+<script>
+// ── 카카오 JS SDK 초기화 ──
+const KAKAO_JS_KEY = 'af5a753cd7790b18c3e114a953d624f6';
+Kakao.init(KAKAO_JS_KEY);
+
+// ── Firebase 초기화 ──
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wjam9XhdH88XErD_Ky7medMaLIytxgA",
+  authDomain: "sss-works.firebaseapp.com",
+  databaseURL: "https://sss-works-default-rtdb.firebaseio.com",
+  projectId: "sss-works",
+  storageBucket: "sss-works.firebasestorage.app",
+  messagingSenderId: "301156213383",
+  appId: "1:301156213383:web:bd895fcd5a7483e4060e22"
+};
+firebase.initializeApp(firebaseConfig);
+const _db = firebase.database();
+
+function showStatus(msg, type) {
+  const el = document.getElementById('status');
+  el.innerHTML = msg;
+  el.className = 'status ' + type;
+}
+
+// ── 기존 토큰 상태 확인 ──
+async function checkTokenStatus() {
+  const statusEl = document.getElementById('token-status');
+  const iconEl = document.getElementById('token-icon');
+  const msgEl = document.getElementById('token-msg');
+  const testBtn = document.getElementById('kakao-test-btn');
+  statusEl.style.display = 'flex';
+
+  try {
+    const snap = await _db.ref('sj_v1/kakao_token').once('value');
+    const data = snap.val();
+    if (data && data.access_token) {
+      const savedAt = new Date(data.saved_at);
+      const diff = Math.round((Date.now() - savedAt) / 1000 / 60);
+      statusEl.className = 'token-status linked';
+      iconEl.textContent = '✅';
+      msgEl.textContent = `연동됨 · ${diff}분 전 저장 · ${savedAt.toLocaleString('ko-KR')}`;
+      testBtn.style.display = 'flex';
+    } else {
+      statusEl.className = 'token-status unlinked';
+      iconEl.textContent = '⚠️';
+      msgEl.textContent = '연동되지 않았습니다. 아래 버튼으로 연동해주세요.';
+    }
+  } catch(e) {
+    statusEl.className = 'token-status unlinked';
+    iconEl.textContent = '❌';
+    msgEl.textContent = 'Firebase 연결 오류: ' + e.message;
+  }
+}
+
+// ── 카카오 로그인 ──
+function kakaoLogin() {
+  showStatus('🔄 카카오 로그인 중...', 'loading');
+  Kakao.Auth.login({
+    scope: 'talk_message',
+    success: async function(authObj) {
+      showStatus('✅ 로그인 성공! 토큰 저장 중...', 'loading');
+      try {
+        await _db.ref('sj_v1/kakao_token').set({
+          access_token: authObj.access_token,
+          refresh_token: authObj.refresh_token || '',
+          token_type: authObj.token_type || 'bearer',
+          saved_at: new Date().toISOString(),
+          expires_in: authObj.expires_in || 21600
+        });
+        showStatus('✅ 카카오 연동 완료!<br>이제 업무 저장/결과보고 시 카카오톡으로 알림이 발송됩니다.', 'success');
+        document.getElementById('kakao-test-btn').style.display = 'flex';
+        checkTokenStatus();
+      } catch(e) {
+        showStatus('❌ Firebase 저장 실패: ' + e.message, 'error');
+      }
+    },
+    fail: function(err) {
+      showStatus('❌ 로그인 실패: ' + JSON.stringify(err), 'error');
+    }
+  });
+}
+
+// ── 테스트 메시지 발송 ──
+async function testKakaoMessage() {
+  showStatus('📨 테스트 메시지 발송 중...', 'loading');
+  try {
+    const snap = await _db.ref('sj_v1/kakao_token').once('value');
+    const data = snap.val();
+    if (!data || !data.access_token) {
+      showStatus('❌ 토큰이 없습니다. 먼저 연동해주세요.', 'error');
+      return;
+    }
+
+    Kakao.Auth.setAccessToken(data.access_token);
+    Kakao.API.request({
+      url: '/v2/api/talk/memo/default/send',
+      data: {
+        template_object: JSON.stringify({
+          object_type: 'text',
+          text: '[학생성공처 업무관리]\n테스트 메시지입니다. ✅\n카카오 알림 연동이 정상적으로 작동합니다!',
+          link: {
+            web_url: 'https://kty12n.github.io/sss-works/',
+            mobile_web_url: 'https://kty12n.github.io/sss-works/'
+          },
+          button_title: '시스템 바로가기'
+        })
+      },
+      success: function() {
+        showStatus('✅ 테스트 메시지가 카카오톡으로 발송되었습니다!<br>카카오톡을 확인해주세요.', 'success');
+      },
+      fail: function(err) {
+        if (err.code === -401) {
+          showStatus('❌ 토큰이 만료되었습니다. 다시 연동해주세요.', 'error');
+        } else {
+          showStatus('❌ 발송 실패: ' + JSON.stringify(err), 'error');
+        }
+      }
+    });
+  } catch(e) {
+    showStatus('❌ 오류: ' + e.message, 'error');
+  }
+}
+
+// 페이지 로드 시 토큰 상태 확인
+checkTokenStatus();
+</script>
+</body>
+</html>
