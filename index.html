@@ -7780,10 +7780,12 @@ function renderGovBudgetBlocks(savedBlocks) {
   });
   recalcGovTotal();
   // 재원 선택 드롭다운 채우기
-  const s = getSettings();
-  document.querySelectorAll('.gov-source-sel').forEach(sel => {
-    const cur = sel.value;
-    sel.innerHTML = '<option value="">재원 선택</option>' + [...(s.govSources||[])].sort((a,b)=>a.localeCompare(b,'ko')).map(g=>`<option value="${g}" ${g===cur?'selected':''}>${g}</option>`).join('');
+ const s = getSettings();
+_govBudgetBlocks.forEach((b,i) => {
+  const sel = document.getElementById('gov-source-'+i);
+  if (!sel) return;
+  const cur = b.source || '';
+  sel.innerHTML = '<option value="">재원 선택</option>' + [...(s.govSources||[])].sort((a,c)=>a.localeCompare(c,'ko')).map(g=>`<option value="${g}" ${g===cur?'selected':''}>${g}</option>`).join('');
   });
 }
 
