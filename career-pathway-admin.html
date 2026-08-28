@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무 및 성과 관리 시스템 - Career Pathway 관리</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root{
+  --primary:#533afd;--primary-deep:#4434d4;--primary-bg:#eeeeff;
+  --brand-dark:#1c1e54;--ink:#0d253d;--ink-2:#273951;--ink-mute:#64748d;
+  --canvas:#ffffff;--canvas-soft:#f6f9fc;--hairline:#e3e8ee;
+  --green:#1a9e5c;--green-lt:#e3f9ef;--red:#ea2261;--red-lt:#fde8ef;
+  --amber:#e5890a;--amber-lt:#fff4e0;--gray-3:#9ba3b8;
+  --shadow-md:rgba(0,55,112,.08) 0 8px 24px, rgba(0,55,112,.04) 0 2px 6px;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter',ui-sans-serif,system-ui,sans-serif;background:var(--canvas-soft);color:var(--ink);}
+a{color:inherit;}
+header.top{background:var(--brand-dark);color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+header.top .brand{font-weight:600;font-size:16px;display:flex;align-items:center;gap:10px;}
+header.top .badge{background:var(--primary);font-size:11px;padding:3px 10px;border-radius:20px;}
+header.top a.back{color:#cdd4ff;font-size:13px;text-decoration:none;}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 24px 80px;}
+.sync{font-size:12px;color:var(--ink-mute);display:flex;align-items:center;gap:6px;}
+.section{background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:24px;margin-bottom:22px;box-shadow:var(--shadow-md);}
+.section h2{font-size:17px;margin:0 0 4px;color:var(--brand-dark);}
+.section .desc{font-size:13px;color:var(--ink-mute);margin-bottom:18px;}
+.btn{border:none;border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-deep);}
+.btn-ghost{background:var(--primary-bg);color:var(--primary-deep);}
+.btn-danger{background:var(--red-lt);color:var(--red);}
+.btn-sm{padding:6px 12px;font-size:12.5px;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{text-align:left;padding:10px 12px;color:var(--ink-mute);font-weight:500;border-bottom:1px solid var(--hairline);font-size:12.5px;}
+td{padding:11px 12px;border-bottom:1px solid #f0f2f8;vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.tag-chip{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--primary-bg);color:var(--primary-deep);margin-right:4px;}
+.cat-pill{font-size:11px;padding:3px 10px;border-radius:20px;background:#eef0f5;color:var(--ink-2);}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.stat-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:12.5px;color:var(--ink-mute);font-weight:500;}
+.field input,.field select,.field textarea{padding:9px 11px;border:1.5px solid var(--hairline);border-radius:8px;font-size:13.5px;font-family:inherit;}
+.field textarea{resize:vertical;min-height:64px;}
+.checkrow{display:flex;gap:14px;flex-wrap:wrap;}
+.checkrow label{display:flex;align-items:center;gap:6px;font-size:13px;}
+/* modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,37,61,.45);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:26px;width:100%;max-width:520px;max-height:90vh;overflow:auto;}
+.modal h3{margin:0 0 18px;font-size:16px;color:var(--brand-dark);}
+.modal .fields{display:flex;flex-direction:column;gap:14px;}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+.empty{padding:30px;text-align:center;color:var(--gray-3);font-size:13px;}
+.status-msg{font-size:12.5px;padding:8px 12px;border-radius:8px;margin-bottom:14px;display:none;}
+.status-msg.show{display:block;}
+.status-msg.ok{background:var(--green-lt);color:var(--green);}
+.status-msg.err{background:var(--red-lt);color:var(--red);}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">🎯 Career Pathway 관리 <span class="badge">DREAM Career Connect Program</span></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span class="sync" id="sync-indicator">● Firebase 연결 확인 중…</span>
+    <a class="back" href="career-pathway.html" target="_blank">↗ 공개 페이지 미리보기</a>
+    <a class="back" href="index.html">← 관리 시스템으로</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="section">
+    <div class="toolbar">
+      <div>
+        <h2>프로그램 관리</h2>
+        <div class="desc">DREAM Career Connect Program 5개 축에 속한 개별 프로그램을 추가·수정합니다. 저장하면 공개 페이지에 즉시 반영됩니다.</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="seedDefaults()">기본 데이터(PDF 원안) 불러오기</button>
+        <button class="btn btn-primary" onclick="openProgramModal()">+ 프로그램 추가</button>
+      </div>
+    </div>
+    <div id="status-programs" class="status-msg"></div>
+    <table>
+      <thead><tr><th style="width:26%">프로그램명</th><th style="width:14%">DREAM 카테고리</th><th style="width:18%">대상군</th><th>설명</th><th style="width:90px"></th></tr></thead>
+      <tbody id="program-tbody"></tbody>
+    </table>
+    <div id="program-empty" class="empty" style="display:none">등록된 프로그램이 없습니다. 위의 "기본 데이터 불러오기"를 눌러 PDF 원안으로 시작하세요.</div>
+  </div>
+
+  <div class="section">
+    <h2>통계 지표</h2>
+    <div class="desc">공개 페이지 하단 통계 카드에 표시되는 값입니다. 자동 연동 KPI가 확정되기 전까지는 수기로 입력합니다.</div>
+    <div id="status-stats" class="status-msg"></div>
+    <div class="stat-inputs">
+      <div class="field"><label>누적 참여 학생(명)</label><input type="number" id="stat-participants" placeholder="예: 320"></div>
+      <div class="field"><label>취업·정주 연계 건수</label><input type="number" id="stat-placements" placeholder="예: 48"></div>
+    </div>
+    <div style="margin-top:16px"><button class="btn btn-primary" onclick="saveStats()">통계 저장</button></div>
+  </div>
+
+  <div class="section">
+    <h2>연동 안내</h2>
+    <div class="desc">
+      · 프로그램 목록과 통계는 <code>sss-works</code> Firebase 프로젝트의 <code>careerPathway/</code> 경로에 저장되며, 기존 관리 시스템(index.html)과 같은 DB를 공유합니다.<br>
+      · 공개 페이지(career-pathway.html)는 이 경로를 실시간 구독하므로, 저장 즉시 별도 배포 없이 반영됩니다.<br>
+      · 대상군(학령기/성인학습자/국제학생) 분류는 현재 국제학생 프로그램만 채워져 있으며, 나머지 프로그램은 추가되는 대로 이 화면에서 등록하면 됩니다.
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-program">
+  <div class="modal">
+    <h3 id="modal-title">프로그램 추가</h3>
+    <div class="fields">
+      <div class="field"><label>프로그램명</label><input type="text" id="f-title" placeholder="예: 인턴십"></div>
+      <div class="field"><label>DREAM 카테고리</label>
+        <select id="f-cat">
+          <option value="diversity">01 · 다양성과 포용성</option>
+          <option value="realworld">02 · 실무 역량 강화</option>
+          <option value="employment">03 · 취업 로드맵 설정</option>
+          <option value="community">04 · 지역사회 참여</option>
+          <option value="mentorship">05 · 성공 경험 공유</option>
+        </select>
+      </div>
+      <div class="field"><label>대상군 (복수 선택 가능)</label>
+        <div class="checkrow">
+          <label><input type="checkbox" value="trad" class="f-group"> 학령기</label>
+          <label><input type="checkbox" value="adult" class="f-group"> 성인학습자</label>
+          <label><input type="checkbox" value="intl" class="f-group"> 국제학생</label>
+        </div>
+      </div>
+      <div class="field"><label>설명</label><textarea id="f-desc" placeholder="프로그램에 대한 한 줄~두 줄 설명"></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeProgramModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveProgram()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wjam9XhdH88XErD_Ky7medMaLIytxgA",
+  authDomain: "sss-works.firebaseapp.com",
+  databaseURL: "https://sss-works-default-rtdb.firebaseio.com",
+  projectId: "sss-works",
+  storageBucket: "sss-works.firebasestorage.app",
+  messagingSenderId: "301156213383",
+  appId: "1:301156213383:web:bd895fcd5a7483e4060e22"
+};
+let _db = null;
+try{ firebase.initializeApp(firebaseConfig); _db = firebase.database(); }catch(e){ console.warn(e); }
+const _authReady = new Promise((resolve,reject)=>{
+  if(!_db){ reject(new Error('no db')); return; }
+  firebase.auth().onAuthStateChanged(u=>{
+    if(u){ resolve(u); return; }
+    firebase.auth().signInAnonymously().then(c=>resolve(c.user)).catch(err=>reject(err));
+  });
+});
+
+const CAT_LABEL = {diversity:'01·다양성과 포용성', realworld:'02·실무 역량 강화', employment:'03·취업 로드맵 설정', community:'04·지역사회 참여', mentorship:'05·성공 경험 공유'};
+const GROUP_LABEL = {trad:'학령기', adult:'성인학습자', intl:'국제학생'};
+
+const DEFAULT_PROGRAMS = [
+  {id:'p1', cat:'diversity', title:'너와 내가 함께:ON 자치활동 캠프', desc:'외국인 유학생과 한국인 학생이 함께 참여해 다양성과 포용성에 대한 이해를 높이고, 상호 존중과 협력을 바탕으로 한 글로벌 공동체 문화를 조성합니다.', groups:['intl']},
+  {id:'p2', cat:'realworld', title:'인턴십', desc:'취업 확정된 산업체에서의 실무 경험을 통한 직무 역량 및 현장 적응력 강화 교육', groups:['intl']},
+  {id:'p3', cat:'realworld', title:'AI 실무 교육', desc:'실제 업무에서 활용할 수 있는 AI 도구 활용 교육', groups:['intl']},
+  {id:'p4', cat:'realworld', title:'비즈니스 한국어', desc:'직장생활에 필요한 전문적인 한국어 활용 능력과 비즈니스 커뮤니케이션 역량 강화 교육', groups:['intl']},
+  {id:'p5', cat:'realworld', title:'중소(벤처)기업의 이해', desc:'중소기업과 벤처기업의 특성, 조직문화 및 업무 프로세스의 이해 등 직장 적응 역량 강화 교육', groups:['intl']},
+  {id:'p6', cat:'realworld', title:'근로기준과산업안전(실무)', desc:'근로자 권리 및 산업안전 규정에 대한 이해를 통해 안정적인 근무 환경 적응 지원', groups:['intl']},
+  {id:'p7', cat:'employment', title:'취업스킬 Up Ⅰ', desc:'기본적 취업 준비 및 채용 서류 작성 교육', groups:['intl']},
+  {id:'p8', cat:'employment', title:'취업스킬 Up Ⅱ', desc:'면접 기술 및 직장 예절을 다루는 취업 준비 심화 교육', groups:['intl']},
+  {id:'p9', cat:'employment', title:'취업실전클리닉', desc:'모의 면접 및 포트폴리오 검토를 포함한 실전 구직 교육', groups:['intl']},
+  {id:'p10', cat:'employment', title:'비자(Visa) 역량 강화 교육', desc:'체류 및 취업·정주를 위한 비자(Visa) 역량 강화 교육', groups:['intl']},
+  {id:'p11', cat:'community', title:'AI 연계 산학협력 프로젝트', desc:'산업체와 공동으로 수행하는 현장 문제 해결 역량 강화 교육', groups:['intl']},
+  {id:'p12', cat:'community', title:'동아리 캡스톤디자인', desc:'전공 분야 및 지역사회 현안 문제해결을 통한 문제해결 능력 향상 교육', groups:['intl']},
+  {id:'p13', cat:'mentorship', title:'현장실습', desc:'실습 중심 교육을 통해 직무 수행에 필요한 실무 역량과 문제해결 능력 강화 교육', groups:['intl']},
+  {id:'p14', cat:'mentorship', title:'기업탐방', desc:'산업 동향 및 기업 요구 역량 파악을 통한 취업 연계 기반 마련', groups:['intl']},
+  {id:'p15', cat:'mentorship', title:'교내·외 채용박람회', desc:'채용박람회 참여를 위한 사전 취업 교육 및 매칭을 통한 취업 기회 확대 지원', groups:['intl']},
+  {id:'p16', cat:'mentorship', title:'지역 특화형(F-2-R, E-7) 탐방 프로그램', desc:'인구소멸지역 및 특정 산업이 분포한 지역 취업 지원(E-7, F-2-R)', groups:['intl']},
+];
+
+let _programs = [];
+let _editingId = null;
+
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function showStatus(id,msg,ok){ const el=document.getElementById(id); el.textContent=msg; el.className='status-msg show '+(ok?'ok':'err'); setTimeout(()=>el.classList.remove('show'),2500); }
+
+function renderPrograms(){
+  const tbody = document.getElementById('program-tbody');
+  const emptyEl = document.getElementById('program-empty');
+  if(!_programs.length){ tbody.innerHTML=''; emptyEl.style.display='block'; return; }
+  emptyEl.style.display='none';
+  tbody.innerHTML = _programs.map(p=>`
+    <tr>
+      <td><strong>${escapeHtml(p.title)}</strong></td>
+      <td><span class="cat-pill">${CAT_LABEL[p.cat]||p.cat}</span></td>
+      <td>${(p.groups||[]).map(g=>`<span class="tag-chip">${GROUP_LABEL[g]||g}</span>`).join('')||'<span style="color:#9ba3b8">미지정</span>'}</td>
+      <td style="color:#64748d;font-size:12.5px">${escapeHtml((p.desc||'').slice(0,60))}${(p.desc||'').length>60?'…':''}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editProgram('${p.id}')">수정</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProgram('${p.id}')">삭제</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openProgramModal(){
+  _editingId = null;
+  document.getElementById('modal-title').textContent = '프로그램 추가';
+  document.getElementById('f-title').value='';
+  document.getElementById('f-cat').value='realworld';
+  document.getElementById('f-desc').value='';
+  document.querySelectorAll('.f-group').forEach(cb=>cb.checked=false);
+  document.getElementById('modal-program').classList.add('open');
+}
+function closeProgramModal(){ document.getElementById('modal-program').classList.remove('open'); }
+
+function editProgram(id){
+  const p = _programs.find(x=>x.id===id);
+  if(!p) return;
+  _editingId = id;
+  document.getElementById('modal-title').textContent = '프로그램 수정';
+  document.getElementById('f-title').value = p.title||'';
+  document.getElementById('f-cat').value = p.cat||'realworld';
+  document.getElementById('f-desc').value = p.desc||'';
+  document.querySelectorAll('.f-group').forEach(cb=>cb.checked=(p.groups||[]).includes(cb.value));
+  document.getElementById('modal-program').classList.add('open');
+}
+
+async function saveProgram(){
+  const title = document.getElementById('f-title').value.trim();
+  if(!title){ alert('프로그램명을 입력해주세요.'); return; }
+  const cat = document.getElementById('f-cat').value;
+  const desc = document.getElementById('f-desc').value.trim();
+  const groups = Array.from(document.querySelectorAll('.f-group:checked')).map(cb=>cb.value);
+  const id = _editingId || ('p'+Date.now());
+  const rec = {id, cat, title, desc, groups};
+  const idx = _programs.findIndex(p=>p.id===id);
+  if(idx>=0) _programs[idx]=rec; else _programs.push(rec);
+  await persistPrograms();
+  closeProgramModal();
+  showStatus('status-programs','저장되었습니다.',true);
+}
+
+async function deleteProgram(id){
+  if(!confirm('이 프로그램을 삭제할까요?')) return;
+  _programs = _programs.filter(p=>p.id!==id);
+  await persistPrograms();
+  showStatus('status-programs','삭제되었습니다.',true);
+}
+
+async function seedDefaults(){
+  if(_programs.length && !confirm('기존 프로그램 목록을 PDF 원안 데이터로 덮어씁니다. 계속할까요?')) return;
+  _programs = DEFAULT_PROGRAMS.slice();
+  await persistPrograms();
+  showStatus('status-programs','기본 데이터를 불러왔습니다.',true);
+}
+
+async function persistPrograms(){
+  renderPrograms();
+  if(!_db){ showStatus('status-programs','Firebase 연결 실패 — 저장되지 않았습니다.',false); return; }
+  try{
+    await _authReady;
+    await _db.ref('careerPathway/programs').set(_programs);
+  }catch(e){
+    console.warn('저장 실패', e);
+    showStatus('status-programs','저장 중 오류가 발생했습니다.',false);
+  }
+}
+
+async function saveStats(){
+  const participants = document.getElementById('stat-participants').value;
+  const placements = document.getElementById('stat-placements').value;
+  const rec = {
+    participants: participants? Number(participants): null,
+    placements: placements? Number(placements): null,
+    programCount: _programs.length,
+    linkedCount: 12,
+  };
+  if(!_db){ showStatus('status-stats','Firebase 연결 실패',false); return; }
+  try{
+    await _authReady;
+    await _db.ref('careerPathway/stats').set(rec);
+    showStatus('status-stats','통계가 저장되었습니다.',true);
+  }catch(e){
+    console.warn(e);
+    showStatus('status-stats','저장 중 오류가 발생했습니다.',false);
+  }
+}
+
+async function initSync(){
+  const ind = document.getElementById('sync-indicator');
+  if(!_db){ ind.textContent='● Firebase 연결 실패'; return; }
+  try{
+    await _authReady;
+    ind.textContent='✓ 동기화됨';
+    _db.ref('careerPathway/programs').on('value', snap=>{
+      const val = snap.val();
+      _programs = val ? (Array.isArray(val)? val.filter(Boolean): Object.values(val)) : [];
+      renderPrograms();
+    });
+    _db.ref('careerPathway/stats').on('value', snap=>{
+      const val = snap.val();
+      if(val){
+        if(val.participants!=null) document.getElementById('stat-participants').value = val.participants;
+        if(val.placements!=null) document.getElementById('stat-placements').value = val.placements;
+      }
+    });
+  }catch(e){
+    ind.textContent='● 동기화 실패';
+    console.warn(e);
+  }
+}
+renderPrograms();
+initSync();
+</script>
+</body>
+</html>
