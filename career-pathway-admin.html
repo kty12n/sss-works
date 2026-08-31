@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무 및 성과 관리 시스템 - Career Pathway 관리</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root{
+  --primary:#533afd;--primary-deep:#4434d4;--primary-bg:#eeeeff;
+  --brand-dark:#1c1e54;--ink:#0d253d;--ink-2:#273951;--ink-mute:#64748d;
+  --canvas:#ffffff;--canvas-soft:#f6f9fc;--hairline:#e3e8ee;
+  --green:#1a9e5c;--green-lt:#e3f9ef;--red:#ea2261;--red-lt:#fde8ef;
+  --amber:#e5890a;--amber-lt:#fff4e0;--gray-3:#9ba3b8;
+  --shadow-md:rgba(0,55,112,.08) 0 8px 24px, rgba(0,55,112,.04) 0 2px 6px;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'Inter',ui-sans-serif,system-ui,sans-serif;background:var(--canvas-soft);color:var(--ink);}
+a{color:inherit;}
+header.top{background:var(--brand-dark);color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+header.top .brand{font-weight:600;font-size:16px;display:flex;align-items:center;gap:10px;}
+header.top .badge{background:var(--primary);font-size:11px;padding:3px 10px;border-radius:20px;}
+header.top a.back{color:#cdd4ff;font-size:13px;text-decoration:none;}
+.wrap{max-width:1160px;margin:0 auto;padding:28px 24px 80px;}
+.sync{font-size:12px;color:var(--ink-mute);display:flex;align-items:center;gap:6px;}
+.section{background:#fff;border:1px solid var(--hairline);border-radius:14px;padding:24px;margin-bottom:22px;box-shadow:var(--shadow-md);}
+.section h2{font-size:17px;margin:0 0 4px;color:var(--brand-dark);}
+.section .desc{font-size:13px;color:var(--ink-mute);margin-bottom:18px;}
+.btn{border:none;border-radius:8px;padding:9px 16px;font-size:13.5px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-deep);}
+.btn-ghost{background:var(--primary-bg);color:var(--primary-deep);}
+.btn-danger{background:var(--red-lt);color:var(--red);}
+.btn-sm{padding:6px 12px;font-size:12.5px;}
+table{width:100%;border-collapse:collapse;font-size:13.5px;}
+th{text-align:left;padding:10px 12px;color:var(--ink-mute);font-weight:500;border-bottom:1px solid var(--hairline);font-size:12.5px;}
+td{padding:11px 12px;border-bottom:1px solid #f0f2f8;vertical-align:top;}
+tr:last-child td{border-bottom:none;}
+.tag-chip{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;background:var(--primary-bg);color:var(--primary-deep);margin-right:4px;}
+.cat-pill{font-size:11px;padding:3px 10px;border-radius:20px;background:#eef0f5;color:var(--ink-2);}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.stat-inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;}
+.field{display:flex;flex-direction:column;gap:6px;}
+.field label{font-size:12.5px;color:var(--ink-mute);font-weight:500;}
+.field input,.field select,.field textarea{padding:9px 11px;border:1.5px solid var(--hairline);border-radius:8px;font-size:13.5px;font-family:inherit;}
+.field textarea{resize:vertical;min-height:64px;}
+.checkrow{display:flex;gap:14px;flex-wrap:wrap;}
+.checkrow label{display:flex;align-items:center;gap:6px;font-size:13px;}
+/* modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,37,61,.45);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:14px;padding:26px;width:100%;max-width:520px;max-height:90vh;overflow:auto;}
+.modal h3{margin:0 0 18px;font-size:16px;color:var(--brand-dark);}
+.modal .fields{display:flex;flex-direction:column;gap:14px;}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;}
+.empty{padding:30px;text-align:center;color:var(--gray-3);font-size:13px;}
+.status-msg{font-size:12.5px;padding:8px 12px;border-radius:8px;margin-bottom:14px;display:none;}
+.status-msg.show{display:block;}
+.status-msg.ok{background:var(--green-lt);color:var(--green);}
+.status-msg.err{background:var(--red-lt);color:var(--red);}
+.session-row-edit{display:grid;grid-template-columns:1fr 1fr 1.4fr auto;gap:8px;margin-bottom:8px;align-items:center;}
+.session-row-edit input{padding:8px 9px;border:1.5px solid var(--hairline);border-radius:7px;font-size:13px;font-family:inherit;}
+.status-chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;}
+.status-chip.open{background:var(--green-lt);color:var(--green);}
+.status-chip.ended{background:#eef0f5;color:#64748d;}
+.status-chip.unscheduled{background:var(--primary-bg);color:var(--primary-deep);}
+.lang-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.lang-tab{border:1.5px solid var(--hairline);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;background:#fff;color:var(--ink-mute);cursor:pointer;}
+.lang-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;}
+.lang-tab.has-content::after{content:' ✓';font-size:10px;}
+.lang-hint{font-size:11.5px;color:var(--ink-mute);margin-top:6px;}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">🎯 Career Pathway 관리 <span class="badge">DREAM Career Connect Program</span></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span class="sync" id="sync-indicator">● Firebase 연결 확인 중…</span>
+    <a class="back" href="career-pathway.html" target="_blank">↗ 공개 페이지 미리보기</a>
+    <a class="back" href="index.html">← 관리 시스템으로</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="section">
+    <div class="toolbar">
+      <div>
+        <h2>프로그램 관리</h2>
+        <div class="desc">DREAM Career Connect Program 5개 축에 속한 개별 프로그램을 추가·수정합니다. 저장하면 공개 페이지에 즉시 반영됩니다.</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-ghost" onclick="seedDefaults()">기본 데이터(PDF 원안) 불러오기</button>
+        <button class="btn btn-primary" onclick="openProgramModal()">+ 프로그램 추가</button>
+      </div>
+    </div>
+    <div id="status-programs" class="status-msg"></div>
+    <table>
+      <thead><tr><th style="width:22%">프로그램명</th><th style="width:13%">DREAM 카테고리</th><th style="width:15%">대상군</th><th style="width:9%">상태</th><th>설명</th><th style="width:90px"></th></tr></thead>
+      <tbody id="program-tbody"></tbody>
+    </table>
+    <div id="program-empty" class="empty" style="display:none">등록된 프로그램이 없습니다. 위의 "기본 데이터 불러오기"를 눌러 PDF 원안으로 시작하세요.</div>
+  </div>
+
+  <div class="section">
+    <h2>통계 지표</h2>
+    <div class="desc">공개 페이지 하단 통계 카드에 표시되는 값입니다. 자동 연동 KPI가 확정되기 전까지는 수기로 입력합니다.</div>
+    <div id="status-stats" class="status-msg"></div>
+    <div class="stat-inputs">
+      <div class="field"><label>누적 참여 학생(명)</label><input type="number" id="stat-participants" placeholder="예: 320"></div>
+      <div class="field"><label>취업·정주 연계 건수</label><input type="number" id="stat-placements" placeholder="예: 48"></div>
+    </div>
+    <div style="margin-top:16px"><button class="btn btn-primary" onclick="saveStats()">통계 저장</button></div>
+  </div>
+
+  <div class="section">
+    <h2>연동 안내</h2>
+    <div class="desc">
+      · 프로그램 목록과 통계는 <code>sss-works</code> Firebase 프로젝트의 <code>careerPathway/</code> 경로에 저장되며, 기존 관리 시스템(index.html)과 같은 DB를 공유합니다.<br>
+      · 공개 페이지(career-pathway.html)는 이 경로를 실시간 구독하므로, 저장 즉시 별도 배포 없이 반영됩니다.<br>
+      · 대상군(학령기/성인학습자/국제학생) 분류는 현재 국제학생 프로그램만 채워져 있으며, 나머지 프로그램은 추가되는 대로 이 화면에서 등록하면 됩니다.
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-program">
+  <div class="modal">
+    <h3 id="modal-title">프로그램 추가</h3>
+    <div class="fields">
+      <div class="field"><label>DREAM 카테고리</label>
+        <select id="f-cat">
+          <option value="diversity">01 · 다양성과 포용성</option>
+          <option value="realworld">02 · 실무 역량 강화</option>
+          <option value="employment">03 · 취업 로드맵 설정</option>
+          <option value="community">04 · 지역사회 참여</option>
+          <option value="mentorship">05 · 성공 경험 공유</option>
+        </select>
+      </div>
+      <div class="field"><label>대상군 (복수 선택 가능)</label>
+        <div class="checkrow">
+          <label><input type="checkbox" value="trad" class="f-group"> 학령기</label>
+          <label><input type="checkbox" value="adult" class="f-group"> 성인학습자</label>
+          <label><input type="checkbox" value="intl" class="f-group"> 국제학생</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>프로그램명 · 설명 — 언어별 입력</label>
+        <div class="lang-tabs" id="lang-tabs"></div>
+        <input type="text" id="f-title" placeholder="프로그램명" style="margin-bottom:8px">
+        <textarea id="f-desc" placeholder="프로그램에 대한 한 줄~두 줄 설명"></textarea>
+        <div id="lang-hint" class="lang-hint"></div>
+      </div>
+      <div class="field">
+        <label>일정 (날짜/시간/장소) — 학생 페이지 상세보기와 종료 여부 표시에 사용됩니다</label>
+        <div id="session-list"></div>
+        <button type="button" class="btn btn-ghost btn-sm" style="align-self:flex-start" onclick="addSessionRow()">+ 일정 추가</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeProgramModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveProgram()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wjam9XhdH88XErD_Ky7medMaLIytxgA",
+  authDomain: "sss-works.firebaseapp.com",
+  databaseURL: "https://sss-works-default-rtdb.firebaseio.com",
+  projectId: "sss-works",
+  storageBucket: "sss-works.firebasestorage.app",
+  messagingSenderId: "301156213383",
+  appId: "1:301156213383:web:bd895fcd5a7483e4060e22"
+};
+let _db = null;
+try{ firebase.initializeApp(firebaseConfig); _db = firebase.database(); }catch(e){ console.warn(e); }
+const _authReady = new Promise((resolve,reject)=>{
+  if(!_db){ reject(new Error('no db')); return; }
+  firebase.auth().onAuthStateChanged(u=>{
+    if(u){ resolve(u); return; }
+    firebase.auth().signInAnonymously().then(c=>resolve(c.user)).catch(err=>reject(err));
+  });
+});
+
+const CAT_LABEL = {diversity:'01·다양성과 포용성', realworld:'02·실무 역량 강화', employment:'03·취업 로드맵 설정', community:'04·지역사회 참여', mentorship:'05·성공 경험 공유'};
+const GROUP_LABEL = {trad:'학령기', adult:'성인학습자', intl:'국제학생'};
+
+const DEFAULT_PROGRAMS = [
+  {id:'p1', cat:'diversity', title:'너와 내가 함께:ON 자치활동 캠프', desc:'외국인 유학생과 한국인 학생이 함께 참여해 다양성과 포용성에 대한 이해를 높이고, 상호 존중과 협력을 바탕으로 한 글로벌 공동체 문화를 조성합니다.', groups:['intl'],
+    translations:{
+      en:{title:'You and I Together: ON Community Activity Camp', desc:'A camp where international and Korean students take part together to build understanding of diversity and inclusion, fostering a global community culture based on mutual respect and cooperation.'},
+      vi:{title:'Bạn và Tôi Cùng Nhau: Trại Hoạt động Cộng đồng ON', desc:'Trại nơi sinh viên quốc tế và sinh viên Hàn Quốc cùng tham gia để nâng cao hiểu biết về sự đa dạng và hòa nhập, xây dựng văn hóa cộng đồng toàn cầu dựa trên sự tôn trọng và hợp tác lẫn nhau.'},
+      uz:{title:"Sen va Men Birga: ON Jamoaviy Faoliyat Lageri", desc:"Xorijiy va koreys talabalari birgalikda ishtirok etadigan, xilma-xillik va inklyuziya haqida tushunchani oshiradigan hamda oʻzaro hurmat va hamkorlikka asoslangan global jamoat madaniyatini shakllantiradigan lager."},
+      my:{title:'မင်းနဲ့ငါ အတူတကွ: ON လူထုလှုပ်ရှားမှု စခန်း', desc:'နိုင်ငံခြားကျောင်းသားများနှင့် ကိုရီးယားကျောင်းသားများ အတူတကွပါဝင်ကာ ကွဲပြားမှုနှင့် ပါဝင်မှုအပေါ် နားလည်မှုမြှင့်တင်ပြီး အပြန်အလှန် လေးစားမှုနှင့် ပူးပေါင်းဆောင်ရွက်မှုအပေါ် အခြေခံသည့် ကမ္ဘာလုံးဆိုင်ရာ လူထုယဉ်ကျေးမှု တည်ဆောက်ရေး စခန်းဖြစ်သည်။'},
+      mn:{title:'Чи Бид Хамтдаа: ON Нийгмийн Идэвхжүүлэх Кэмп', desc:'Гадаад болон Солонгос оюутнууд хамтран оролцож, олон талт байдал, оролцооны талаарх ойлголтыг нэмэгдүүлж, харилцан хүндэтгэл, хамтын ажиллагаанд суурилсан дэлхийн хамтын нийгэмлэгийн соёлыг бий болгодог кэмп юм.'},
+    }},
+  {id:'p2', cat:'realworld', title:'인턴십', desc:'취업 확정된 산업체에서의 실무 경험을 통한 직무 역량 및 현장 적응력 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Internship', desc:'Training that strengthens job competency and on-site adaptability through hands-on experience at companies where employment is already confirmed.'},
+      vi:{title:'Thực tập', desc:'Đào tạo tăng cường năng lực nghề nghiệp và khả năng thích nghi thực tế thông qua kinh nghiệm thực hành tại doanh nghiệp đã xác nhận tuyển dụng.'},
+      uz:{title:'Amaliyot (Internship)', desc:"Ish joyi allaqachon tasdiqlangan korxonalarda amaliy tajriba orqali ish koʻnikmalari va joyga moslashish qobiliyatini kuchaytiruvchi taʼlim."},
+      my:{title:'အလုပ်သင်အစီအစဉ်', desc:'အလုပ်ခန့်ထားရန် အတည်ပြုပြီးသား စက်မှုလုပ်ငန်းများတွင် လက်တွေ့အတွေ့အကြုံမှတစ်ဆင့် အလုပ်စွမ်းရည်နှင့် လုပ်ငန်းခွင် လိုက်လျောညီထွေဖြစ်နိုင်စွမ်းကို မြှင့်တင်ပေးသည့် သင်တန်း'},
+      mn:{title:'Дадлага', desc:'Ажилд орохоор баталгаажсан аж ахуйн нэгжид дадлага хийх замаар ажлын ур чадвар, орчинд дасан зохицох чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p3', cat:'realworld', title:'AI 실무 교육', desc:'실제 업무에서 활용할 수 있는 AI 도구 활용 교육', groups:['intl'],
+    translations:{
+      en:{title:'AI Practical Training', desc:'Training on using AI tools that can be applied directly in real work.'},
+      vi:{title:'Đào tạo Thực hành AI', desc:'Đào tạo sử dụng các công cụ AI có thể áp dụng trực tiếp vào công việc thực tế.'},
+      uz:{title:'AI Amaliy Taʼlimi', desc:"Haqiqiy ish jarayonida qoʻllash mumkin boʻlgan AI vositalaridan foydalanish boʻyicha taʼlim."},
+      my:{title:'AI လက်တွေ့ လေ့ကျင့်ရေး', desc:'လက်တွေ့အလုပ်တွင် အသုံးပြုနိုင်သည့် AI ကိရိယာများ အသုံးပြုနည်း သင်တန်း'},
+      mn:{title:'AI-н Практик Сургалт', desc:'Бодит ажилд ашиглах боломжтой AI хэрэгслүүдийг ашиглах сургалт'},
+    }},
+  {id:'p4', cat:'realworld', title:'비즈니스 한국어', desc:'직장생활에 필요한 전문적인 한국어 활용 능력과 비즈니스 커뮤니케이션 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Business Korean', desc:'Training that strengthens professional Korean language ability and business communication skills needed for workplace life.'},
+      vi:{title:'Tiếng Hàn Thương mại', desc:'Đào tạo tăng cường khả năng sử dụng tiếng Hàn chuyên nghiệp và kỹ năng giao tiếp kinh doanh cần thiết cho đời sống công sở.'},
+      uz:{title:'Biznes Koreys Tili', desc:'Ish hayotida zarur boʻlgan professional koreys tili va biznes muloqot koʻnikmalarini kuchaytiruvchi taʼlim.'},
+      my:{title:'စီးပွားရေး ကိုရီးယားစကား', desc:'အလုပ်ခွင်ဘဝအတွက် လိုအပ်သော ကျွမ်းကျင်သည့် ကိုရီးယားဘာသာစကားအသုံးချနိုင်စွမ်းနှင့် စီးပွားရေးဆက်သွယ်ရေး စွမ်းရည်ကို မြှင့်တင်သည့် သင်တန်း'},
+      mn:{title:'Бизнесийн Солонгос Хэл', desc:'Ажлын амьдралд шаардлагатай мэргэжлийн Солонгос хэлний чадвар, бизнесийн харилцааны ур чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p5', cat:'realworld', title:'중소(벤처)기업의 이해', desc:'중소기업과 벤처기업의 특성, 조직문화 및 업무 프로세스의 이해 등 직장 적응 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Understanding SMEs and Startups', desc:'Training that strengthens workplace adaptability by understanding the characteristics, culture, and work processes of small/medium enterprises and startups.'},
+      vi:{title:'Hiểu về Doanh nghiệp Vừa và Nhỏ (Startup)', desc:'Đào tạo tăng cường khả năng thích nghi công sở thông qua việc hiểu đặc điểm, văn hóa tổ chức và quy trình làm việc của doanh nghiệp vừa, nhỏ và startup.'},
+      uz:{title:'Kichik va Oʻrta Biznes (Startaplar)ni Tushunish', desc:"Kichik va oʻrta korxonalar hamda startaplarning xususiyatlari, tashkiliy madaniyati va ish jarayonlarini tushunish orqali ishga moslashish koʻnikmalarini kuchaytiruvchi taʼlim."},
+      my:{title:'အလတ်စား/စတင်တင်လုပ်ငန်းများ နားလည်ခြင်း', desc:'အလတ်စားနှင့် စတင်တင်လုပ်ငန်းများ၏ အထူးလက္ခဏာများ၊ အဖွဲ့အစည်းယဉ်ကျေးမှုနှင့် အလုပ်လုပ်ငန်းစဉ်များကို နားလည်စေခြင်းဖြင့် အလုပ်ခွင် လိုက်လျောညီထွေဖြစ်နိုင်စွမ်း မြှင့်တင်ရေး သင်တန်း'},
+      mn:{title:'Жижиг, дунд болон стартап компаниудыг ойлгох', desc:'Жижиг, дунд аж ахуйн нэгж, стартап компаниудын онцлог, байгууллагын соёл, ажлын үйл явцыг ойлгуулснаар ажлын байранд дасан зохицох чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p6', cat:'realworld', title:'근로기준과산업안전(실무)', desc:'근로자 권리 및 산업안전 규정에 대한 이해를 통해 안정적인 근무 환경 적응 지원', groups:['intl'],
+    translations:{
+      en:{title:'Labor Standards & Industrial Safety (Practical)', desc:'Support for adapting to a stable working environment by understanding worker rights and industrial safety regulations.'},
+      vi:{title:'Tiêu chuẩn Lao động & An toàn Công nghiệp (Thực hành)', desc:'Hỗ trợ thích nghi với môi trường làm việc ổn định thông qua việc hiểu quyền lợi người lao động và quy định an toàn công nghiệp.'},
+      uz:{title:'Mehnat Standartlari va Sanoat Xavfsizligi (Amaliy)', desc:'Ishchi huquqlari va sanoat xavfsizligi qoidalarini tushunish orqali barqaror ish muhitiga moslashishni qoʻllab-quvvatlash.'},
+      my:{title:'အလုပ်သမား စံနှုန်းနှင့် စက်မှုလုံခြုံရေး (လက်တွေ့)', desc:'အလုပ်သမားအခွင့်အရေးနှင့် စက်မှုလုံခြုံရေး စည်းမျဉ်းများကို နားလည်စေခြင်းဖြင့် တည်ငြိမ်သော အလုပ်ခွင်ပတ်ဝန်းကျင်သို့ လိုက်လျောညီထွေဖြစ်စေရေး ပံ့ပိုးမှု'},
+      mn:{title:'Хөдөлмөрийн стандарт ба Аж үйлдвэрийн аюулгүй байдал (Практик)', desc:'Ажилчдын эрх, аж үйлдвэрийн аюулгүй байдлын дүрэм журмыг ойлгуулснаар тогтвортой ажлын орчинд дасан зохицоход дэмжлэг үзүүлэх'},
+    }},
+  {id:'p7', cat:'employment', title:'취업스킬 Up Ⅰ', desc:'기본적 취업 준비 및 채용 서류 작성 교육', groups:['intl'],
+    translations:{
+      en:{title:'Job Skills Up I', desc:'Training on basic job-search preparation and writing application documents.'},
+      vi:{title:'Nâng cao Kỹ năng Việc làm I', desc:'Đào tạo chuẩn bị việc làm cơ bản và cách viết hồ sơ ứng tuyển.'},
+      uz:{title:'Ish Koʻnikmalarini Oshirish I', desc:'Ish qidirishga asosiy tayyorgarlik va ariza hujjatlarini yozish boʻyicha taʼlim.'},
+      my:{title:'အလုပ်ရှာဖွေရေး ကျွမ်းကျင်မှု တိုးတက်ခြင်း I', desc:'အခြေခံ အလုပ်ရှာဖွေရေး ပြင်ဆင်မှုနှင့် လျှောက်လွှာစာရွက်စာတမ်း ရေးသားနည်း သင်တန်း'},
+      mn:{title:'Ажлын ур чадвар дээшлүүлэх I', desc:'Ажилд орох суурь бэлтгэл, өргөдлийн бичиг баримт бичих сургалт'},
+    }},
+  {id:'p8', cat:'employment', title:'취업스킬 Up Ⅱ', desc:'면접 기술 및 직장 예절을 다루는 취업 준비 심화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Job Skills Up II', desc:'Advanced job-preparation training covering interview techniques and workplace etiquette.'},
+      vi:{title:'Nâng cao Kỹ năng Việc làm II', desc:'Đào tạo chuyên sâu về kỹ thuật phỏng vấn và phép tắc nơi làm việc.'},
+      uz:{title:'Ish Koʻnikmalarini Oshirish II', desc:'Suhbat texnikasi va ish joyidagi odob-axloq qoidalarini qamrab olgan chuqurlashtirilgan taʼlim.'},
+      my:{title:'အလုပ်ရှာဖွေရေး ကျွမ်းကျင်မှု တိုးတက်ခြင်း II', desc:'အင်တာဗျူးနည်းပညာနှင့် အလုပ်ခွင် ကျင့်ဝတ်များကို ကိုင်တွယ်သည့် အဆင့်မြင့် အလုပ်ပြင်ဆင်မှု သင်တန်း'},
+      mn:{title:'Ажлын ур чадвар дээшлүүлэх II', desc:'Ярилцлагын арга барил, ажлын байрны ёс зүйг хамарсан гүнзгийрүүлсэн бэлтгэл сургалт'},
+    }},
+  {id:'p9', cat:'employment', title:'취업실전클리닉', desc:'모의 면접 및 포트폴리오 검토를 포함한 실전 구직 교육', groups:['intl'],
+    translations:{
+      en:{title:'Job-Search Practice Clinic', desc:'Practical job-search training including mock interviews and portfolio review.'},
+      vi:{title:'Phòng khám Thực hành Tìm việc', desc:'Đào tạo tìm việc thực tế bao gồm phỏng vấn thử và đánh giá hồ sơ năng lực.'},
+      uz:{title:'Ish Qidirish Amaliy Klinikasi', desc:'Sinov suhbatlari va portfolioni koʻrib chiqishni oʻz ichiga olgan amaliy ish qidirish taʼlimi.'},
+      my:{title:'အလုပ်ရှာဖွေရေး လက်တွေ့ ကလင်နစ်', desc:'အင်တာဗျူးလေ့ကျင့်ခန်းနှင့် ပုံစံစာအုပ် ပြန်လည်သုံးသပ်မှုအပါအဝင် လက်တွေ့ အလုပ်ရှာဖွေရေး သင်တန်း'},
+      mn:{title:'Ажил хайх практик клиник', desc:'Дадлага ярилцлага, портфолио хянах зэрэг практик ажил хайх сургалт'},
+    }},
+  {id:'p10', cat:'employment', title:'비자(Visa) 역량 강화 교육', desc:'체류 및 취업·정주를 위한 비자(Visa) 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Visa Competency Training', desc:'Training that strengthens visa-related knowledge for stay, employment, and settlement.'},
+      vi:{title:'Đào tạo Năng lực Visa', desc:'Đào tạo tăng cường năng lực về visa cho việc lưu trú, làm việc và định cư.'},
+      uz:{title:'Viza Koʻnikmalarini Kuchaytirish Taʼlimi', desc:'Turar joy, ish va joylashish uchun viza bilan bogʻliq bilimlarni kuchaytiruvchi taʼlim.'},
+      my:{title:'ဗီဇာ စွမ်းရည် မြှင့်တင်ရေး သင်တန်း', desc:'နေထိုင်ခွင့်၊ အလုပ်အကိုင်နှင့် နေရာချထားမှုအတွက် ဗီဇာဆိုင်ရာ ဗဟုသုတ မြှင့်တင်သည့် သင်တန်း'},
+      mn:{title:'Визийн чадвар бэхжүүлэх сургалт', desc:'Оршин суух, ажил эрхлэлт, суурьшилд шаардлагатай визийн мэдлэгийг бэхжүүлэх сургалт'},
+    }},
+  {id:'p11', cat:'community', title:'AI 연계 산학협력 프로젝트', desc:'산업체와 공동으로 수행하는 현장 문제 해결 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'AI-Linked Industry-Academia Project', desc:'Training that strengthens on-site problem-solving skills through projects carried out jointly with industry partners.'},
+      vi:{title:'Dự án Hợp tác Nhà trường - Doanh nghiệp Liên kết AI', desc:'Đào tạo tăng cường năng lực giải quyết vấn đề thực tế thông qua các dự án phối hợp cùng doanh nghiệp.'},
+      uz:{title:"AI Bilan Bogʻliq Sanoat-Ta'lim Hamkorlik Loyihasi", desc:'Sanoat hamkorlari bilan birgalikda amalga oshiriladigan loyihalar orqali amaliy muammolarni hal qilish koʻnikmalarini kuchaytiruvchi taʼlim.'},
+      my:{title:'AI ချိတ်ဆက် စက်မှု-ပညာရေး ပူးပေါင်းစီမံကိန်း', desc:'စက်မှုလုပ်ငန်းများနှင့် ပူးတွဲဆောင်ရွက်သည့် စီမံကိန်းများမှတစ်ဆင့် လက်တွေ့ပြဿနာဖြေရှင်းနိုင်စွမ်း မြှင့်တင်ရေး သင်တန်း'},
+      mn:{title:'AI-тэй холбоотой Аж үйлдвэр-Их сургуулийн хамтарсан төсөл', desc:'Аж ахуйн нэгжтэй хамтран хэрэгжүүлдэг төслүүдээр дамжуулан бодит асуудлыг шийдвэрлэх чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p12', cat:'community', title:'동아리 캡스톤디자인', desc:'전공 분야 및 지역사회 현안 문제해결을 통한 문제해결 능력 향상 교육', groups:['intl'],
+    translations:{
+      en:{title:'Club Capstone Design', desc:"Training that improves problem-solving ability by tackling issues in students' major fields and local community challenges."},
+      vi:{title:'Thiết kế Capstone Câu lạc bộ', desc:'Đào tạo nâng cao khả năng giải quyết vấn đề thông qua giải quyết các vấn đề chuyên ngành và cộng đồng địa phương.'},
+      uz:{title:'Toʻgarak Kapston Dizayni', desc:'Talabaning mutaxassislik sohasi va mahalliy jamiyat muammolarini hal qilish orqali muammo yechish qobiliyatini oshiruvchi taʼlim.'},
+      my:{title:'ကလပ် Capstone ဒီဇိုင်း', desc:'အထူးပြုဘာသာရပ်နှင့် ဒေသဆိုင်ရာ ပြဿနာများကို ဖြေရှင်းခြင်းမှတစ်ဆင့် ပြဿနာဖြေရှင်းနိုင်စွမ်း မြှင့်တင်သည့် သင်တန်း'},
+      mn:{title:'Клубын Кэпстон дизайн', desc:'Мэргэжлийн чиглэл болон орон нутгийн асуудлыг шийдвэрлэх замаар асуудал шийдвэрлэх чадварыг сайжруулах сургалт'},
+    }},
+  {id:'p13', cat:'mentorship', title:'현장실습', desc:'실습 중심 교육을 통해 직무 수행에 필요한 실무 역량과 문제해결 능력 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Field Practicum', desc:'Hands-on training that strengthens the practical skills and problem-solving ability needed to perform a job.'},
+      vi:{title:'Thực tập Thực tế', desc:'Đào tạo dựa trên thực hành, tăng cường năng lực thực tế và khả năng giải quyết vấn đề cần thiết để thực hiện công việc.'},
+      uz:{title:"Amaliy Mashg'ulot", desc:'Ishni bajarish uchun zarur boʻlgan amaliy koʻnikmalar va muammo yechish qobiliyatini kuchaytiradigan amaliyotga asoslangan taʼlim.'},
+      my:{title:'လက်တွေ့ကွင်းဆင်း အလုပ်သင်ခြင်း', desc:'လက်တွေ့လုပ်ငန်းလုပ်ဆောင်ရန် လိုအပ်သော လက်တွေ့စွမ်းရည်နှင့် ပြဿနာဖြေရှင်းနိုင်စွမ်းကို မြှင့်တင်သည့် လက်တွေ့ဗဟိုပြု သင်တန်း'},
+      mn:{title:'Талбайн дадлага', desc:'Ажлыг гүйцэтгэхэд шаардлагатай практик чадвар, асуудал шийдвэрлэх чадварыг бэхжүүлдэг дадлагад суурилсан сургалт'},
+    }},
+  {id:'p14', cat:'mentorship', title:'기업탐방', desc:'산업 동향 및 기업 요구 역량 파악을 통한 취업 연계 기반 마련', groups:['intl'],
+    translations:{
+      en:{title:'Company Visit', desc:'Building a foundation for employment connections by understanding industry trends and the skills companies require.'},
+      vi:{title:'Tham quan Doanh nghiệp', desc:'Xây dựng nền tảng kết nối việc làm thông qua việc nắm bắt xu hướng ngành và năng lực doanh nghiệp yêu cầu.'},
+      uz:{title:'Kompaniyaga Tashrif', desc:'Sanoat tendentsiyalari va kompaniyalar talab qiladigan koʻnikmalarni tushunish orqali bandlik uchun asos yaratish.'},
+      my:{title:'ကုမ္ပဏီ လည်ပတ်ခြင်း', desc:'စက်မှုလုပ်ငန်း လမ်းကြောင်းနှင့် ကုမ္ပဏီများ လိုအပ်သော စွမ်းရည်များကို နားလည်စေခြင်းဖြင့် အလုပ်အကိုင် ဆက်စပ်မှု အခြေခံ တည်ဆောက်ခြင်း'},
+      mn:{title:'Компанид зочлох аялал', desc:'Аж үйлдвэрийн чиг хандлага, компаниудын шаарддаг чадварыг ойлгуулснаар ажил эрхлэлтийн холбоосын суурийг бэлтгэх'},
+    }},
+  {id:'p15', cat:'mentorship', title:'교내·외 채용박람회', desc:'채용박람회 참여를 위한 사전 취업 교육 및 매칭을 통한 취업 기회 확대 지원', groups:['intl'],
+    translations:{
+      en:{title:'On/Off-Campus Job Fairs', desc:'Support for expanding employment opportunities through pre-fair job training and matching for job fair participation.'},
+      vi:{title:'Hội chợ Việc làm Trong & Ngoài trường', desc:'Hỗ trợ mở rộng cơ hội việc làm thông qua đào tạo trước hội chợ và kết nối để tham gia hội chợ việc làm.'},
+      uz:{title:'Kampus Ichi/Tashqarisidagi Ish Yarmarkalari', desc:'Yarmarka oldidan tayyorgarlik taʼlimi va moslashtirish orqali ish yarmarkalarida ishtirok etish uchun imkoniyatlarni kengaytirish.'},
+      my:{title:'တက္ကသိုလ်တွင်း/ပြင်ပ အလုပ်အကိုင် ဖေါ်ရာများ', desc:'အလုပ်အကိုင်ဖေါ်ရာ ပါဝင်ရန်အတွက် ကြိုတင် အလုပ်ပြင်ဆင်မှု သင်တန်းနှင့် တွဲဖက်ပေးခြင်းမှတစ်ဆင့် အလုပ်အကိုင်အခွင့်အလမ်း ချဲ့ထွင်ပေးခြင်း'},
+      mn:{title:'Дотоод/Гадаад ажлын үзэсгэлэн яармаг', desc:'Яармагт оролцох урьдчилсан бэлтгэл сургалт, тохируулга хийж ажлын боломжийг өргөжүүлэх дэмжлэг'},
+    }},
+  {id:'p16', cat:'mentorship', title:'지역 특화형(F-2-R, E-7) 탐방 프로그램', desc:'인구소멸지역 및 특정 산업이 분포한 지역 취업 지원(E-7, F-2-R)', groups:['intl'],
+    translations:{
+      en:{title:'Regional Specialization Visit Program (F-2-R, E-7)', desc:'Employment support (E-7, F-2-R) for depopulating regions and areas with concentrated industries.'},
+      vi:{title:'Chương trình Tham quan Đặc thù Khu vực (F-2-R, E-7)', desc:'Hỗ trợ việc làm (E-7, F-2-R) tại các khu vực suy giảm dân số và khu vực tập trung ngành công nghiệp cụ thể.'},
+      uz:{title:'Hududiy Ixtisoslashgan Tashrif Dasturi (F-2-R, E-7)', desc:'Aholi soni kamayayotgan hududlar va maʼlum sanoat tarqalgan hududlarda bandlikni qoʻllab-quvvatlash (E-7, F-2-R).'},
+      my:{title:'ဒေသဆိုင်ရာ အထူးပြု လည်ပတ်ရေး အစီအစဉ် (F-2-R, E-7)', desc:'လူဦးရေကျဆင်းနေသော ဒေသများနှင့် အထူးစက်မှုလုပ်ငန်း စုစည်းရာဒေသများတွင် အလုပ်အကိုင် ပံ့ပိုးမှု (E-7, F-2-R)'},
+      mn:{title:'Бүсчилсэн тусгай зочлох хөтөлбөр (F-2-R, E-7)', desc:'Хүн ам цөөрч буй бүс нутаг болон тодорхой салбарын аж ахуйн нэгжүүд төвлөрсөн бүс нутагт ажил эрхлэлтийг дэмжих (E-7, F-2-R)'},
+    }},
+];
+
+let _programs = [];
+let _editingId = null;
+let _modalSessions = [];
+const EDIT_LANGS = [
+  {code:'ko', label:'한국어'},
+  {code:'en', label:'English'},
+  {code:'vi', label:'Tiếng Việt'},
+  {code:'uz', label:'Oʻzbekcha'},
+  {code:'my', label:'မြန်မာ'},
+  {code:'mn', label:'Монгол'},
+];
+let _modalLang = 'ko';
+let _modalTranslations = {}; // {ko:{title,desc}, en:{title,desc}, ...}
+
+function _today(){ const t=new Date(); t.setHours(0,0,0,0); return t; }
+function sessionStatus(dateStr){
+  if(!dateStr) return 'unscheduled';
+  const d = new Date(dateStr);
+  if(isNaN(d.getTime())) return 'unscheduled';
+  d.setHours(0,0,0,0);
+  return d < _today() ? 'ended' : 'open';
+}
+function programStatus(p){
+  const sessions = Array.isArray(p.sessions) ? p.sessions.filter(s=>s&&s.date) : [];
+  if(!sessions.length) return 'unscheduled';
+  return sessions.some(s=>sessionStatus(s.date)==='open') ? 'open' : 'ended';
+}
+const STATUS_LABEL = {open:'모집중', ended:'종료', unscheduled:'일정 미정'};
+
+function escapeHtml(s){ return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function showStatus(id,msg,ok){ const el=document.getElementById(id); el.textContent=msg; el.className='status-msg show '+(ok?'ok':'err'); setTimeout(()=>el.classList.remove('show'),2500); }
+
+function renderPrograms(){
+  const tbody = document.getElementById('program-tbody');
+  const emptyEl = document.getElementById('program-empty');
+  if(!_programs.length){ tbody.innerHTML=''; emptyEl.style.display='block'; return; }
+  emptyEl.style.display='none';
+  tbody.innerHTML = _programs.map(p=>`
+    <tr>
+      <td><strong>${escapeHtml(p.title)}</strong></td>
+      <td><span class="cat-pill">${CAT_LABEL[p.cat]||p.cat}</span></td>
+      <td>${(p.groups||[]).map(g=>`<span class="tag-chip">${GROUP_LABEL[g]||g}</span>`).join('')||'<span style="color:#9ba3b8">미지정</span>'}</td>
+      <td><span class="status-chip ${programStatus(p)}">${STATUS_LABEL[programStatus(p)]}</span></td>
+      <td style="color:#64748d;font-size:12.5px">${escapeHtml((p.desc||'').slice(0,60))}${(p.desc||'').length>60?'…':''}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editProgram('${p.id}')">수정</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProgram('${p.id}')">삭제</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openProgramModal(){
+  _editingId = null;
+  document.getElementById('modal-title').textContent = '프로그램 추가';
+  document.getElementById('f-cat').value='realworld';
+  document.querySelectorAll('.f-group').forEach(cb=>cb.checked=false);
+  _modalSessions = [];
+  _modalTranslations = {ko:{title:'',desc:''}};
+  _modalLang = 'ko';
+  renderLangTabs();
+  loadModalLangFields();
+  renderSessionRows();
+  document.getElementById('modal-program').classList.add('open');
+}
+function closeProgramModal(){ document.getElementById('modal-program').classList.remove('open'); }
+
+function editProgram(id){
+  const p = _programs.find(x=>x.id===id);
+  if(!p) return;
+  _editingId = id;
+  document.getElementById('modal-title').textContent = '프로그램 수정';
+  document.getElementById('f-cat').value = p.cat||'realworld';
+  document.querySelectorAll('.f-group').forEach(cb=>cb.checked=(p.groups||[]).includes(cb.value));
+  _modalSessions = Array.isArray(p.sessions) ? JSON.parse(JSON.stringify(p.sessions)) : [];
+  _modalTranslations = {ko:{title:p.title||'', desc:p.desc||''}};
+  if(p.translations){
+    Object.keys(p.translations).forEach(lang=>{
+      _modalTranslations[lang] = {title:p.translations[lang].title||'', desc:p.translations[lang].desc||''};
+    });
+  }
+  _modalLang = 'ko';
+  renderLangTabs();
+  loadModalLangFields();
+  renderSessionRows();
+  document.getElementById('modal-program').classList.add('open');
+}
+
+function renderLangTabs(){
+  const el = document.getElementById('lang-tabs');
+  el.innerHTML = EDIT_LANGS.map(l=>{
+    const has = _modalTranslations[l.code] && (_modalTranslations[l.code].title||_modalTranslations[l.code].desc);
+    return `<button type="button" class="lang-tab${l.code===_modalLang?' active':''}${has?' has-content':''}" data-lang="${l.code}">${l.label}</button>`;
+  }).join('');
+  el.querySelectorAll('.lang-tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      saveModalLangFields();
+      _modalLang = btn.dataset.lang;
+      renderLangTabs();
+      loadModalLangFields();
+    });
+  });
+  const hintEl = document.getElementById('lang-hint');
+  hintEl.textContent = _modalLang==='ko'
+    ? '한국어는 기본 언어입니다. 다른 언어는 비워두면 학생 페이지에서 한국어로 표시됩니다.'
+    : '이 언어를 비워두면 학생이 이 언어를 선택했을 때 한국어 원문이 대신 표시됩니다.';
+}
+function saveModalLangFields(){
+  _modalTranslations[_modalLang] = {
+    title: document.getElementById('f-title').value.trim(),
+    desc: document.getElementById('f-desc').value.trim(),
+  };
+}
+function loadModalLangFields(){
+  const cur = _modalTranslations[_modalLang] || {title:'', desc:''};
+  document.getElementById('f-title').value = cur.title || '';
+  document.getElementById('f-desc').value = cur.desc || '';
+  document.getElementById('f-title').placeholder = _modalLang==='ko' ? '예: 인턴십' : '(' + EDIT_LANGS.find(l=>l.code===_modalLang).label + ') translated title';
+}
+
+function renderSessionRows(){
+  const el = document.getElementById('session-list');
+  if(!_modalSessions.length){
+    el.innerHTML = '<div style="font-size:12.5px;color:#9ba3b8;margin-bottom:8px">등록된 일정이 없습니다. "일정 추가"를 눌러주세요.</div>';
+    return;
+  }
+  el.innerHTML = _modalSessions.map((s,i)=>`
+    <div class="session-row-edit">
+      <input type="date" value="${s.date||''}" oninput="updateSession(${i},'date',this.value)">
+      <input type="time" value="${s.time||''}" oninput="updateSession(${i},'time',this.value)">
+      <input type="text" placeholder="장소" value="${escapeHtml(s.location||'')}" oninput="updateSession(${i},'location',this.value)">
+      <button type="button" class="btn btn-danger btn-sm" onclick="removeSessionRow(${i})">✕</button>
+    </div>`).join('');
+}
+function addSessionRow(){ _modalSessions.push({date:'',time:'',location:''}); renderSessionRows(); }
+function updateSession(i,field,val){ if(_modalSessions[i]) _modalSessions[i][field]=val; }
+function removeSessionRow(i){ _modalSessions.splice(i,1); renderSessionRows(); }
+
+async function saveProgram(){
+  saveModalLangFields();
+  const koData = _modalTranslations.ko || {title:'', desc:''};
+  const title = (koData.title||'').trim();
+  if(!title){ alert('한국어 프로그램명을 입력해주세요.'); _modalLang='ko'; renderLangTabs(); loadModalLangFields(); return; }
+  const cat = document.getElementById('f-cat').value;
+  const desc = (koData.desc||'').trim();
+  const groups = Array.from(document.querySelectorAll('.f-group:checked')).map(cb=>cb.value);
+  const id = _editingId || ('p'+Date.now());
+  const sessions = _modalSessions.filter(s=>s.date);
+  const translations = {};
+  ['en','vi','uz','my','mn'].forEach(lang=>{
+    const d = _modalTranslations[lang];
+    if(d && (d.title||d.desc)) translations[lang] = {title:d.title||'', desc:d.desc||''};
+  });
+  const rec = {id, cat, title, desc, groups, sessions, translations};
+  const idx = _programs.findIndex(p=>p.id===id);
+  if(idx>=0) _programs[idx]=rec; else _programs.push(rec);
+  await persistPrograms();
+  closeProgramModal();
+  showStatus('status-programs','저장되었습니다.',true);
+}
+
+async function deleteProgram(id){
+  if(!confirm('이 프로그램을 삭제할까요?')) return;
+  _programs = _programs.filter(p=>p.id!==id);
+  await persistPrograms();
+  showStatus('status-programs','삭제되었습니다.',true);
+}
+
+async function seedDefaults(){
+  if(_programs.length && !confirm('기존 프로그램 목록을 PDF 원안 데이터로 덮어씁니다. 계속할까요?')) return;
+  _programs = DEFAULT_PROGRAMS.slice();
+  await persistPrograms();
+  showStatus('status-programs','기본 데이터를 불러왔습니다.',true);
+}
+
+async function persistPrograms(){
+  renderPrograms();
+  if(!_db){ showStatus('status-programs','Firebase 연결 실패 — 저장되지 않았습니다.',false); return; }
+  try{
+    await _authReady;
+    await _db.ref('careerPathway/programs').set(_programs);
+  }catch(e){
+    console.warn('저장 실패', e);
+    showStatus('status-programs','저장 중 오류가 발생했습니다.',false);
+  }
+}
+
+async function saveStats(){
+  const participants = document.getElementById('stat-participants').value;
+  const placements = document.getElementById('stat-placements').value;
+  const rec = {
+    participants: participants? Number(participants): null,
+    placements: placements? Number(placements): null,
+    programCount: _programs.length,
+    linkedCount: 12,
+  };
+  if(!_db){ showStatus('status-stats','Firebase 연결 실패',false); return; }
+  try{
+    await _authReady;
+    await _db.ref('careerPathway/stats').set(rec);
+    showStatus('status-stats','통계가 저장되었습니다.',true);
+  }catch(e){
+    console.warn(e);
+    showStatus('status-stats','저장 중 오류가 발생했습니다.',false);
+  }
+}
+
+async function initSync(){
+  const ind = document.getElementById('sync-indicator');
+  if(!_db){ ind.textContent='● Firebase 연결 실패'; return; }
+  try{
+    await _authReady;
+    ind.textContent='✓ 동기화됨';
+    _db.ref('careerPathway/programs').on('value', snap=>{
+      const val = snap.val();
+      _programs = val ? (Array.isArray(val)? val.filter(Boolean): Object.values(val)) : [];
+      renderPrograms();
+    });
+    _db.ref('careerPathway/stats').on('value', snap=>{
+      const val = snap.val();
+      if(val){
+        if(val.participants!=null) document.getElementById('stat-participants').value = val.participants;
+        if(val.placements!=null) document.getElementById('stat-placements').value = val.placements;
+      }
+    });
+  }catch(e){
+    ind.textContent='● 동기화 실패';
+    console.warn(e);
+  }
+}
+renderPrograms();
+initSync();
+</script>
+</body>
+</html>
