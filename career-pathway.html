@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career Pathway — 서정대학교 취업·정주 지원 모델</title>
+<meta name="description" content="입학부터 적응, 진로, 직무, 현장, 취업까지 — 서정대학교가 함께 걷는 취업·정주 지원 모델, DREAM Career Connect Program">
+<!-- Google Analytics (GA4) — 아래 G-XXXXXXXXXX 두 곳을 실제 측정 ID로 교체하세요 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root{
+  --color-fresh-grass:#8ed462;
+  --color-cream-paper:#f5f1e4;
+  --color-ink-black:#2c2e2a;
+  --color-pure-white:#ffffff;
+  --color-sandstone:#e0dbce;
+  --color-stone-gray:#80827f;
+  --color-hairline-mist:#d5d5d4;
+  --color-sky-pop:#2ba0ff;
+  --color-coral-pop:#ff705d;
+  --color-sunshine-pop:#f5e211;
+  --color-magenta-pop:#d6249f;
+  --font-inter:'Inter',ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --page-max-width:1200px;
+  --radius-full:50px;
+  --radius-illust:63.75px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-inter);
+  background:var(--color-cream-paper);
+  color:var(--color-ink-black);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+.wrap{max-width:var(--page-max-width);margin:0 auto;padding:0 24px;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+
+/* ── Skip link for keyboard users ── */
+.skip-link{position:absolute;left:-999px;top:0;background:var(--color-ink-black);color:#fff;padding:10px 16px;border-radius:0 0 10px 0;z-index:200;}
+.skip-link:focus{left:0;}
+
+/* ── Floating nav ── */
+.nav-outer{position:sticky;top:14px;z-index:100;padding:0 16px;}
+.nav{
+  max-width:var(--page-max-width);
+  margin:0 auto;
+  background:var(--color-pure-white);
+  border-radius:var(--radius-full);
+  padding:10px 10px 10px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  box-shadow:0 2px 0 rgba(44,46,42,.04);
+  border:1px solid var(--color-hairline-mist);
+}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;white-space:nowrap;}
+.nav-logo{width:36px;height:36px;border-radius:12px;background:var(--color-ink-black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;}
+.nav-links{display:flex;gap:6px;list-style:none;}
+.nav-links a{font-size:15px;font-weight:500;padding:9px 16px;border-radius:var(--radius-full);color:var(--color-ink-black);}
+.nav-links a:hover{background:var(--color-cream-paper);}
+.nav-cta{display:flex;align-items:center;gap:8px;}
+.menu-toggle{width:40px;height:40px;border-radius:50%;background:var(--color-fresh-grass);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.menu-toggle svg{width:16px;height:16px;}
+.btn-ghost-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--color-cream-paper);
+  border:1px solid var(--color-hairline-mist);
+  border-radius:var(--radius-full);
+  padding:11px 20px 11px 20px;
+  font-size:15px;font-weight:500;color:var(--color-ink-black);
+  white-space:nowrap;
+}
+.btn-ghost-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--color-sky-pop);}
+.lang-switcher{
+  appearance:none;-webkit-appearance:none;
+  background:var(--color-cream-paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2380827f' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 10px center/12px;
+  border:1px solid var(--color-hairline-mist);border-radius:var(--radius-full);
+  padding:10px 30px 10px 16px;font-size:13.5px;font-weight:500;color:var(--color-ink-black);
+  font-family:inherit;cursor:pointer;
+}
+@media (max-width:520px){ .lang-switcher{padding:9px 26px 9px 12px;font-size:12.5px;} }
+@media (max-width:880px){ .nav-links{display:none;} }
+
+/* ── Hero ── */
+.hero{padding:88px 0 40px;text-align:center;}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:15px;font-weight:500;color:var(--color-stone-gray);
+  border:1px solid var(--color-hairline-mist);
+  background:var(--color-pure-white);
+  padding:8px 18px;border-radius:var(--radius-full);
+  margin-bottom:28px;
+}
+.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--color-coral-pop);}
+h1.display{
+  font-size:clamp(44px,9vw,140px);
+  font-weight:500;
+  line-height:0.95;
+  letter-spacing:-0.04em;
+  max-width:1100px;
+  margin:0 auto;
+}
+h1.display .accent{color:var(--color-fresh-grass);-webkit-text-stroke:0;}
+.hero-sub{
+  max-width:620px;margin:28px auto 0;
+  font-size:18px;line-height:1.55;color:var(--color-stone-gray);
+}
+.hero-actions{display:flex;gap:14px;justify-content:center;margin-top:36px;flex-wrap:wrap;}
+.btn-primary{
+  background:var(--color-ink-black);color:#fff;
+  border-radius:var(--radius-full);
+  padding:15px 28px;font-size:15px;font-weight:500;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn-primary .dot{width:8px;height:8px;border-radius:50%;background:var(--color-fresh-grass);}
+.btn-outline{
+  border:1.5px solid var(--color-ink-black);
+  border-radius:var(--radius-full);
+  padding:14px 26px;font-size:15px;font-weight:500;
+}
+
+/* ── Wordmark strip ── */
+.hierarchy-strip{padding:36px 0 8px;}
+.hierarchy-inner{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;}
+.h-crumb{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  background:var(--color-pure-white);border:1px solid var(--color-hairline-mist);
+  border-radius:20px;padding:10px 20px;font-size:14px;font-weight:600;
+}
+.h-crumb.h-top{background:var(--color-ink-black);color:#fff;border-color:var(--color-ink-black);}
+.h-crumb em{font-style:normal;font-weight:400;font-size:11.5px;color:var(--color-stone-gray);}
+.h-crumb.h-top em{color:#c9c9c9;}
+.h-arrow{color:var(--color-stone-gray);font-size:16px;}
+@media (max-width:640px){ .hierarchy-inner{flex-direction:column;} .h-arrow{transform:rotate(90deg);} }
+
+/* ── 6-stage pathway (signature element) ── */
+.pathway{padding:56px 0 96px;}
+.pathway-head{text-align:center;max-width:640px;margin:0 auto 48px;}
+.pathway-head .kicker{font-size:15px;font-weight:500;color:var(--color-stone-gray);margin-bottom:10px;}
+.pathway-head h2{font-size:clamp(30px,4vw,53px);font-weight:500;letter-spacing:-0.02em;line-height:1.15;}
+.pathway-track{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:0;
+  position:relative;
+}
+.pathway-track::before{
+  content:'';position:absolute;top:33px;left:8.3%;right:8.3%;height:2px;
+  background:repeating-linear-gradient(90deg,var(--color-hairline-mist) 0 8px,transparent 8px 16px);
+  z-index:0;
+}
+.stage{position:relative;z-index:1;padding:0 8px;text-align:center;}
+.stage-num{
+  width:66px;height:66px;border-radius:50%;
+  background:var(--color-pure-white);border:2px solid var(--color-ink-black);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;margin:0 auto 18px;font-weight:600;
+}
+.stage:nth-child(1) .stage-num{background:var(--color-fresh-grass);border-color:var(--color-fresh-grass);}
+.stage:nth-child(6) .stage-num{background:var(--color-coral-pop);border-color:var(--color-coral-pop);color:#fff;}
+.stage h3{font-size:17px;font-weight:600;margin-bottom:6px;}
+.stage p{font-size:13px;color:var(--color-stone-gray);line-height:1.4;}
+.stage .visa{display:inline-block;margin-top:8px;font-size:11px;font-weight:600;color:var(--color-ink-black);background:var(--color-sunshine-pop);padding:3px 10px;border-radius:var(--radius-full);}
+@media (max-width:900px){
+  .pathway-track{grid-template-columns:repeat(3,1fr);row-gap:36px;}
+  .pathway-track::before{display:none;}
+}
+@media (max-width:520px){
+  .pathway-track{grid-template-columns:repeat(2,1fr);}
+}
+
+/* ── Target-group filter ── */
+.filters{padding:0 0 56px;}
+.filter-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.filter-pill{
+  border:1.5px solid var(--color-ink-black);border-radius:var(--radius-full);
+  padding:11px 22px;font-size:15px;font-weight:500;background:var(--color-pure-white);
+  transition:background .15s,color .15s;
+}
+.filter-pill.active{background:var(--color-ink-black);color:#fff;}
+
+/* ── 학생성공 로드맵 (DREAM 소개) ── */
+.roadmap{padding:24px 0 8px;}
+.roadmap-inner{background:var(--color-ink-black);border-radius:56px;padding:56px 44px;color:#fff;}
+.roadmap-head{max-width:640px;margin:0 auto;text-align:center;}
+.roadmap-head .kicker{font-size:13px;font-weight:500;color:#9a9c97;margin-bottom:10px;}
+.roadmap-head h2{font-size:clamp(28px,4vw,46px);font-weight:500;letter-spacing:-0.02em;}
+.roadmap-en{font-size:15px;color:var(--color-fresh-grass);font-weight:600;margin-top:6px;letter-spacing:.02em;}
+.roadmap-head p{font-size:14.5px;color:#c7c8c3;line-height:1.6;margin-top:16px;}
+.axis-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:40px;}
+.axis-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:20px 16px;text-align:center;cursor:pointer;transition:background .15s;}
+.axis-item:hover{background:rgba(255,255,255,.12);}
+.axis-item .idx{font-size:12px;color:var(--color-fresh-grass);font-weight:700;}
+.axis-item .kr{font-size:15px;font-weight:600;margin:8px 0 4px;}
+.axis-item .en{font-size:11.5px;color:#9a9c97;}
+@media (max-width:900px){ .axis-grid{grid-template-columns:repeat(3,1fr);} .roadmap-inner{padding:40px 24px;border-radius:36px;} }
+@media (max-width:560px){ .axis-grid{grid-template-columns:repeat(2,1fr);} }
+
+/* ── DREAM categories ── */
+.dream{padding:24px 0 100px;}
+.dream-section{margin-bottom:72px;}
+.dream-section:last-child{margin-bottom:0;}
+.dream-header{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;flex-wrap:wrap;}
+.dream-index{font-size:14px;font-weight:600;color:var(--color-stone-gray);}
+.dream-title-en{font-size:30px;font-weight:500;letter-spacing:-0.01em;}
+.dream-title-en .dream-letter,.axis-item .en .dream-letter{color:var(--color-magenta-pop);}
+.axis-item .en{font-size:11.5px;color:#9a9c97;}
+.dream-title-kr{font-size:16px;color:var(--color-stone-gray);}
+.dream-rule{height:1px;background:var(--color-hairline-mist);margin:20px 0 28px;}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+.prog-card{
+  background:var(--color-pure-white);border-radius:50px;padding:28px 26px 26px;
+  border:1px solid var(--color-hairline-mist);
+  display:flex;flex-direction:column;gap:14px;min-height:190px;
+  position:relative;
+}
+.prog-card h4{font-size:19px;font-weight:600;line-height:1.3;}
+.prog-card p{font-size:14px;color:var(--color-stone-gray);line-height:1.55;flex:1;}
+.tag-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto;}
+.tag{font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--radius-full);border:1px solid var(--color-hairline-mist);color:var(--color-stone-gray);}
+.tag.intl{background:#eaf5ff;border-color:#c7e6ff;color:#1a6fb0;}
+.tag.trad{background:#eefbe4;border-color:#d3f0bd;color:#4a8a1f;}
+.tag.adult{background:#fff2e0;border-color:#ffdca6;color:#a86a10;}
+.empty-note{
+  grid-column:1/-1;border:1.5px dashed var(--color-hairline-mist);border-radius:32px;
+  padding:36px 24px;text-align:center;color:var(--color-stone-gray);font-size:14px;
+}
+
+/* ── Linked programs (연계 사업) ── */
+.linked{padding:0 0 100px;}
+.linked-inner{background:var(--color-pure-white);border-radius:50px;padding:48px 40px;}
+.linked-head{text-align:center;max-width:600px;margin:0 auto 36px;}
+.linked-head h2{font-size:clamp(26px,3.5vw,40px);font-weight:500;letter-spacing:-0.02em;margin-bottom:10px;}
+.linked-head p{color:var(--color-stone-gray);font-size:15px;}
+.linked-table{width:100%;border-collapse:collapse;font-size:14px;}
+.linked-table th{text-align:left;padding:10px 14px;color:var(--color-stone-gray);font-weight:500;border-bottom:1px solid var(--color-hairline-mist);font-size:13px;}
+.linked-table td{padding:12px 14px;border-bottom:1px solid var(--color-cream-paper);}
+.linked-table tr:last-child td{border-bottom:none;}
+.badge-year{font-size:11px;font-weight:600;color:var(--color-stone-gray);background:var(--color-cream-paper);padding:4px 10px;border-radius:var(--radius-full);white-space:nowrap;}
+@media (max-width:640px){ .linked-inner{padding:32px 20px;} .linked-table{font-size:12.5px;} .linked-table th:nth-child(2),.linked-table td:nth-child(2){display:none;} }
+
+/* ── Stats strip ── */
+.stats{padding:0 0 100px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.stat-card{background:var(--color-pure-white);border-radius:32px;padding:28px 22px;border:1px solid var(--color-hairline-mist);text-align:center;}
+.stat-num{font-size:44px;font-weight:600;letter-spacing:-0.02em;}
+.stat-label{font-size:13px;color:var(--color-stone-gray);margin-top:6px;}
+@media (max-width:760px){ .stats-grid{grid-template-columns:repeat(2,1fr);} }
+
+/* ── Footer accent ── */
+footer{background:var(--color-sunshine-pop);padding:64px 24px 40px;margin-top:0;}
+.footer-inner{max-width:var(--page-max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
+.footer-head{font-size:clamp(28px,4vw,53px);font-weight:500;letter-spacing:-0.02em;line-height:1.1;max-width:560px;}
+.footer-meta{font-size:14px;color:#4a4a1f;line-height:1.7;}
+.footer-bottom{max-width:var(--page-max-width);margin:36px auto 0;padding-top:20px;border-top:1px solid rgba(44,46,42,.15);font-size:13px;color:#4a4a1f;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+
+/* ── Program detail modal ── */
+.prog-card{cursor:pointer;}
+.status-pill{position:absolute;top:20px;right:20px;font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--radius-full);}
+.status-pill.open{background:#eefbe4;color:#4a8a1f;}
+.status-pill.ended{background:#f0f0ee;color:var(--color-stone-gray);}
+.status-pill.unscheduled{background:#eaf5ff;color:#1a6fb0;}
+.modal-overlay{position:fixed;inset:0;background:rgba(44,46,42,.5);display:none;align-items:center;justify-content:center;z-index:300;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal-box{position:relative;background:var(--color-cream-paper);border-radius:40px;padding:40px 36px 36px;max-width:520px;width:100%;max-height:88vh;overflow:auto;}
+.modal-close{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;background:var(--color-pure-white);border:1px solid var(--color-hairline-mist);font-size:15px;}
+.detail-status{margin-bottom:6px;}
+.detail-status span{font-size:11px;font-weight:600;padding:5px 12px;border-radius:var(--radius-full);}
+.detail-status span.open{background:#eefbe4;color:#4a8a1f;}
+.detail-status span.ended{background:#f0f0ee;color:var(--color-stone-gray);}
+.detail-status span.unscheduled{background:#eaf5ff;color:#1a6fb0;}
+.detail-cat{font-size:13px;color:var(--color-stone-gray);font-weight:500;margin-bottom:6px;}
+#detail-title{font-size:26px;font-weight:600;letter-spacing:-0.01em;line-height:1.25;padding-right:30px;}
+.detail-desc{font-size:14.5px;color:var(--color-stone-gray);line-height:1.6;margin-top:16px;}
+.detail-sessions{margin-top:24px;}
+.detail-sessions-label{font-size:13px;font-weight:600;color:var(--color-ink-black);margin-bottom:10px;}
+.session-row{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--color-pure-white);border:1px solid var(--color-hairline-mist);border-radius:16px;padding:12px 16px;margin-bottom:8px;font-size:13.5px;}
+.session-row .info{line-height:1.5;}
+.session-row .info b{display:block;font-weight:600;}
+.session-row .info span{color:var(--color-stone-gray);font-size:12.5px;}
+.session-badge{font-size:11px;font-weight:600;padding:4px 10px;border-radius:var(--radius-full);white-space:nowrap;}
+.session-badge.open{background:#eefbe4;color:#4a8a1f;}
+.session-badge.ended{background:#f0f0ee;color:var(--color-stone-gray);}
+.no-session{font-size:13.5px;color:var(--color-stone-gray);background:var(--color-pure-white);border:1.5px dashed var(--color-hairline-mist);border-radius:16px;padding:16px;text-align:center;}
+.detail-apply{width:100%;justify-content:center;margin-top:26px;}
+.detail-apply.disabled{background:var(--color-hairline-mist);color:var(--color-stone-gray);pointer-events:none;}
+.detail-apply .dot{background:var(--color-fresh-grass);}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto;} }
+
+/* ── Chatbot widget ── */
+#chat-fab{
+  position:fixed;right:24px;bottom:24px;z-index:400;
+  width:58px;height:58px;border-radius:50%;
+  background:var(--color-ink-black);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 24px rgba(44,46,42,.28);
+  transition:transform .15s;
+}
+#chat-fab:hover{transform:scale(1.06);}
+#chat-fab svg{width:24px;height:24px;}
+#chat-fab .fab-close-icon{display:none;}
+#chat-fab.open .fab-chat-icon{display:none;}
+#chat-fab.open .fab-close-icon{display:block;}
+#chat-panel{
+  position:fixed;right:24px;bottom:94px;z-index:400;
+  width:360px;max-width:calc(100vw - 32px);height:min(520px, calc(100vh - 150px));
+  background:var(--color-pure-white);border-radius:28px;border:1px solid var(--color-hairline-mist);
+  box-shadow:0 20px 48px rgba(44,46,42,.22);
+  display:none;flex-direction:column;overflow:hidden;
+}
+#chat-panel.open{display:flex;}
+.chat-header{
+  background:var(--color-ink-black);color:#fff;padding:16px 18px;
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.chat-header .title{font-size:14.5px;font-weight:600;}
+.chat-header .sub{font-size:11.5px;color:#b8b9b4;margin-top:2px;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;background:var(--color-cream-paper);}
+.chat-bubble{max-width:84%;padding:10px 14px;border-radius:18px;font-size:13.5px;line-height:1.55;white-space:pre-line;}
+.chat-bubble.bot{align-self:flex-start;background:var(--color-pure-white);border:1px solid var(--color-hairline-mist);border-bottom-left-radius:4px;}
+.chat-bubble.user{align-self:flex-end;background:var(--color-ink-black);color:#fff;border-bottom-right-radius:4px;}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;background:var(--color-cream-paper);flex-shrink:0;}
+.chat-chip{font-size:11.5px;font-weight:500;background:var(--color-pure-white);border:1px solid var(--color-hairline-mist);border-radius:var(--radius-full);padding:6px 12px;color:var(--color-ink-black);}
+.chat-chip:hover{background:var(--color-fresh-grass);border-color:var(--color-fresh-grass);}
+.chat-input-row{display:flex;gap:8px;padding:12px;border-top:1px solid var(--color-hairline-mist);background:#fff;flex-shrink:0;}
+.chat-input-row input{flex:1;border:1.5px solid var(--color-hairline-mist);border-radius:var(--radius-full);padding:10px 16px;font-size:13.5px;font-family:inherit;}
+.chat-input-row input:focus{outline:none;border-color:var(--color-ink-black);}
+.chat-send-btn{width:40px;height:40px;border-radius:50%;background:var(--color-ink-black);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chat-send-btn svg{width:16px;height:16px;}
+@media (max-width:480px){
+  #chat-panel{right:16px;left:16px;width:auto;bottom:88px;}
+  #chat-fab{right:16px;bottom:16px;}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link" id="t-skip-link">본문 바로가기</a>
+
+<div class="nav-outer">
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo">SJU</div>
+      <span id="t-nav-brand">서정대학교 Career Pathway</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#pathway" id="t-nav-pathway">Career Pathway</a></li>
+      <li><a href="#roadmap" id="t-nav-roadmap">학생성공 로드맵</a></li>
+      <li><a href="#programs" id="t-nav-programs">프로그램</a></li>
+    </ul>
+    <div class="nav-cta">
+      <select id="lang-switcher" class="lang-switcher" aria-label="Language"></select>
+      <div class="menu-toggle" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2c2e2a" stroke-width="2"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </div>
+      <a class="btn-ghost-pill" id="t-nav-cta" href="#programs"><span class="dot"></span>프로그램 보기</a>
+    </div>
+  </nav>
+</div>
+
+<main id="main">
+  <section class="hero wrap">
+    <div class="eyebrow"><span class="dot"></span><span id="t-eyebrow">서정대학교 취업·정주 지원 모델</span></div>
+    <h1 class="display">Career<br>Pathway<span class="accent">.</span></h1>
+    <p class="hero-sub" id="t-hero-sub">입학부터 적응, 진로, 직무, 현장, 취업까지 — 서정대학교 재학생 한 명 한 명의 단계에 맞춰 취업·정주로 이어지는 길을 설계하는 가장 큰 그림입니다. 이 여정은 <strong>학생성공 로드맵</strong>이 구체적인 프로그램으로 채웁니다.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#pathway"><span class="dot"></span><span id="t-hero-btn1">6단계 여정 보기</span></a>
+      <a class="btn-outline" href="#roadmap" id="t-hero-btn2">학생성공 로드맵 보기</a>
+    </div>
+  </section>
+
+  <section class="hierarchy-strip">
+    <div class="wrap hierarchy-inner">
+      <span class="h-crumb h-top">Career Pathway<em id="t-crumb-top-sub">취업·정주 지원 모델</em></span>
+      <span class="h-arrow">›</span>
+      <span class="h-crumb"><span id="t-crumb-mid">학생성공 로드맵</span><em>DREAM Career Connect Program</em></span>
+      <span class="h-arrow">›</span>
+      <span class="h-crumb"><span id="t-crumb-end">개별 프로그램</span><em id="t-crumb-end-sub">16개 (계속 추가 중)</em></span>
+    </div>
+  </section>
+
+  <section class="pathway" id="pathway">
+    <div class="wrap">
+      <div class="pathway-head">
+        <div class="kicker" id="t-pathway-kicker">개념 정의</div>
+        <h2 id="t-pathway-heading">취업·정주로 이어지는 6단계</h2>
+      </div>
+      <div class="pathway-track" id="pathway-track"></div>
+    </div>
+  </section>
+
+  <section class="roadmap" id="roadmap">
+    <div class="wrap">
+      <div class="roadmap-inner">
+        <div class="roadmap-head">
+          <div class="kicker" id="t-roadmap-kicker">Career Pathway를 채우는 실행 체계</div>
+          <h2 id="t-roadmap-heading">학생성공 로드맵</h2>
+          <div class="roadmap-en">DREAM Career Connect Program</div>
+          <p id="t-roadmap-desc">Career Pathway라는 큰 여정을, 다섯 개의 축으로 나눠 구체적인 프로그램으로 실행하는 서정대학교의 학생성공 로드맵입니다. 아래 5개 축이 곧 다음 섹션의 프로그램 카테고리가 됩니다.</p>
+        </div>
+        <div class="axis-grid" id="axis-grid"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="filters" id="programs">
+    <div class="wrap">
+      <div class="filter-row" id="filter-row"></div>
+    </div>
+  </section>
+
+  <section class="dream">
+    <div class="wrap" id="dream-container"></div>
+  </section>
+
+  <section class="stats">
+    <div class="wrap">
+      <div class="stats-grid" id="stats-grid"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-head" id="t-footer-head">함께 걷는<br>취업·정주의 길</div>
+    <div class="footer-meta" id="t-footer-meta">서정대학교 학생성공처<br>Dream to Career, Career to Settlement</div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 서정대학교 SEOJEONG UNIVERSITY</span>
+    <span>Career Pathway — 취업·정주 지원 모델</span>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="detail-overlay" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <button class="modal-close" id="detail-close" aria-label="닫기">✕</button>
+    <div id="detail-status" class="detail-status"></div>
+    <div id="detail-cat" class="detail-cat"></div>
+    <h3 id="detail-title"></h3>
+    <div id="detail-tags" class="tag-row" style="margin:12px 0 0"></div>
+    <p id="detail-desc" class="detail-desc"></p>
+    <div class="detail-sessions">
+      <div class="detail-sessions-label" id="t-detail-sessions-label">일정 및 장소</div>
+      <div id="detail-sessions-list"></div>
+    </div>
+    <a id="detail-apply" class="btn-primary detail-apply" target="_blank" rel="noopener"><span class="dot"></span>신청하기</a>
+  </div>
+</div>
+
+<!-- Chatbot widget -->
+<button id="chat-fab" aria-label="Chat" aria-expanded="false">
+  <svg class="fab-chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  <svg class="fab-close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+<div id="chat-panel" role="dialog" aria-label="Career Pathway chat">
+  <div class="chat-header">
+    <div>
+      <div class="title" id="chat-title">Career Pathway 도우미</div>
+      <div class="sub" id="chat-sub">프로그램·일정·신청 방법을 물어보세요</div>
+    </div>
+  </div>
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-suggestions" id="chat-suggestions"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chat-input" autocomplete="off">
+    <button class="chat-send-btn" id="chat-send" aria-label="Send">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script>
+// ══════════════════════════════════════════
+//  Firebase (sss-works 프로젝트 공용, /careerPathway 네임스페이스)
+// ══════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wjam9XhdH88XErD_Ky7medMaLIytxgA",
+  authDomain: "sss-works.firebaseapp.com",
+  databaseURL: "https://sss-works-default-rtdb.firebaseio.com",
+  projectId: "sss-works",
+  storageBucket: "sss-works.firebasestorage.app",
+  messagingSenderId: "301156213383",
+  appId: "1:301156213383:web:bd895fcd5a7483e4060e22"
+};
+let _cpdb = null;
+try{ firebase.initializeApp(firebaseConfig); _cpdb = firebase.database(); }catch(e){ console.warn('Firebase 초기화 실패', e); }
+const _authReady = new Promise((resolve,reject)=>{
+  if(!_cpdb){ reject(new Error('no db')); return; }
+  firebase.auth().onAuthStateChanged(u=>{
+    if(u){ resolve(u); return; }
+    firebase.auth().signInAnonymously().then(c=>resolve(c.user)).catch(err=>{ console.warn('익명 인증 실패', err); reject(err); });
+  });
+});
+
+// ── 지원 언어 ──
+const LANGS = [
+  {code:'ko', label:'한국어'},
+  {code:'en', label:'English'},
+  {code:'vi', label:'Tiếng Việt'},
+  {code:'uz', label:'Oʻzbekcha'},
+  {code:'my', label:'မြန်မာဘာသာ'},
+  {code:'mn', label:'Монгол'},
+];
+let _lang = (function(){ try{ return localStorage.getItem('cp_lang') || 'ko'; }catch(e){ return 'ko'; } })();
+
+// ── 정적 UI 문구 (id → 언어별 텍스트) ──
+const I18N_UI = {
+  't-eyebrow': {ko:'서정대학교 취업·정주 지원 모델', en:"Seojeong University's Employment & Settlement Model", vi:'Mô hình hỗ trợ việc làm và định cư của Đại học Seojeong', uz:'Seojeong universitetining ish va turar joy bilan taʼminlash modeli', my:'စိုဂျောင်းတက္ကသိုလ်၏ အလုပ်အကိုင်နှင့် နေရာချထားမှု ပံ့ပိုးမှုမော်ဒယ်', mn:'Сёжон Их Сургуулийн ажил эрхлэлт, суурьшлын дэмжлэгийн загвар'},
+  't-hero-sub': {ko:'입학부터 적응, 진로, 직무, 현장, 취업까지 — 서정대학교 재학생 한 명 한 명의 단계에 맞춰 취업·정주로 이어지는 길을 설계하는 가장 큰 그림입니다. 이 여정은 <strong>학생성공 로드맵</strong>이 구체적인 프로그램으로 채웁니다.', en:'From admission to adjustment, career planning, job skills, field experience, and employment — this is the big picture Seojeong University designs to guide every student toward stable employment and settlement. The <strong>Student Success Roadmap</strong> fills this journey with concrete programs.', vi:'Từ nhập học đến thích nghi, định hướng nghề nghiệp, kỹ năng nghề, trải nghiệm thực tế và việc làm — đây là bức tranh lớn mà Đại học Seojeong thiết kế để đồng hành cùng từng sinh viên trên con đường việc làm và định cư ổn định. <strong>Lộ trình Thành công Sinh viên</strong> sẽ hiện thực hóa hành trình này bằng các chương trình cụ thể.', uz:"Qabuldan tortib moslashish, kasb rejalashtirish, ish koʻnikmalari, amaliyot va bandlikgacha — bu Seojeong universiteti har bir talabani barqaror ish va turar joyga yetaklash uchun chizgan yirik manzaradir. <strong>Talaba Muvaffaqiyati Yoʻl xaritasi</strong> ushbu yoʻlni aniq dasturlar bilan toʻldiradi.", my:'ဝင်ခွင့်မှသည် လိုက်လျောညီထွေဖြစ်မှု၊ အသက်မွေးဝမ်းကျောင်း စီစဉ်မှု၊ အလုပ်ကျွမ်းကျင်မှု၊ လက်တွေ့အတွေ့အကြုံနှင့် အလုပ်အကိုင်အထိ — ကျောင်းသားတိုင်းကို တည်ငြိမ်သော အလုပ်အကိုင်နှင့် နေရာချထားမှုဆီ လမ်းညွှန်ရန် စိုဂျောင်းတက္ကသိုလ်က ရေးဆွဲထားသော ကြီးမားသည့်ရုပ်ပုံဖြစ်သည်။ ဒီခရီးစဉ်ကို <strong>ကျောင်းသားအောင်မြင်မှုလမ်းညွှန်ချက်</strong>က တိကျသောအစီအစဉ်များဖြင့် ဖြည့်ဆည်းပေးမည်။', mn:'Элсэлтээс эхлээд дасан зохицох, мэргэжлийн төлөвлөгөө, ажлын ур чадвар, дадлага, ажил эрхлэлт хүртэл — энэ бол оюутан бүрийг тогтвортой ажил, оршин суух руу чиглүүлэхээр Сёжон Их Сургуулийн зохион бүтээсэн том дүр зураг юм. <strong>Оюутны Амжилтын Замын Зураг</strong> энэ аяллыг тодорхой хөтөлбөрүүдээр дүүргэнэ.'},
+  't-nav-brand': {ko:'서정대학교 Career Pathway', en:'Seojeong University Career Pathway', vi:'Career Pathway – Đại học Seojeong', uz:'Seojeong universiteti Career Pathway', my:'စိုဂျောင်းတက္ကသိုလ် Career Pathway', mn:'Сёжон Их Сургуулийн Career Pathway'},
+  't-hero-btn1': {ko:'6단계 여정 보기', en:'See the 6-Stage Journey', vi:'Xem hành trình 6 giai đoạn', uz:'6 bosqichli yoʻlni koʻrish', my:'အဆင့် ၆ ဆင့် ခရီးစဉ်ကို ကြည့်ရန်', mn:'6 үе шаттай аяллыг харах'},
+  't-hero-btn2': {ko:'학생성공 로드맵 보기', en:'See the Student Success Roadmap', vi:'Xem Lộ trình Thành công Sinh viên', uz:'Talaba Muvaffaqiyati Yoʻl xaritasini koʻrish', my:'ကျောင်းသားအောင်မြင်မှု လမ်းညွှန်ချက်ကို ကြည့်ရန်', mn:'Оюутны Амжилтын Замын Зургийг харах'},
+  't-crumb-top-sub': {ko:'취업·정주 지원 모델', en:'Employment & Settlement Model', vi:'Mô hình hỗ trợ việc làm & định cư', uz:'Ish va turar joy bilan taʼminlash modeli', my:'အလုပ်အကိုင်နှင့် နေရာချထားမှု ပံ့ပိုးမှု မော်ဒယ်', mn:'Ажил эрхлэлт, суурьшлын дэмжлэгийн загвар'},
+  't-crumb-mid': {ko:'학생성공 로드맵', en:'Student Success Roadmap', vi:'Lộ trình Thành công Sinh viên', uz:'Talaba Muvaffaqiyati Yoʻl xaritasi', my:'ကျောင်းသားအောင်မြင်မှု လမ်းညွှန်ချက်', mn:'Оюутны Амжилтын Замын Зураг'},
+  't-crumb-end': {ko:'개별 프로그램', en:'Individual Programs', vi:'Các chương trình cụ thể', uz:'Alohida dasturlar', my:'အစီအစဉ်တစ်ခုချင်းစီ', mn:'Тус тусын хөтөлбөрүүд'},
+  't-crumb-end-sub': {ko:'16개 (계속 추가 중)', en:'16 programs (more being added)', vi:'16 chương trình (đang cập nhật thêm)', uz:'16 ta dastur (yangilari qoʻshilmoqda)', my:'အစီအစဉ် ၁၆ ခု (ဆက်လက်ထည့်သွင်းနေဆဲ)', mn:'16 хөтөлбөр (үргэлжлүүлэн нэмж байгаа)'},
+  't-nav-pathway': {ko:'Career Pathway', en:'Career Pathway', vi:'Career Pathway', uz:'Career Pathway', my:'Career Pathway', mn:'Career Pathway'},
+  't-nav-roadmap': {ko:'학생성공 로드맵', en:'Student Success Roadmap', vi:'Lộ trình Thành công', uz:'Yoʻl xaritasi', my:'လမ်းညွှန်ချက်', mn:'Замын зураг'},
+  't-nav-programs': {ko:'프로그램', en:'Programs', vi:'Chương trình', uz:'Dasturlar', my:'အစီအစဉ်များ', mn:'Хөтөлбөрүүд'},
+  't-nav-linked': {ko:'연계 사업', en:'Partner Programs', vi:'Chương trình liên kết', uz:'Hamkor dasturlar', my:'ချိတ်ဆက် အစီအစဉ်များ', mn:'Хамтарсан хөтөлбөр'},
+  't-nav-cta': {ko:'프로그램 보기', en:'View Programs', vi:'Xem chương trình', uz:'Dasturlarni koʻrish', my:'အစီအစဉ်များကြည့်ရန်', mn:'Хөтөлбөр харах'},
+  't-pathway-kicker': {ko:'개념 정의', en:'Concept', vi:'Khái niệm', uz:'Tushuncha', my:'သဘောတရား အဓိပ္ပာယ်', mn:'Ойлголтын тодорхойлолт'},
+  't-pathway-heading': {ko:'취업·정주로 이어지는 6단계', en:'6 Stages Toward Employment & Settlement', vi:'6 giai đoạn dẫn đến việc làm và định cư', uz:'Ish va turar joyga olib boradigan 6 bosqich', my:'အလုပ်အကိုင်နှင့် နေရာချထားမှုဆီ ဦးတည်သော အဆင့် ၆ ဆင့်', mn:'Ажил эрхлэлт, суурьшилд хүргэх 6 үе шат'},
+  't-roadmap-kicker': {ko:'Career Pathway를 채우는 실행 체계', en:'The framework that fills Career Pathway', vi:'Hệ thống thực hiện lấp đầy Career Pathway', uz:"Career Pathway'ni toʻldiruvchi tizim", my:'Career Pathway ကို ဖြည့်ဆည်းပေးသော စနစ်', mn:'Career Pathway-г дүүргэдэг систем'},
+  't-roadmap-heading': {ko:'학생성공 로드맵', en:'Student Success Roadmap', vi:'Lộ trình Thành công Sinh viên', uz:'Talaba Muvaffaqiyati Yoʻl xaritasi', my:'ကျောင်းသားအောင်မြင်မှု လမ်းညွှန်ချက်', mn:'Оюутны Амжилтын Замын Зураг'},
+  't-roadmap-desc': {ko:'Career Pathway라는 큰 여정을, 다섯 개의 축으로 나눠 구체적인 프로그램으로 실행하는 서정대학교의 학생성공 로드맵입니다. 아래 5개 축이 곧 다음 섹션의 프로그램 카테고리가 됩니다.', en:'The Student Success Roadmap is how Seojeong University breaks the big Career Pathway journey into five axes and turns it into concrete programs. The five axes below become the program categories in the next section.', vi:'Lộ trình Thành công Sinh viên là cách Đại học Seojeong chia hành trình lớn Career Pathway thành năm trục và thực hiện bằng các chương trình cụ thể. Năm trục dưới đây chính là các danh mục chương trình ở phần tiếp theo.', uz:"Talaba Muvaffaqiyati Yoʻl xaritasi — Seojeong universiteti Career Pathway'ning katta safarini beshta yoʻnalishga boʻlib, aniq dasturlar orqali amalga oshirish usulidir. Quyidagi beshta yoʻnalish keyingi boʻlimdagi dastur toifalariga aylanadi.", my:'ကျောင်းသားအောင်မြင်မှု လမ်းညွှန်ချက်ဆိုသည်မှာ Career Pathway ၏ ကြီးမားသောခရီးစဉ်ကို ဝင်ရိုးငါးခုအဖြစ် ခွဲခြားပြီး တိကျသောအစီအစဉ်များဖြင့် အကောင်အထည်ဖော်ရန် စိုဂျောင်းတက္ကသိုလ်၏ နည်းလမ်းဖြစ်သည်။ အောက်ပါ ဝင်ရိုးငါးခုသည် နောက်အပိုင်း၏ အစီအစဉ်အမျိုးအစားများ ဖြစ်လာမည်။', mn:'Оюутны Амжилтын Замын Зураг гэдэг нь Career Pathway хэмээх том аяллыг таван тэнхлэгт хуваан, тодорхой хөтөлбөрүүдээр хэрэгжүүлдэг Сёжон Их Сургуулийн арга юм. Доорх таван тэнхлэг нь дараагийн хэсгийн хөтөлбөрийн ангилал болно.'},
+  't-linked-heading': {ko:'정부·기관 연계 사업', en:"Government & Institutional Partner Programs", vi:'Chương trình liên kết với chính phủ & tổ chức', uz:'Hukumat va muassasalar bilan hamkorlik dasturlari', my:'အစိုးရနှင့် အဖွဲ့အစည်းများ ချိတ်ဆက်အစီအစဉ်များ', mn:'Засгийн газар, байгууллагуудтай хамтарсан хөтөлбөрүүд'},
+  't-linked-desc': {ko:'서정대학교는 11개 정부 사업 및 인증을 통해 외국인 유학생의 성공적인 한국생활과 지역사회 정착을 지원합니다.', en:"Seojeong University supports international students' successful life in Korea and settlement in the community through 11 government projects and certifications.", vi:'Đại học Seojeong hỗ trợ sinh viên quốc tế có cuộc sống thành công tại Hàn Quốc và định cư tại cộng đồng thông qua 11 dự án và chứng nhận của chính phủ.', uz:'Seojeong universiteti xorijiy talabalarning Koreyadagi muvaffaqiyatli hayoti va jamiyatga joylashishini 11 ta davlat loyihasi va sertifikati orqali qoʻllab-quvvatlaydi.', my:'စိုဂျောင်းတက္ကသိုလ်သည် နိုင်ငံခြားကျောင်းသားများ၏ ကိုရီးယားနိုင်ငံတွင် အောင်မြင်စွာနေထိုင်ရေးနှင့် ရပ်ရွာအသိုက်အဝန်းတွင် အခြေချနေထိုင်ရေးကို အစိုးရစီမံကိန်းနှင့် အသိအမှတ်ပြုလက်မှတ် ၁၁ ခုမှတစ်ဆင့် ပံ့ပိုးပေးပါသည်။', mn:'Сёжон Их Сургууль нь гадаад оюутнуудын Солонгост амжилттай амьдрах, орон нутагт суурьших явцыг 11 засгийн газрын төсөл, гэрчилгээгээр дэмждэг.'},
+  't-linked-th1': {ko:'사업명', en:'Program', vi:'Tên chương trình', uz:'Dastur nomi', my:'အစီအစဉ်အမည်', mn:'Хөтөлбөрийн нэр'},
+  't-linked-th2': {ko:'주관기관', en:'Organizer', vi:'Cơ quan chủ quản', uz:'Tashkilotchi', my:'တာဝန်ခံအဖွဲ့', mn:'Хариуцах байгууллага'},
+  't-linked-th3': {ko:'기간', en:'Period', vi:'Thời gian', uz:'Muddat', my:'ကာလ', mn:'Хугацаа'},
+  't-footer-head': {ko:'함께 걷는<br>취업·정주의 길', en:'Walking together<br>toward employment & settlement', vi:'Cùng nhau bước đi<br>trên con đường việc làm & định cư', uz:'Birga yurgan<br>ish va turar joy yoʻli', my:'အတူတကွလျှောက်လှမ်းသော<br>အလုပ်အကိုင်နှင့် နေရာချထားမှု လမ်း', mn:'Хамтдаа алхаж буй<br>ажил эрхлэлт, суурьшлын зам'},
+  't-footer-meta': {ko:'서정대학교 학생성공처<br>Dream to Career, Career to Settlement', en:'Seojeong University Office of Student Success<br>Dream to Career, Career to Settlement', vi:'Văn phòng Thành công Sinh viên – Đại học Seojeong<br>Dream to Career, Career to Settlement', uz:'Seojeong universiteti Talaba Muvaffaqiyati Boshqarmasi<br>Dream to Career, Career to Settlement', my:'စိုဂျောင်းတက္ကသိုလ် ကျောင်းသားအောင်မြင်ရေးရုံး<br>Dream to Career, Career to Settlement', mn:'Сёжон Их Сургуулийн Оюутны Амжилтын Алба<br>Dream to Career, Career to Settlement'},
+  't-detail-sessions-label': {ko:'일정 및 장소', en:'Schedule & Location', vi:'Lịch trình & Địa điểm', uz:'Jadval va manzil', my:'အချိန်ဇယားနှင့် နေရာ', mn:'Хуваарь ба байршил'},
+  't-skip-link': {ko:'본문 바로가기', en:'Skip to content', vi:'Bỏ qua đến nội dung', uz:'Kontentga oʻtish', my:'အကြောင်းအရာသို့ ကျော်သွားရန်', mn:'Агуулга руу шилжих'},
+};
+
+function t(key){ return (I18N_UI[key] && I18N_UI[key][_lang]) || (I18N_UI[key] && I18N_UI[key].ko) || ''; }
+
+const NO_SESSION_TEXT = {ko:'일정이 아직 등록되지 않았습니다. 담당자에게 문의해주세요.', en:'No schedule has been registered yet. Please contact the program office.', vi:'Lịch trình chưa được đăng ký. Vui lòng liên hệ bộ phận phụ trách.', uz:"Jadval hali kiritilmagan. Iltimos, mas'ul boʻlim bilan bogʻlaning.", my:'အချိန်ဇယားကို မှတ်ပုံမတင်ရသေးပါ။ တာဝန်ခံဌာနကို ဆက်သွယ်ပါ။', mn:'Хуваарийг оруулаагүй байна. Хариуцсан алба хаагчтай холбогдоно уу.'};
+const NO_LOCATION_TEXT = {ko:'장소 미정', en:'Location TBD', vi:'Chưa xác định địa điểm', uz:'Manzil aniqlanmagan', my:'နေရာ မသတ်မှတ်ရသေး', mn:'Байршил тодорхойгүй'};
+const APPLY_LABEL = {ko:'신청하기', en:'Apply', vi:'Đăng ký', uz:'Ariza berish', my:'လျှောက်ထားရန်', mn:'Бүртгүүлэх'};
+const APPLY_ENDED_LABEL = {ko:'모집이 종료되었습니다', en:'Application closed', vi:'Đã kết thúc đăng ký', uz:'Ariza qabul qilish yakunlandi', my:'လျှောက်လွှာလက်ခံမှု ပြီးဆုံးပါပြီ', mn:'Бүртгэл дууссан'};
+const EMPTY_NOTE_TEXT = {ko:g=>`${g} 대상 프로그램은 순차적으로 채워질 예정입니다.`, en:g=>`Programs for ${g} will be added progressively.`, vi:g=>`Các chương trình dành cho ${g} sẽ được bổ sung dần.`, uz:g=>`${g} uchun dasturlar bosqichma-bosqich qoʻshiladi.`, my:g=>`${g} အတွက် အစီအစဉ်များကို အဆင့်ဆင့် ဖြည့်စွက်သွားပါမည်။`, mn:g=>`${g}-д зориулсан хөтөлбөрүүдийг үе шаттайгаар нэмнэ.`};
+
+// ── 6단계 파이프라인 (고정 콘텐츠: PDF 원안, 언어별 번역 포함) ──
+const STAGES = [
+  {n:1, key:'admission', visaKey:null,
+    title:{ko:'입학',en:'Admission',vi:'Nhập học',uz:'Qabul',my:'ဝင်ခွင့်',mn:'Элсэлт'},
+    desc:{ko:'안정적인 대학 생활 지원',en:'Support for stable university life',vi:'Hỗ trợ cuộc sống đại học ổn định',uz:'Barqaror universitet hayoti uchun qoʻllab-quvvatlash',my:'တည်ငြိမ်သော တက္ကသိုလ်ဘဝအတွက် ပံ့ပိုးမှု',mn:'Тогтвортой их сургуулийн амьдралыг дэмжих'}},
+  {n:2, key:'adjustment', visaKey:'stay',
+    title:{ko:'적응',en:'Adjustment',vi:'Thích nghi',uz:'Moslashish',my:'လိုက်လျောညီထွေဖြစ်မှု',mn:'Дасан зохицох'},
+    desc:{ko:'체류 안정 및 비자 관리 지원',en:'Support for stable stay and visa management',vi:'Hỗ trợ ổn định lưu trú và quản lý visa',uz:'Barqaror turar joy va viza boshqaruvi uchun qoʻllab-quvvatlash',my:'တည်ငြိမ်သော နေထိုင်မှုနှင့် ဗီဇာစီမံခန့်ခွဲမှု ပံ့ပိုးမှု',mn:'Тогтвортой оршин суух, визийн менежментийн дэмжлэг'}},
+  {n:3, key:'career', visaKey:null,
+    title:{ko:'진로',en:'Career',vi:'Định hướng nghề nghiệp',uz:'Kasb tanlash',my:'အသက်မွေးဝမ်းကျောင်းလမ်းညွှန်',mn:'Мэргэжлийн чиг баримжаа'},
+    desc:{ko:'진로 설계 및 개발 지원',en:'Support for career design and development',vi:'Hỗ trợ thiết kế và phát triển nghề nghiệp',uz:'Kasbiy rejalashtirish va rivojlanish uchun qoʻllab-quvvatlash',my:'အသက်မွေးဝမ်းကျောင်း ဒီဇိုင်းရေးဆွဲမှုနှင့် ဖွံ့ဖြိုးတိုးတက်မှု ပံ့ပိုးမှု',mn:'Мэргэжлийн зураглал, хөгжлийн дэмжлэг'}},
+  {n:4, key:'job', visaKey:null,
+    title:{ko:'직무',en:'Job Skills',vi:'Kỹ năng nghề',uz:'Ish koʻnikmalari',my:'အလုပ်ကျွမ်းကျင်မှု',mn:'Ажлын ур чадвар'},
+    desc:{ko:'직무 역량 개발 지원',en:'Support for job competency development',vi:'Hỗ trợ phát triển năng lực nghề nghiệp',uz:'Ish koʻnikmalarini rivojlantirish uchun qoʻllab-quvvatlash',my:'အလုပ်စွမ်းရည် ဖွံ့ဖြိုးတိုးတက်မှု ပံ့ပိုးမှု',mn:'Ажлын ур чадварыг хөгжүүлэх дэмжлэг'}},
+  {n:5, key:'field', visaKey:null,
+    title:{ko:'현장',en:'Field',vi:'Trải nghiệm thực tế',uz:'Amaliyot',my:'လက်တွေ့ကွင်းဆင်းမှု',mn:'Талбай дадлага'},
+    desc:{ko:'현장 경험 및 실무 적응 지원',en:'Support for field experience and practical adjustment',vi:'Hỗ trợ trải nghiệm thực tế và thích nghi công việc',uz:'Amaliy tajriba va ish jarayoniga moslashish uchun qoʻllab-quvvatlash',my:'လက်တွေ့အတွေ့အကြုံနှင့် လုပ်ငန်းခွင် လိုက်လျောညီထွေမှု ပံ့ပိုးမှု',mn:'Талбайн туршлага, практик дасан зохицох дэмжлэг'}},
+  {n:6, key:'employment', visaKey:'work',
+    title:{ko:'취업',en:'Employment',vi:'Việc làm',uz:'Bandlik',my:'အလုပ်အကိုင်',mn:'Ажил эрхлэлт'},
+    desc:{ko:'취업 역량 및 비자 연계 지원',en:'Support for employment competency and visa linkage',vi:'Hỗ trợ năng lực việc làm và kết nối visa',uz:'Bandlik koʻnikmalari va viza bilan bogʻlash uchun qoʻllab-quvvatlash',my:'အလုပ်အကိုင် စွမ်းရည်နှင့် ဗီဇာ ဆက်စပ်မှု ပံ့ပိုးမှု',mn:'Ажил эрхлэлтийн ур чадвар, визийн холбоосын дэмжлэг'}},
+];
+const VISA_LABEL = {
+  stay:{ko:'체류 Visa',en:'Stay Visa',vi:'Visa lưu trú',uz:'Turar joy vizasi',my:'နေထိုင်ခွင့် ဗီဇာ',mn:'Оршин суух виз'},
+  work:{ko:'취업 Visa',en:'Work Visa',vi:'Visa làm việc',uz:'Ish vizasi',my:'အလုပ်လုပ်ခွင့် ဗီဇာ',mn:'Хөдөлмөрийн виз'},
+};
+
+// ── 대상군 필터 ──
+const GROUPS = [
+  {id:'all', label:{ko:'전체',en:'All',vi:'Tất cả',uz:'Barchasi',my:'အားလုံး',mn:'Бүгд'}},
+  {id:'trad', label:{ko:'학령기',en:'Traditional-age',vi:'Độ tuổi truyền thống',uz:'Anʼanaviy yoshdagilar',my:'ပုံမှန်အသက်အရွယ်',mn:'Уламжлалт насны'}},
+  {id:'adult', label:{ko:'성인학습자',en:'Adult Learners',vi:'Người học trưởng thành',uz:'Kattalar talabalari',my:'အရွယ်ရောက် သင်ယူသူများ',mn:'Насанд хүрсэн суралцагчид'}},
+  {id:'intl', label:{ko:'국제학생',en:'International Students',vi:'Sinh viên quốc tế',uz:'Xalqaro talabalar',my:'နိုင်ငံတကာ ကျောင်းသားများ',mn:'Гадаад оюутнууд'}},
+];
+const GROUP_TAG = {trad:{cls:'trad'}, adult:{cls:'adult'}, intl:{cls:'intl'}};
+function groupLabel(id){ const g = GROUPS.find(x=>x.id===id); return g ? (g.label[_lang]||g.label.ko) : id; }
+let _activeGroup = 'all';
+
+// ── DREAM 5개 카테고리 (영문명은 공식 명칭으로 고정, 자국어명은 언어별 번역) ──
+const DREAM_CATS = [
+  {id:'diversity', idx:'01', en:'Diversity and inclusion', kr:{ko:'다양성과 포용성',vi:'Đa dạng và hòa nhập',uz:'Xilma-xillik va inklyuziya',my:'ကွဲပြားမှုနှင့် ပါဝင်မှု',mn:'Олон талт байдал, оролцоо'}},
+  {id:'realworld', idx:'02', en:'Real-world ready program', kr:{ko:'실무 역량 강화',vi:'Tăng cường năng lực thực tế',uz:'Amaliy koʻnikmalarni kuchaytirish',my:'လက်တွေ့စွမ်းရည် မြှင့်တင်ခြင်း',mn:'Практик чадварыг бэхжүүлэх'}},
+  {id:'employment', idx:'03', en:'Employment pathway', kr:{ko:'취업 로드맵 설정',vi:'Thiết lập lộ trình việc làm',uz:'Bandlik yoʻl xaritasini belgilash',my:'အလုပ်အကိုင် လမ်းညွှန်ချက် သတ်မှတ်ခြင်း',mn:'Ажил эрхлэлтийн замын зургийг тодорхойлох'}},
+  {id:'community', idx:'04', en:'Active community engagement', kr:{ko:'지역사회 참여',vi:'Tham gia cộng đồng',uz:'Jamiyat ishtiroki',my:'ရပ်ရွာအသိုက်အဝန်း ပါဝင်မှု',mn:'Орон нутгийн хамтын нийгэмлэгийн оролцоо'}},
+  {id:'mentorship', idx:'05', en:'Mentorship for success', kr:{ko:'성공 경험 공유',vi:'Chia sẻ kinh nghiệm thành công',uz:'Muvaffaqiyat tajribasini almashish',my:'အောင်မြင်မှု အတွေ့အကြုံ မျှဝေခြင်း',mn:'Амжилтын туршлага хуваалцах'}},
+];
+function catLabel(cat){ return cat.kr[_lang] || cat.kr.ko; }
+function highlightDream(text){
+  if(!text) return '';
+  return `<span class="dream-letter">${escapeHtml(text.charAt(0))}</span>${escapeHtml(text.slice(1))}`;
+}
+
+// ── 기본 프로그램 데이터 (PDF 원안, ko가 기본값. translations에 en/vi/uz/my/mn) ──
+const DEFAULT_PROGRAMS = [
+  {id:'p1', cat:'diversity', title:'너와 내가 함께:ON 자치활동 캠프', desc:'외국인 유학생과 한국인 학생이 함께 참여해 다양성과 포용성에 대한 이해를 높이고, 상호 존중과 협력을 바탕으로 한 글로벌 공동체 문화를 조성합니다.', groups:['intl'],
+    translations:{
+      en:{title:'You and I Together: ON Community Activity Camp', desc:'A camp where international and Korean students take part together to build understanding of diversity and inclusion, fostering a global community culture based on mutual respect and cooperation.'},
+      vi:{title:'Bạn và Tôi Cùng Nhau: Trại Hoạt động Cộng đồng ON', desc:'Trại nơi sinh viên quốc tế và sinh viên Hàn Quốc cùng tham gia để nâng cao hiểu biết về sự đa dạng và hòa nhập, xây dựng văn hóa cộng đồng toàn cầu dựa trên sự tôn trọng và hợp tác lẫn nhau.'},
+      uz:{title:"Sen va Men Birga: ON Jamoaviy Faoliyat Lageri", desc:"Xorijiy va koreys talabalari birgalikda ishtirok etadigan, xilma-xillik va inklyuziya haqida tushunchani oshiradigan hamda oʻzaro hurmat va hamkorlikka asoslangan global jamoat madaniyatini shakllantiradigan lager."},
+      my:{title:'မင်းနဲ့ငါ အတူတကွ: ON လူထုလှုပ်ရှားမှု စခန်း', desc:'နိုင်ငံခြားကျောင်းသားများနှင့် ကိုရီးယားကျောင်းသားများ အတူတကွပါဝင်ကာ ကွဲပြားမှုနှင့် ပါဝင်မှုအပေါ် နားလည်မှုမြှင့်တင်ပြီး အပြန်အလှန် လေးစားမှုနှင့် ပူးပေါင်းဆောင်ရွက်မှုအပေါ် အခြေခံသည့် ကမ္ဘာလုံးဆိုင်ရာ လူထုယဉ်ကျေးမှု တည်ဆောက်ရေး စခန်းဖြစ်သည်။'},
+      mn:{title:'Чи Бид Хамтдаа: ON Нийгмийн Идэвхжүүлэх Кэмп', desc:'Гадаад болон Солонгос оюутнууд хамтран оролцож, олон талт байдал, оролцооны талаарх ойлголтыг нэмэгдүүлж, харилцан хүндэтгэл, хамтын ажиллагаанд суурилсан дэлхийн хамтын нийгэмлэгийн соёлыг бий болгодог кэмп юм.'},
+    }},
+  {id:'p2', cat:'realworld', title:'인턴십', desc:'취업 확정된 산업체에서의 실무 경험을 통한 직무 역량 및 현장 적응력 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Internship', desc:'Training that strengthens job competency and on-site adaptability through hands-on experience at companies where employment is already confirmed.'},
+      vi:{title:'Thực tập', desc:'Đào tạo tăng cường năng lực nghề nghiệp và khả năng thích nghi thực tế thông qua kinh nghiệm thực hành tại doanh nghiệp đã xác nhận tuyển dụng.'},
+      uz:{title:'Amaliyot (Internship)', desc:"Ish joyi allaqachon tasdiqlangan korxonalarda amaliy tajriba orqali ish koʻnikmalari va joyga moslashish qobiliyatini kuchaytiruvchi taʼlim."},
+      my:{title:'အလုပ်သင်အစီအစဉ်', desc:'အလုပ်ခန့်ထားရန် အတည်ပြုပြီးသား စက်မှုလုပ်ငန်းများတွင် လက်တွေ့အတွေ့အကြုံမှတစ်ဆင့် အလုပ်စွမ်းရည်နှင့် လုပ်ငန်းခွင် လိုက်လျောညီထွေဖြစ်နိုင်စွမ်းကို မြှင့်တင်ပေးသည့် သင်တန်း'},
+      mn:{title:'Дадлага', desc:'Ажилд орохоор баталгаажсан аж ахуйн нэгжид дадлага хийх замаар ажлын ур чадвар, орчинд дасан зохицох чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p3', cat:'realworld', title:'AI 실무 교육', desc:'실제 업무에서 활용할 수 있는 AI 도구 활용 교육', groups:['intl'],
+    translations:{
+      en:{title:'AI Practical Training', desc:'Training on using AI tools that can be applied directly in real work.'},
+      vi:{title:'Đào tạo Thực hành AI', desc:'Đào tạo sử dụng các công cụ AI có thể áp dụng trực tiếp vào công việc thực tế.'},
+      uz:{title:'AI Amaliy Taʼlimi', desc:"Haqiqiy ish jarayonida qoʻllash mumkin boʻlgan AI vositalaridan foydalanish boʻyicha taʼlim."},
+      my:{title:'AI လက်တွေ့ လေ့ကျင့်ရေး', desc:'လက်တွေ့အလုပ်တွင် အသုံးပြုနိုင်သည့် AI ကိရိယာများ အသုံးပြုနည်း သင်တန်း'},
+      mn:{title:'AI-н Практик Сургалт', desc:'Бодит ажилд ашиглах боломжтой AI хэрэгслүүдийг ашиглах сургалт'},
+    }},
+  {id:'p4', cat:'realworld', title:'비즈니스 한국어', desc:'직장생활에 필요한 전문적인 한국어 활용 능력과 비즈니스 커뮤니케이션 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Business Korean', desc:'Training that strengthens professional Korean language ability and business communication skills needed for workplace life.'},
+      vi:{title:'Tiếng Hàn Thương mại', desc:'Đào tạo tăng cường khả năng sử dụng tiếng Hàn chuyên nghiệp và kỹ năng giao tiếp kinh doanh cần thiết cho đời sống công sở.'},
+      uz:{title:'Biznes Koreys Tili', desc:'Ish hayotida zarur boʻlgan professional koreys tili va biznes muloqot koʻnikmalarini kuchaytiruvchi taʼlim.'},
+      my:{title:'စီးပွားရေး ကိုရီးယားစကား', desc:'အလုပ်ခွင်ဘဝအတွက် လိုအပ်သော ကျွမ်းကျင်သည့် ကိုရီးယားဘာသာစကားအသုံးချနိုင်စွမ်းနှင့် စီးပွားရေးဆက်သွယ်ရေး စွမ်းရည်ကို မြှင့်တင်သည့် သင်တန်း'},
+      mn:{title:'Бизнесийн Солонгос Хэл', desc:'Ажлын амьдралд шаардлагатай мэргэжлийн Солонгос хэлний чадвар, бизнесийн харилцааны ур чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p5', cat:'realworld', title:'중소(벤처)기업의 이해', desc:'중소기업과 벤처기업의 특성, 조직문화 및 업무 프로세스의 이해 등 직장 적응 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Understanding SMEs and Startups', desc:'Training that strengthens workplace adaptability by understanding the characteristics, culture, and work processes of small/medium enterprises and startups.'},
+      vi:{title:'Hiểu về Doanh nghiệp Vừa và Nhỏ (Startup)', desc:'Đào tạo tăng cường khả năng thích nghi công sở thông qua việc hiểu đặc điểm, văn hóa tổ chức và quy trình làm việc của doanh nghiệp vừa, nhỏ và startup.'},
+      uz:{title:'Kichik va Oʻrta Biznes (Startaplar)ni Tushunish', desc:"Kichik va oʻrta korxonalar hamda startaplarning xususiyatlari, tashkiliy madaniyati va ish jarayonlarini tushunish orqali ishga moslashish koʻnikmalarini kuchaytiruvchi taʼlim."},
+      my:{title:'အလတ်စား/စတင်တင်လုပ်ငန်းများ နားလည်ခြင်း', desc:'အလတ်စားနှင့် စတင်တင်လုပ်ငန်းများ၏ အထူးလက္ခဏာများ၊ အဖွဲ့အစည်းယဉ်ကျေးမှုနှင့် အလုပ်လုပ်ငန်းစဉ်များကို နားလည်စေခြင်းဖြင့် အလုပ်ခွင် လိုက်လျောညီထွေဖြစ်နိုင်စွမ်း မြှင့်တင်ရေး သင်တန်း'},
+      mn:{title:'Жижиг, дунд болон стартап компаниудыг ойлгох', desc:'Жижиг, дунд аж ахуйн нэгж, стартап компаниудын онцлог, байгууллагын соёл, ажлын үйл явцыг ойлгуулснаар ажлын байранд дасан зохицох чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p6', cat:'realworld', title:'근로기준과산업안전(실무)', desc:'근로자 권리 및 산업안전 규정에 대한 이해를 통해 안정적인 근무 환경 적응 지원', groups:['intl'],
+    translations:{
+      en:{title:'Labor Standards & Industrial Safety (Practical)', desc:'Support for adapting to a stable working environment by understanding worker rights and industrial safety regulations.'},
+      vi:{title:'Tiêu chuẩn Lao động & An toàn Công nghiệp (Thực hành)', desc:'Hỗ trợ thích nghi với môi trường làm việc ổn định thông qua việc hiểu quyền lợi người lao động và quy định an toàn công nghiệp.'},
+      uz:{title:'Mehnat Standartlari va Sanoat Xavfsizligi (Amaliy)', desc:'Ishchi huquqlari va sanoat xavfsizligi qoidalarini tushunish orqali barqaror ish muhitiga moslashishni qoʻllab-quvvatlash.'},
+      my:{title:'အလုပ်သမား စံနှုန်းနှင့် စက်မှုလုံခြုံရေး (လက်တွေ့)', desc:'အလုပ်သမားအခွင့်အရေးနှင့် စက်မှုလုံခြုံရေး စည်းမျဉ်းများကို နားလည်စေခြင်းဖြင့် တည်ငြိမ်သော အလုပ်ခွင်ပတ်ဝန်းကျင်သို့ လိုက်လျောညီထွေဖြစ်စေရေး ပံ့ပိုးမှု'},
+      mn:{title:'Хөдөлмөрийн стандарт ба Аж үйлдвэрийн аюулгүй байдал (Практик)', desc:'Ажилчдын эрх, аж үйлдвэрийн аюулгүй байдлын дүрэм журмыг ойлгуулснаар тогтвортой ажлын орчинд дасан зохицоход дэмжлэг үзүүлэх'},
+    }},
+  {id:'p7', cat:'employment', title:'취업스킬 Up Ⅰ', desc:'기본적 취업 준비 및 채용 서류 작성 교육', groups:['intl'],
+    translations:{
+      en:{title:'Job Skills Up I', desc:'Training on basic job-search preparation and writing application documents.'},
+      vi:{title:'Nâng cao Kỹ năng Việc làm I', desc:'Đào tạo chuẩn bị việc làm cơ bản và cách viết hồ sơ ứng tuyển.'},
+      uz:{title:'Ish Koʻnikmalarini Oshirish I', desc:'Ish qidirishga asosiy tayyorgarlik va ariza hujjatlarini yozish boʻyicha taʼlim.'},
+      my:{title:'အလုပ်ရှာဖွေရေး ကျွမ်းကျင်မှု တိုးတက်ခြင်း I', desc:'အခြေခံ အလုပ်ရှာဖွေရေး ပြင်ဆင်မှုနှင့် လျှောက်လွှာစာရွက်စာတမ်း ရေးသားနည်း သင်တန်း'},
+      mn:{title:'Ажлын ур чадвар дээшлүүлэх I', desc:'Ажилд орох суурь бэлтгэл, өргөдлийн бичиг баримт бичих сургалт'},
+    }},
+  {id:'p8', cat:'employment', title:'취업스킬 Up Ⅱ', desc:'면접 기술 및 직장 예절을 다루는 취업 준비 심화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Job Skills Up II', desc:'Advanced job-preparation training covering interview techniques and workplace etiquette.'},
+      vi:{title:'Nâng cao Kỹ năng Việc làm II', desc:'Đào tạo chuyên sâu về kỹ thuật phỏng vấn và phép tắc nơi làm việc.'},
+      uz:{title:'Ish Koʻnikmalarini Oshirish II', desc:'Suhbat texnikasi va ish joyidagi odob-axloq qoidalarini qamrab olgan chuqurlashtirilgan taʼlim.'},
+      my:{title:'အလုပ်ရှာဖွေရေး ကျွမ်းကျင်မှု တိုးတက်ခြင်း II', desc:'အင်တာဗျူးနည်းပညာနှင့် အလုပ်ခွင် ကျင့်ဝတ်များကို ကိုင်တွယ်သည့် အဆင့်မြင့် အလုပ်ပြင်ဆင်မှု သင်တန်း'},
+      mn:{title:'Ажлын ур чадвар дээшлүүлэх II', desc:'Ярилцлагын арга барил, ажлын байрны ёс зүйг хамарсан гүнзгийрүүлсэн бэлтгэл сургалт'},
+    }},
+  {id:'p9', cat:'employment', title:'취업실전클리닉', desc:'모의 면접 및 포트폴리오 검토를 포함한 실전 구직 교육', groups:['intl'],
+    translations:{
+      en:{title:'Job-Search Practice Clinic', desc:'Practical job-search training including mock interviews and portfolio review.'},
+      vi:{title:'Phòng khám Thực hành Tìm việc', desc:'Đào tạo tìm việc thực tế bao gồm phỏng vấn thử và đánh giá hồ sơ năng lực.'},
+      uz:{title:'Ish Qidirish Amaliy Klinikasi', desc:'Sinov suhbatlari va portfolioni koʻrib chiqishni oʻz ichiga olgan amaliy ish qidirish taʼlimi.'},
+      my:{title:'အလုပ်ရှာဖွေရေး လက်တွေ့ ကလင်နစ်', desc:'အင်တာဗျူးလေ့ကျင့်ခန်းနှင့် ပုံစံစာအုပ် ပြန်လည်သုံးသပ်မှုအပါအဝင် လက်တွေ့ အလုပ်ရှာဖွေရေး သင်တန်း'},
+      mn:{title:'Ажил хайх практик клиник', desc:'Дадлага ярилцлага, портфолио хянах зэрэг практик ажил хайх сургалт'},
+    }},
+  {id:'p10', cat:'employment', title:'비자(Visa) 역량 강화 교육', desc:'체류 및 취업·정주를 위한 비자(Visa) 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Visa Competency Training', desc:'Training that strengthens visa-related knowledge for stay, employment, and settlement.'},
+      vi:{title:'Đào tạo Năng lực Visa', desc:'Đào tạo tăng cường năng lực về visa cho việc lưu trú, làm việc và định cư.'},
+      uz:{title:'Viza Koʻnikmalarini Kuchaytirish Taʼlimi', desc:'Turar joy, ish va joylashish uchun viza bilan bogʻliq bilimlarni kuchaytiruvchi taʼlim.'},
+      my:{title:'ဗီဇာ စွမ်းရည် မြှင့်တင်ရေး သင်တန်း', desc:'နေထိုင်ခွင့်၊ အလုပ်အကိုင်နှင့် နေရာချထားမှုအတွက် ဗီဇာဆိုင်ရာ ဗဟုသုတ မြှင့်တင်သည့် သင်တန်း'},
+      mn:{title:'Визийн чадвар бэхжүүлэх сургалт', desc:'Оршин суух, ажил эрхлэлт, суурьшилд шаардлагатай визийн мэдлэгийг бэхжүүлэх сургалт'},
+    }},
+  {id:'p11', cat:'community', title:'AI 연계 산학협력 프로젝트', desc:'산업체와 공동으로 수행하는 현장 문제 해결 역량 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'AI-Linked Industry-Academia Project', desc:'Training that strengthens on-site problem-solving skills through projects carried out jointly with industry partners.'},
+      vi:{title:'Dự án Hợp tác Nhà trường - Doanh nghiệp Liên kết AI', desc:'Đào tạo tăng cường năng lực giải quyết vấn đề thực tế thông qua các dự án phối hợp cùng doanh nghiệp.'},
+      uz:{title:"AI Bilan Bogʻliq Sanoat-Ta'lim Hamkorlik Loyihasi", desc:'Sanoat hamkorlari bilan birgalikda amalga oshiriladigan loyihalar orqali amaliy muammolarni hal qilish koʻnikmalarini kuchaytiruvchi taʼlim.'},
+      my:{title:'AI ချိတ်ဆက် စက်မှု-ပညာရေး ပူးပေါင်းစီမံကိန်း', desc:'စက်မှုလုပ်ငန်းများနှင့် ပူးတွဲဆောင်ရွက်သည့် စီမံကိန်းများမှတစ်ဆင့် လက်တွေ့ပြဿနာဖြေရှင်းနိုင်စွမ်း မြှင့်တင်ရေး သင်တန်း'},
+      mn:{title:'AI-тэй холбоотой Аж үйлдвэр-Их сургуулийн хамтарсан төсөл', desc:'Аж ахуйн нэгжтэй хамтран хэрэгжүүлдэг төслүүдээр дамжуулан бодит асуудлыг шийдвэрлэх чадварыг бэхжүүлэх сургалт'},
+    }},
+  {id:'p12', cat:'community', title:'동아리 캡스톤디자인', desc:'전공 분야 및 지역사회 현안 문제해결을 통한 문제해결 능력 향상 교육', groups:['intl'],
+    translations:{
+      en:{title:'Club Capstone Design', desc:"Training that improves problem-solving ability by tackling issues in students' major fields and local community challenges."},
+      vi:{title:'Thiết kế Capstone Câu lạc bộ', desc:'Đào tạo nâng cao khả năng giải quyết vấn đề thông qua giải quyết các vấn đề chuyên ngành và cộng đồng địa phương.'},
+      uz:{title:'Toʻgarak Kapston Dizayni', desc:'Talabaning mutaxassislik sohasi va mahalliy jamiyat muammolarini hal qilish orqali muammo yechish qobiliyatini oshiruvchi taʼlim.'},
+      my:{title:'ကလပ် Capstone ဒီဇိုင်း', desc:'အထူးပြုဘာသာရပ်နှင့် ဒေသဆိုင်ရာ ပြဿနာများကို ဖြေရှင်းခြင်းမှတစ်ဆင့် ပြဿနာဖြေရှင်းနိုင်စွမ်း မြှင့်တင်သည့် သင်တန်း'},
+      mn:{title:'Клубын Кэпстон дизайн', desc:'Мэргэжлийн чиглэл болон орон нутгийн асуудлыг шийдвэрлэх замаар асуудал шийдвэрлэх чадварыг сайжруулах сургалт'},
+    }},
+  {id:'p13', cat:'mentorship', title:'현장실습', desc:'실습 중심 교육을 통해 직무 수행에 필요한 실무 역량과 문제해결 능력 강화 교육', groups:['intl'],
+    translations:{
+      en:{title:'Field Practicum', desc:'Hands-on training that strengthens the practical skills and problem-solving ability needed to perform a job.'},
+      vi:{title:'Thực tập Thực tế', desc:'Đào tạo dựa trên thực hành, tăng cường năng lực thực tế và khả năng giải quyết vấn đề cần thiết để thực hiện công việc.'},
+      uz:{title:"Amaliy Mashg'ulot", desc:'Ishni bajarish uchun zarur boʻlgan amaliy koʻnikmalar va muammo yechish qobiliyatini kuchaytiradigan amaliyotga asoslangan taʼlim.'},
+      my:{title:'လက်တွေ့ကွင်းဆင်း အလုပ်သင်ခြင်း', desc:'လက်တွေ့လုပ်ငန်းလုပ်ဆောင်ရန် လိုအပ်သော လက်တွေ့စွမ်းရည်နှင့် ပြဿနာဖြေရှင်းနိုင်စွမ်းကို မြှင့်တင်သည့် လက်တွေ့ဗဟိုပြု သင်တန်း'},
+      mn:{title:'Талбайн дадлага', desc:'Ажлыг гүйцэтгэхэд шаардлагатай практик чадвар, асуудал шийдвэрлэх чадварыг бэхжүүлдэг дадлагад суурилсан сургалт'},
+    }},
+  {id:'p14', cat:'mentorship', title:'기업탐방', desc:'산업 동향 및 기업 요구 역량 파악을 통한 취업 연계 기반 마련', groups:['intl'],
+    translations:{
+      en:{title:'Company Visit', desc:'Building a foundation for employment connections by understanding industry trends and the skills companies require.'},
+      vi:{title:'Tham quan Doanh nghiệp', desc:'Xây dựng nền tảng kết nối việc làm thông qua việc nắm bắt xu hướng ngành và năng lực doanh nghiệp yêu cầu.'},
+      uz:{title:'Kompaniyaga Tashrif', desc:'Sanoat tendentsiyalari va kompaniyalar talab qiladigan koʻnikmalarni tushunish orqali bandlik uchun asos yaratish.'},
+      my:{title:'ကုမ္ပဏီ လည်ပတ်ခြင်း', desc:'စက်မှုလုပ်ငန်း လမ်းကြောင်းနှင့် ကုမ္ပဏီများ လိုအပ်သော စွမ်းရည်များကို နားလည်စေခြင်းဖြင့် အလုပ်အကိုင် ဆက်စပ်မှု အခြေခံ တည်ဆောက်ခြင်း'},
+      mn:{title:'Компанид зочлох аялал', desc:'Аж үйлдвэрийн чиг хандлага, компаниудын шаарддаг чадварыг ойлгуулснаар ажил эрхлэлтийн холбоосын суурийг бэлтгэх'},
+    }},
+  {id:'p15', cat:'mentorship', title:'교내·외 채용박람회', desc:'채용박람회 참여를 위한 사전 취업 교육 및 매칭을 통한 취업 기회 확대 지원', groups:['intl'],
+    translations:{
+      en:{title:'On/Off-Campus Job Fairs', desc:'Support for expanding employment opportunities through pre-fair job training and matching for job fair participation.'},
+      vi:{title:'Hội chợ Việc làm Trong & Ngoài trường', desc:'Hỗ trợ mở rộng cơ hội việc làm thông qua đào tạo trước hội chợ và kết nối để tham gia hội chợ việc làm.'},
+      uz:{title:'Kampus Ichi/Tashqarisidagi Ish Yarmarkalari', desc:'Yarmarka oldidan tayyorgarlik taʼlimi va moslashtirish orqali ish yarmarkalarida ishtirok etish uchun imkoniyatlarni kengaytirish.'},
+      my:{title:'တက္ကသိုလ်တွင်း/ပြင်ပ အလုပ်အကိုင် ဖေါ်ရာများ', desc:'အလုပ်အကိုင်ဖေါ်ရာ ပါဝင်ရန်အတွက် ကြိုတင် အလုပ်ပြင်ဆင်မှု သင်တန်းနှင့် တွဲဖက်ပေးခြင်းမှတစ်ဆင့် အလုပ်အကိုင်အခွင့်အလမ်း ချဲ့ထွင်ပေးခြင်း'},
+      mn:{title:'Дотоод/Гадаад ажлын үзэсгэлэн яармаг', desc:'Яармагт оролцох урьдчилсан бэлтгэл сургалт, тохируулга хийж ажлын боломжийг өргөжүүлэх дэмжлэг'},
+    }},
+  {id:'p16', cat:'mentorship', title:'지역 특화형(F-2-R, E-7) 탐방 프로그램', desc:'인구소멸지역 및 특정 산업이 분포한 지역 취업 지원(E-7, F-2-R)', groups:['intl'],
+    translations:{
+      en:{title:'Regional Specialization Visit Program (F-2-R, E-7)', desc:'Employment support (E-7, F-2-R) for depopulating regions and areas with concentrated industries.'},
+      vi:{title:'Chương trình Tham quan Đặc thù Khu vực (F-2-R, E-7)', desc:'Hỗ trợ việc làm (E-7, F-2-R) tại các khu vực suy giảm dân số và khu vực tập trung ngành công nghiệp cụ thể.'},
+      uz:{title:'Hududiy Ixtisoslashgan Tashrif Dasturi (F-2-R, E-7)', desc:'Aholi soni kamayayotgan hududlar va maʼlum sanoat tarqalgan hududlarda bandlikni qoʻllab-quvvatlash (E-7, F-2-R).'},
+      my:{title:'ဒေသဆိုင်ရာ အထူးပြု လည်ပတ်ရေး အစီအစဉ် (F-2-R, E-7)', desc:'လူဦးရေကျဆင်းနေသော ဒေသများနှင့် အထူးစက်မှုလုပ်ငန်း စုစည်းရာဒေသများတွင် အလုပ်အကိုင် ပံ့ပိုးမှု (E-7, F-2-R)'},
+      mn:{title:'Бүсчилсэн тусгай зочлох хөтөлбөр (F-2-R, E-7)', desc:'Хүн ам цөөрч буй бүс нутаг болон тодорхой салбарын аж ахуйн нэгжүүд төвлөрсөн бүс нутагт ажил эрхлэлтийг дэмжих (E-7, F-2-R)'},
+    }},
+];
+function progText(p, field){
+  if(_lang==='ko') return p[field] || '';
+  const tr = p.translations && p.translations[_lang];
+  return (tr && tr[field]) || p[field] || '';
+}
+
+// ── 연계 사업 (공식 한국어 명칭 고정 — 정부·기관 프로그램명은 원문 유지) ──
+const LINKED_PROGRAMS = [
+  {name:'이민자 사회통합프로그램(KIIP) 거점운영기관', org:'법무부', period:'2018~2026'},
+  {name:'뿌리산업 외국인 기술인력 양성대학', org:'산업통상자원부', period:'2022~2026'},
+  {name:'특수목적 한국어 연구소 설립', org:'서정대학교', period:'2023~2026'},
+  {name:'재한외국인교육훈련센터 설립', org:'서정대학교', period:'2024~2026'},
+  {name:'한국어능력시험(TOPIK IBT) 정식 시험운영기관', org:'국립국제교육원', period:'2023~2026'},
+  {name:'외국인 직업능력심사평가원 훈련기관인증평가 인증기관', org:'한국산업인력공단', period:'2023~2026'},
+  {name:'외국인근로자 한국어교육 위탁훈련기관 선정', org:'한국산업인력공단', period:'2024~2026'},
+  {name:'교육국제화역량 인증대학', org:'교육부', period:'2025~2026'},
+  {name:'외국인 요양보호사 양성대학', org:'경기도', period:'2025~2026'},
+  {name:'글로벌 인재 취업 선도대학', org:'중소벤처기업진흥공단', period:'2025~2026'},
+  {name:'외국인 유학생 일학습병행 운행기관', org:'고용노동부', period:'2026'},
+  {name:'전문대학 「육성형 전문기술학과」 시범 지정', org:'법무부', period:'2026'},
+];
+
+let _programs = DEFAULT_PROGRAMS.slice();
+let _stats = null;
+const APPLY_URL = 'https://sjcore.seojeong.ac.kr/';
+
+// ── Google Analytics 이벤트 추적 헬퍼 ──
+function track(eventName, params){
+  try{ if(typeof gtag==='function') gtag('event', eventName, params||{}); }catch(e){}
+}
+
+// ══════════════════════════════════════════
+//  챗봇: 페이지 콘텐츠 기반 Q&A, 6개 언어 지원
+// ══════════════════════════════════════════
+const CHAT_UI_LABELS = {
+  title: {ko:'Career Pathway 도우미', en:'Career Pathway Assistant', vi:'Trợ lý Career Pathway', uz:'Career Pathway Yordamchisi', my:'Career Pathway လက်ထောက်', mn:'Career Pathway Туслах'},
+  sub: {ko:'프로그램·일정·신청 방법을 물어보세요', en:'Ask about programs, schedules, or how to apply', vi:'Hỏi về chương trình, lịch trình hoặc cách đăng ký', uz:"Dasturlar, jadval yoki ariza berish haqida so'rang", my:'အစီအစဉ်၊ အချိန်ဇယား သို့မဟုတ် လျှောက်ထားနည်းအကြောင်း မေးမြန်းပါ', mn:'Хөтөлбөр, хуваарь, бүртгүүлэх талаар асуугаарай'},
+  placeholder: {ko:'메시지를 입력하세요…', en:'Type a message…', vi:'Nhập tin nhắn…', uz:'Xabar yozing…', my:'စာတစ်စောင်ရိုက်ပါ…', mn:'Мессеж бичнэ үү…'},
+};
+const CHAT_GREETING = {
+  ko:'안녕하세요! Career Pathway 도우미입니다. 프로그램, 일정, 신청 방법 등 무엇이든 물어보세요.',
+  en:"Hello! I'm the Career Pathway assistant. Ask me about any program, schedule, or how to apply.",
+  vi:'Xin chào! Tôi là trợ lý Career Pathway. Hãy hỏi tôi về chương trình, lịch trình hoặc cách đăng ký.',
+  uz:"Salom! Men Career Pathway yordamchisiman. Istalgan dastur, jadval yoki ariza berish haqida so'rang.",
+  my:'မင်္ဂလာပါ! ကျွန်တော်က Career Pathway လက်ထောက်ဖြစ်ပါတယ်။ မည်သည့်အစီအစဉ်၊ အချိန်ဇယား သို့မဟုတ် လျှောက်ထားနည်းအကြောင်းမဆို မေးနိုင်ပါသည်။',
+  mn:'Сайн байна уу! Би Career Pathway-н туслах юм. Ямар ч хөтөлбөр, хуваарь, бүртгүүлэх аргын талаар асуугаарай.',
+};
+const CHAT_SUGGESTIONS = {
+  ko:['인턴십이 뭐예요?','학생성공 로드맵이 뭐예요?','신청은 어떻게 하나요?'],
+  en:['What is the internship?','What is the Student Success Roadmap?','How do I apply?'],
+  vi:['Chương trình thực tập là gì?','Lộ trình Thành công Sinh viên là gì?','Làm sao để đăng ký?'],
+  uz:['Amaliyot dasturi nima?',"Talaba Muvaffaqiyati Yo'l xaritasi nima?",'Qanday ariza beraman?'],
+  my:['အလုပ်သင်အစီအစဉ်ဆိုတာ ဘာလဲ','ကျောင်းသားအောင်မြင်မှု လမ်းညွှန်ချက်ဆိုတာ ဘာလဲ','ဘယ်လိုလျှောက်ရမလဲ'],
+  mn:['Дадлагын хөтөлбөр гэж юу вэ?','Оюутны Амжилтын Замын Зураг гэж юу вэ?','Яаж бүртгүүлэх вэ?'],
+};
+const CHAT_FALLBACK = {
+  ko:'죄송해요, 정확히 이해하지 못했어요. 예를 들어 "인턴십이 뭐예요?", "신청은 어떻게 하나요?" 같은 질문을 해보세요.',
+  en:'Sorry, I couldn\'t quite understand that. Try asking things like "What is the internship?" or "How do I apply?"',
+  vi:'Xin lỗi, tôi chưa hiểu rõ câu hỏi. Hãy thử hỏi như "Chương trình thực tập là gì?" hoặc "Làm sao để đăng ký?"',
+  uz:"Kechirasiz, aniq tushunmadim. \"Amaliyot dasturi nima?\" yoki \"Qanday ariza beraman?\" kabi savollar bering.",
+  my:'တောင်းပန်ပါတယ်၊ အတိအကျ နားမလည်ခဲ့ပါ။ "အလုပ်သင်အစီအစဉ်ဆိုတာ ဘာလဲ" သို့မဟုတ် "ဘယ်လိုလျှောက်ရမလဲ" စသည်ဖြင့် မေးကြည့်ပါ။',
+  mn:'Уучлаарай, би сайн ойлгосонгүй. "Дадлагын хөтөлбөр гэж юу вэ?" эсвэл "Яаж бүртгүүлэх вэ?" гэх мэт асуугаарай.',
+};
+
+// ── 언어 자동 감지 (질문 언어에 맞춰 답변) ──
+function detectLang(text){
+  if(/[\uac00-\ud7a3]/.test(text)) return 'ko';
+  if(/[\u1000-\u109f]/.test(text)) return 'my';
+  if(/[\u0400-\u04ff]/.test(text)) return 'mn';
+  if(/[đĐàáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵ]/i.test(text)) return 'vi';
+  if(/ʻ|oʻ|gʻ|o'zbek|bo'l|uchun|dastur|talaba/i.test(text)) return 'uz';
+  return 'en';
+}
+
+// ── 정적 캔드 토픽 (키워드 매칭 → 언어별 답변) ──
+const CHAT_TOPICS = [
+  {id:'greeting',
+    keywords:['안녕','반가워','hello','hi','hey','xin chào','chào bạn','salom','assalom','မင်္ဂလာပါ','сайн байна уу','сайн уу'],
+    answer:lang=>CHAT_GREETING[lang]||CHAT_GREETING.ko},
+  {id:'career_pathway',
+    keywords:['career pathway','커리어 패스웨이','패스웨이가 뭐','패스웨이란','what is career pathway','career pathway là gì','career pathway nima','career pathway ဆိုတာ','career pathway гэж'],
+    answer:lang=>({
+      ko:'Career Pathway는 입학부터 적응, 진로, 직무, 현장, 취업까지 서정대학교 재학생 한 명 한 명의 단계에 맞춰 취업·정주로 이어지는 길을 설계하는 가장 큰 그림입니다. 학생성공 로드맵이 이 여정을 구체적인 프로그램으로 채웁니다.',
+      en:"Career Pathway is the big-picture model Seojeong University designs to guide every student from admission through adjustment, career planning, job skills, field experience, and employment toward stable settlement. The Student Success Roadmap fills this journey with concrete programs.",
+      vi:'Career Pathway là bức tranh tổng thể mà Đại học Seojeong thiết kế để dẫn dắt từng sinh viên từ nhập học đến thích nghi, định hướng nghề nghiệp, kỹ năng nghề, trải nghiệm thực tế và việc làm, hướng tới định cư ổn định. Lộ trình Thành công Sinh viên lấp đầy hành trình này bằng các chương trình cụ thể.',
+      uz:"Career Pathway — Seojeong universiteti har bir talabani qabuldan boshlab moslashish, kasb rejalashtirish, ish koʻnikmalari, amaliyot va bandlik orqali barqaror joylashishga yetaklash uchun chizgan katta modeldir. Talaba Muvaffaqiyati Yoʻl xaritasi bu safarni aniq dasturlar bilan toʻldiradi.",
+      my:'Career Pathway ဆိုသည်မှာ ကျောင်းသားတိုင်းကို ဝင်ခွင့်မှစပြီး လိုက်လျောညီထွေဖြစ်မှု၊ အသက်မွေးဝမ်းကျောင်း စီစဉ်မှု၊ အလုပ်ကျွမ်းကျင်မှု၊ လက်တွေ့အတွေ့အကြုံနှင့် အလုပ်အကိုင်မှတစ်ဆင့် တည်ငြိမ်သော နေရာချထားမှုဆီ လမ်းညွှန်ရန် စိုဂျောင်းတက္ကသိုလ်၏ ဒီဇိုင်းရေးဆွဲထားသော ကြီးမားသည့်ပုံစံဖြစ်သည်။ ကျောင်းသားအောင်မြင်မှု လမ်းညွှန်ချက်သည် ဒီခရီးစဉ်ကို တိကျသောအစီအစဉ်များနှင့် ဖြည့်ဆည်းပေးပါသည်။',
+      mn:'Career Pathway бол Сёжон Их Сургуулийн оюутан бүрийг элсэлтээс эхлээд дасан зохицох, мэргэжлийн төлөвлөгөө, ажлын ур чадвар, дадлага, ажил эрхлэлтээр дамжуулан тогтвортой суурьшилд хүргэхээр зохион бүтээсэн том загвар юм. Оюутны Амжилтын Замын Зураг энэ аяллыг тодорхой хөтөлбөрүүдээр дүүргэдэг.',
+    }[lang]||'')},
+  {id:'roadmap',
+    keywords:['학생성공 로드맵','로드맵이 뭐','dream career connect','student success roadmap','lộ trình thành công','yoʻl xaritasi nima','လမ်းညွှန်ချက်ဆိုတာ','замын зураг гэж'],
+    answer:lang=>I18N_UI['t-roadmap-desc'][lang]||I18N_UI['t-roadmap-desc'].ko},
+  {id:'dream_meaning',
+    keywords:['dream 뜻','dream 약자','5개 축','다섯 개 축','what does dream stand for','dream acronym','five axes','dream là viết tắt','dream nima','ဝင်ရိုးငါးခု','таван тэнхлэг'],
+    answer:lang=>{
+      const letterWords = {ko:'약자',en:'stands for',vi:'là viết tắt của',uz:'quyidagilarni anglatadi',my:'၏အတိုကောက်ဖြစ်သည်',mn:'үсгийн товчлол'};
+      const lines = DREAM_CATS.map(c=>`${c.en.charAt(0)} — ${c.en} (${catLabel(c)})`);
+      return `DREAM ${letterWords[lang]||letterWords.ko}:\n${lines.join('\n')}`;
+    }},
+  {id:'apply_how',
+    keywords:['신청 방법','어떻게 신청','신청은 어디서','how to apply','where to apply','đăng ký như thế nào','đăng ký ở đâu','qanday ariza berish','qayerda ariza berish','ဘယ်လိုလျှောက်ရမလဲ','яаж бүртгүүлэх','хаана бүртгүүлэх'],
+    answer:lang=>({
+      ko:`모든 프로그램은 프로그램 상세보기의 "신청하기" 버튼을 통해 ${APPLY_URL} 에서 신청할 수 있습니다. 모집이 종료된 프로그램은 신청이 불가합니다.`,
+      en:`Every program can be applied for through the "Apply" button on its detail page, which leads to ${APPLY_URL}. Programs marked as closed can no longer accept applications.`,
+      vi:`Bạn có thể đăng ký mọi chương trình qua nút "Đăng ký" trên trang chi tiết, dẫn đến ${APPLY_URL}. Các chương trình đã kết thúc sẽ không nhận đăng ký nữa.`,
+      uz:`Har qanday dasturga tafsilotlar sahifasidagi "Ariza berish" tugmasi orqali ${APPLY_URL} manzilida ariza berishingiz mumkin. Yakunlangan dasturlar endi ariza qabul qilmaydi.`,
+      my:`အစီအစဉ်တိုင်းကို အသေးစိတ်စာမျက်နှာရှိ "လျှောက်ထားရန်" ခလုတ်မှတစ်ဆင့် ${APPLY_URL} တွင် လျှောက်ထားနိုင်ပါသည်။ ပြီးဆုံးသွားသော အစီအစဉ်များကို ထပ်မံလျှောက်ထား၍ မရတော့ပါ။`,
+      mn:`Хөтөлбөр бүрт дэлгэрэнгүй хуудасны "Бүртгүүлэх" товчоор дамжуулан ${APPLY_URL} хаягаар бүртгүүлж болно. Дууссан хөтөлбөрт цаашид бүртгэл авахгүй.`,
+    }[lang]||'')},
+  {id:'target_groups',
+    keywords:['대상군','학령기가 뭐','성인학습자가 뭐','국제학생이 뭐','누가 신청','who can apply','target groups','traditional-age','adult learners','đối tượng tham gia','ai có thể đăng ký','kim ariza bera oladi','maqsadli guruhlar','ပစ်မှတ်အုပ်စု','хэн бүртгүүлж','зорилтот бүлэг'],
+    answer:lang=>{
+      const items = GROUPS.filter(g=>g.id!=='all').map(g=>g.label[lang]||g.label.ko);
+      const head = {ko:'대상군은 3가지로 나뉩니다:',en:'There are three target groups:',vi:'Có ba nhóm đối tượng:',uz:'Uchta maqsadli guruh mavjud:',my:'ပစ်မှတ်အုပ်စု သုံးမျိုးရှိသည်:',mn:'Гурван зорилтот бүлэг байдаг:'}[lang]||'대상군은 3가지로 나뉩니다:';
+      return `${head}\n${items.map(i=>'• '+i).join('\n')}`;
+    }},
+  {id:'stats',
+    keywords:['통계','몇 개의 프로그램','참여 학생 수','현황','statistics','how many programs','how many students','overview','thống kê','có bao nhiêu chương trình','statistika','nechta dastur','စာရင်းအင်း','ဘယ်နှစ်ခု','статистик','хэдэн хөтөлбөр'],
+    answer:lang=>{
+      const s = _stats || {};
+      const tmpl = {
+        ko:(a,b,c,d)=>`현재 ${a}개의 프로그램이 운영 중이며, ${b}개의 정부·기관과 연계되어 있습니다. 누적 참여 학생은 ${c}명, 취업·정주 연계 건수는 ${d}건입니다.`,
+        en:(a,b,c,d)=>`There are currently ${a} active programs, linked with ${b} government/institutional partners. Total participating students: ${c}. Employment & settlement cases: ${d}.`,
+        vi:(a,b,c,d)=>`Hiện có ${a} chương trình đang triển khai, liên kết với ${b} tổ chức chính phủ. Tổng số sinh viên tham gia: ${c}. Số ca kết nối việc làm & định cư: ${d}.`,
+        uz:(a,b,c,d)=>`Hozirda ${a} ta faol dastur mavjud, ${b} ta davlat/muassasa bilan hamkorlikda. Jami ishtirok etgan talabalar: ${c}. Ish va turar joy bilan bogʻlangan holatlar: ${d}.`,
+        my:(a,b,c,d)=>`လက်ရှိတွင် အစီအစဉ် ${a} ခု လည်ပတ်နေပြီး၊ အစိုးရ/အဖွဲ့အစည်း ${b} ခုနှင့် ချိတ်ဆက်ထားသည်။ ပါဝင်သည့် ကျောင်းသားစုစုပေါင်း: ${c}။ အလုပ်အကိုင်နှင့် နေရာချထားမှု ဆက်စပ်မှု: ${d}။`,
+        mn:(a,b,c,d)=>`Одоогоор ${a} хөтөлбөр идэвхтэй ажиллаж байгаа бөгөөд ${b} засгийн газар/байгууллагатай хамтарсан. Оролцсон оюутны нийт тоо: ${c}. Ажил эрхлэлт, суурьшлын холбоосын тоо: ${d}.`,
+      };
+      const f = tmpl[lang]||tmpl.ko;
+      return f(s.programCount ?? _programs.length, s.linkedCount ?? LINKED_PROGRAMS.length, s.participants ?? '-', s.placements ?? '-');
+    }},
+  {id:'linked',
+    keywords:['연계 사업','정부 사업','인증대학','partner programs','government programs','certifications','chương trình liên kết','danh sách chương trình chính phủ','hamkor dasturlar','davlat dasturlari','ချိတ်ဆက်အစီအစဉ်','အစိုးရအစီအစဉ်','хамтарсан хөтөлбөр','засгийн газрын хөтөлбөр'],
+    answer:lang=>{
+      const names = LINKED_PROGRAMS.slice(0,3).map(l=>l.name).join(', ');
+      const tmpl = {
+        ko:n=>`서정대학교는 총 ${LINKED_PROGRAMS.length}개의 정부·기관 사업과 연계되어 있습니다. 예: ${names} 등.`,
+        en:n=>`Seojeong University is linked with ${LINKED_PROGRAMS.length} government/institutional programs, including: ${names}, and more.`,
+        vi:n=>`Đại học Seojeong liên kết với tổng cộng ${LINKED_PROGRAMS.length} chương trình chính phủ/tổ chức, ví dụ: ${names}, v.v.`,
+        uz:n=>`Seojeong universiteti jami ${LINKED_PROGRAMS.length} ta davlat/muassasa dasturi bilan hamkorlik qiladi, jumladan: ${names} va boshqalar.`,
+        my:n=>`စိုဂျောင်းတက္ကသိုလ်သည် အစိုးရ/အဖွဲ့အစည်း အစီအစဉ် ${LINKED_PROGRAMS.length} ခုနှင့် ချိတ်ဆက်ထားပြီး၊ ဥပမာ- ${names} စသည်တို့ ပါဝင်သည်။`,
+        mn:n=>`Сёжон Их Сургууль нийт ${LINKED_PROGRAMS.length} засгийн газар/байгууллагын хөтөлбөртэй хамтран ажилладаг, жишээ нь: ${names} гэх мэт.`,
+      };
+      return (tmpl[lang]||tmpl.ko)();
+    }},
+];
+
+const PROG_FIELD_LABELS = {
+  category:{ko:'분류',en:'Category',vi:'Danh mục',uz:'Turkum',my:'အမျိုးအစား',mn:'Ангилал'},
+  status:{ko:'상태',en:'Status',vi:'Trạng thái',uz:'Holat',my:'အခြေအနေ',mn:'Төлөв'},
+  schedule:{ko:'일정',en:'Schedule',vi:'Lịch trình',uz:'Jadval',my:'အချိန်ဇယား',mn:'Хуваарь'},
+};
+const STAGE_ANSWER_LABEL = {ko:'단계',en:'Stage',vi:'Giai đoạn',uz:'Bosqich',my:'အဆင့်',mn:'Үе шат'};
+
+function composeProgramAnswer(p, lang){
+  const title = progText(p,'title');
+  const desc = progText(p,'desc');
+  const cat = DREAM_CATS.find(c=>c.id===p.cat);
+  const st = programStatus(p);
+  const sessions = Array.isArray(p.sessions) ? p.sessions.filter(s=>s&&(s.startDate||s.endDate||s.date)) : [];
+  let scheduleLine;
+  if(sessions.length){
+    scheduleLine = sessions.slice(0,2).map(s=>{
+      const start = s.startDate || s.date || '';
+      const end = s.endDate || '';
+      let dl = formatDate(start);
+      if(s.startTime) dl += ' ' + s.startTime;
+      if(end && end!==start){ dl += ' ~ ' + formatDate(end) + (s.endTime?' '+s.endTime:''); }
+      else if(s.endTime){ dl += ' ~ ' + s.endTime; }
+      const extra = [s.dept, s.location, s.note].filter(Boolean).join(' · ');
+      return `${dl}${extra?' · '+extra:''} (${statusLabel(sessionStatus(s))})`;
+    }).join(' / ');
+  } else {
+    scheduleLine = statusLabel('unscheduled');
+  }
+  const applyLine = st==='ended' ? (APPLY_ENDED_LABEL[lang]||APPLY_ENDED_LABEL.ko) : `${APPLY_LABEL[lang]||APPLY_LABEL.ko}: ${APPLY_URL}`;
+  const L = {
+    category: (PROG_FIELD_LABELS.category[lang]||PROG_FIELD_LABELS.category.ko),
+    status: (PROG_FIELD_LABELS.status[lang]||PROG_FIELD_LABELS.status.ko),
+    schedule: (PROG_FIELD_LABELS.schedule[lang]||PROG_FIELD_LABELS.schedule.ko),
+  };
+  return `${title}\n${desc}\n\n${L.category}: ${cat?catLabel(cat):''} · ${L.status}: ${statusLabel(st)}\n${L.schedule}: ${scheduleLine}\n${applyLine}`;
+}
+function composeStageAnswer(s, lang){
+  const title = s.title[lang]||s.title.ko;
+  const desc = s.desc[lang]||s.desc.ko;
+  const label = STAGE_ANSWER_LABEL[lang]||STAGE_ANSWER_LABEL.ko;
+  let out = `${label} ${s.n}. ${title} — ${desc}`;
+  if(s.visaKey){ out += ` (${VISA_LABEL[s.visaKey][lang]||VISA_LABEL[s.visaKey].ko})`; }
+  return out;
+}
+
+function buildSearchIndex(){
+  const idx = [];
+  _programs.forEach(p=>{
+    const texts = ['ko','en','vi','uz','my','mn'].map(l=>{
+      if(l==='ko') return (p.title||'')+' '+(p.desc||'');
+      const tr = p.translations && p.translations[l];
+      return tr ? (tr.title||'')+' '+(tr.desc||'') : '';
+    }).join(' ').toLowerCase();
+    idx.push({type:'program', ref:p, text:texts});
+  });
+  STAGES.forEach(s=>{
+    const texts = (Object.values(s.title).join(' ')+' '+Object.values(s.desc).join(' ')).toLowerCase();
+    idx.push({type:'stage', ref:s, text:texts});
+  });
+  CHAT_TOPICS.forEach(top=>{
+    idx.push({type:'topic', ref:top, text:top.keywords.join(' ').toLowerCase()});
+  });
+  return idx;
+}
+
+function matchQuery(query){
+  const q = query.toLowerCase().trim();
+  if(!q) return null;
+  const tokens = q.split(/\s+/).filter(t=>t.length>=2);
+  const idx = buildSearchIndex();
+  let best = null, bestScore = 0;
+  idx.forEach(item=>{
+    let score = 0;
+    if(item.text.includes(q)) score += 6;
+    tokens.forEach(tok=>{ if(item.text.includes(tok)) score += 1; });
+    if(score > bestScore){ bestScore = score; best = item; }
+  });
+  return bestScore > 0 ? best : null;
+}
+
+function chatAnswer(query){
+  const lang = detectLang(query);
+  const match = matchQuery(query);
+  let answer;
+  if(!match){
+    answer = CHAT_FALLBACK[lang] || CHAT_FALLBACK.ko;
+  } else if(match.type==='program'){
+    answer = composeProgramAnswer(match.ref, lang);
+  } else if(match.type==='stage'){
+    answer = composeStageAnswer(match.ref, lang);
+  } else {
+    answer = match.ref.answer(lang) || CHAT_FALLBACK[lang] || CHAT_FALLBACK.ko;
+  }
+  return answer;
+}
+
+// ── 챗봇 UI 동작 ──
+function chatApplyStaticText(){
+  const titleEl = document.getElementById('chat-title');
+  const subEl = document.getElementById('chat-sub');
+  const inputEl = document.getElementById('chat-input');
+  if(titleEl) titleEl.textContent = CHAT_UI_LABELS.title[_lang]||CHAT_UI_LABELS.title.ko;
+  if(subEl) subEl.textContent = CHAT_UI_LABELS.sub[_lang]||CHAT_UI_LABELS.sub.ko;
+  if(inputEl) inputEl.placeholder = CHAT_UI_LABELS.placeholder[_lang]||CHAT_UI_LABELS.placeholder.ko;
+  renderChatSuggestions();
+}
+function renderChatSuggestions(){
+  const el = document.getElementById('chat-suggestions');
+  if(!el) return;
+  const list = CHAT_SUGGESTIONS[_lang]||CHAT_SUGGESTIONS.ko;
+  el.innerHTML = list.map(q=>`<button type="button" class="chat-chip">${escapeHtml(q)}</button>`).join('');
+  el.querySelectorAll('.chat-chip').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ document.getElementById('chat-input').value = btn.textContent; sendChatMessage(); });
+  });
+}
+function appendChatBubble(text, who){
+  const el = document.getElementById('chat-messages');
+  const div = document.createElement('div');
+  div.className = 'chat-bubble ' + who;
+  div.textContent = text;
+  el.appendChild(div);
+  el.scrollTop = el.scrollHeight;
+}
+function sendChatMessage(){
+  const input = document.getElementById('chat-input');
+  const q = input.value.trim();
+  if(!q) return;
+  appendChatBubble(q, 'user');
+  input.value = '';
+  const answer = chatAnswer(q);
+  track('chatbot_query', {query:q.slice(0,100), language:detectLang(q)});
+  setTimeout(()=> appendChatBubble(answer, 'bot'), 220);
+}
+function toggleChat(forceOpen){
+  const panel = document.getElementById('chat-panel');
+  const fab = document.getElementById('chat-fab');
+  const willOpen = forceOpen!==undefined ? forceOpen : !panel.classList.contains('open');
+  panel.classList.toggle('open', willOpen);
+  fab.classList.toggle('open', willOpen);
+  fab.setAttribute('aria-expanded', String(willOpen));
+  if(willOpen) document.getElementById('chat-input').focus();
+}
+function initChat(){
+  document.getElementById('chat-fab').addEventListener('click', ()=>toggleChat());
+  document.getElementById('chat-send').addEventListener('click', sendChatMessage);
+  document.getElementById('chat-input').addEventListener('keydown', e=>{ if(e.key==='Enter') sendChatMessage(); });
+  chatApplyStaticText();
+  appendChatBubble(CHAT_GREETING[_lang]||CHAT_GREETING.ko, 'bot');
+}
+
+// ── 일정 상태 판정 (종료날짜 기준) ──
+function _today(){ const t = new Date(); t.setHours(0,0,0,0); return t; }
+function sessionStatus(s){
+  // s: {dept, startDate, endDate, note} — endDate 지나면 종료
+  const endStr = s.endDate || s.startDate || s.date;
+  if(!endStr) return 'unscheduled';
+  const d = new Date(endStr);
+  if(isNaN(d.getTime())) return 'unscheduled';
+  d.setHours(23,59,59,999);
+  return d < _today() ? 'ended' : 'open';
+}
+function programStatus(p){
+  const sessions = Array.isArray(p.sessions) ? p.sessions.filter(s=>s&&(s.startDate||s.endDate||s.date)) : [];
+  if(!sessions.length) return 'unscheduled';
+  return sessions.some(s=>sessionStatus(s)==='open') ? 'open' : 'ended';
+}
+const STATUS_LABEL_MAP = {
+  open:{ko:'모집중',en:'Open',vi:'Đang mở',uz:'Ochiq',my:'လက်ခံနေဆဲ',mn:'Бүртгэж байна'},
+  ended:{ko:'종료',en:'Closed',vi:'Đã kết thúc',uz:'Yakunlangan',my:'ပြီးဆုံး',mn:'Дууссан'},
+  unscheduled:{ko:'일정 협의중',en:'Schedule TBD',vi:'Lịch đang cập nhật',uz:'Jadval aniqlanmoqda',my:'အချိန်ဇယား သဘောတူညီမှု ရယူနေဆဲ',mn:'Хуваарь тодорхойгүй байна'},
+};
+function statusLabel(st){ return (STATUS_LABEL_MAP[st] && STATUS_LABEL_MAP[st][_lang]) || (STATUS_LABEL_MAP[st] && STATUS_LABEL_MAP[st].ko) || ''; }
+
+// ── 렌더 함수들 ──
+function renderPathway(){
+  const el = document.getElementById('pathway-track');
+  el.innerHTML = STAGES.map(s=>{
+    const title = s.title[_lang]||s.title.ko;
+    const desc = s.desc[_lang]||s.desc.ko;
+    const visa = s.visaKey ? (VISA_LABEL[s.visaKey][_lang]||VISA_LABEL[s.visaKey].ko) : null;
+    return `
+    <div class="stage">
+      <div class="stage-num">${s.n}</div>
+      <h3>${title}</h3>
+      <p>${desc}</p>
+      ${visa?`<span class="visa">${visa}</span>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderFilters(){
+  const el = document.getElementById('filter-row');
+  el.innerHTML = GROUPS.map(g=>`<button class="filter-pill${g.id===_activeGroup?' active':''}" data-g="${g.id}">${groupLabel(g.id)}</button>`).join('');
+  el.querySelectorAll('.filter-pill').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ _activeGroup = btn.dataset.g; renderFilters(); renderDream(); });
+  });
+}
+
+function programMatches(p){
+  if(_activeGroup==='all') return true;
+  return Array.isArray(p.groups) && p.groups.includes(_activeGroup);
+}
+
+function renderDream(){
+  const el = document.getElementById('dream-container');
+  el.innerHTML = DREAM_CATS.map(cat=>{
+    const items = _programs.filter(p=>p.cat===cat.id && programMatches(p));
+    const cardsHtml = items.length ? items.map(p=>{
+      const st = programStatus(p);
+      return `
+      <div class="prog-card" data-id="${p.id}">
+        <span class="status-pill ${st}">${statusLabel(st)}</span>
+        <h4>${escapeHtml(progText(p,'title'))}</h4>
+        <p>${escapeHtml(progText(p,'desc'))}</p>
+        <div class="tag-row">${(p.groups||[]).map(g=>{
+          const t = GROUP_TAG[g]; return t?`<span class="tag ${t.cls}">${groupLabel(g)}</span>`:'';
+        }).join('')}</div>
+      </div>`;
+    }).join('')
+      : `<div class="empty-note">${(EMPTY_NOTE_TEXT[_lang]||EMPTY_NOTE_TEXT.ko)(groupLabel(_activeGroup))}</div>`;
+    return `
+      <div class="dream-section" id="cat-${cat.id}">
+        <div class="dream-header">
+          <span class="dream-index">${cat.idx}</span>
+          <span class="dream-title-en">${highlightDream(cat.en)}</span>
+          <span class="dream-title-kr">${catLabel(cat)}</span>
+        </div>
+        <div class="dream-rule"></div>
+        <div class="card-grid">${cardsHtml}</div>
+      </div>`;
+  }).join('');
+  el.querySelectorAll('.prog-card').forEach(card=>{
+    card.addEventListener('click', ()=> openDetail(card.dataset.id));
+  });
+}
+
+function renderAxisGrid(){
+  const el = document.getElementById('axis-grid');
+  el.innerHTML = DREAM_CATS.map(cat=>{
+    const primary = _lang==='en' ? highlightDream(cat.en) : catLabel(cat);
+    return `
+    <div class="axis-item" data-cat="${cat.id}">
+      <div class="idx">${cat.idx}</div>
+      <div class="kr">${primary}</div>
+      ${_lang!=='en' ? `<div class="en">${highlightDream(cat.en)}</div>` : ''}
+    </div>`;
+  }).join('');
+  el.querySelectorAll('.axis-item').forEach(item=>{
+    item.addEventListener('click', ()=>{
+      const target = document.getElementById('cat-'+item.dataset.cat);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+// ── 프로그램 상세 모달 ──
+function openDetail(id){
+  const p = _programs.find(x=>x.id===id);
+  if(!p) return;
+  track('program_view', {program_id:p.id, program_title:p.title, language:_lang});
+  const st = programStatus(p);
+  const cat = DREAM_CATS.find(c=>c.id===p.cat);
+  document.getElementById('detail-status').innerHTML = `<span class="${st}">${statusLabel(st)}</span>`;
+  document.getElementById('detail-cat').textContent = cat ? `${cat.idx} · ${catLabel(cat)}` : '';
+  document.getElementById('detail-title').textContent = progText(p,'title');
+  document.getElementById('detail-desc').textContent = progText(p,'desc');
+  document.getElementById('detail-tags').innerHTML = (p.groups||[]).map(g=>{
+    const t = GROUP_TAG[g]; return t?`<span class="tag ${t.cls}">${groupLabel(g)}</span>`:'';
+  }).join('');
+  const sessions = Array.isArray(p.sessions) ? p.sessions.filter(s=>s&&(s.startDate||s.endDate||s.date)) : [];
+  const listEl = document.getElementById('detail-sessions-list');
+  if(sessions.length){
+    listEl.innerHTML = sessions.map(s=>{
+      const sst = sessionStatus(s);
+      const start = s.startDate || s.date || '';
+      const end = s.endDate || '';
+      let dateLabel = formatDate(start);
+      if(s.startTime) dateLabel += ' ' + s.startTime;
+      if(end && end!==start){
+        dateLabel += ' ~ ' + formatDate(end);
+        if(s.endTime) dateLabel += ' ' + s.endTime;
+      } else if(s.endTime && !end){
+        dateLabel += ' ~ ' + s.endTime;
+      } else if(s.endTime && end===start){
+        dateLabel += ' ~ ' + s.endTime;
+      }
+      const parts = [];
+      if(s.dept) parts.push(escapeHtml(s.dept));
+      if(s.location) parts.push(escapeHtml(s.location));
+      if(s.note) parts.push(escapeHtml(s.note));
+      const metaLine = parts.join(' · ');
+      return `<div class="session-row">
+        <div class="info"><b>${escapeHtml(dateLabel)}</b>${metaLine?`<span>${metaLine}</span>`:''}</div>
+        <span class="session-badge ${sst}">${statusLabel(sst)}</span>
+      </div>`;
+    }).join('');
+  } else {
+    listEl.innerHTML = `<div class="no-session">${NO_SESSION_TEXT[_lang]||NO_SESSION_TEXT.ko}</div>`;
+  }
+  const applyBtn = document.getElementById('detail-apply');
+  applyBtn.href = APPLY_URL;
+  applyBtn.onclick = function(){ track('apply_click', {program_id:p.id, program_title:p.title, language:_lang}); };
+  if(st==='ended'){
+    applyBtn.classList.add('disabled');
+    applyBtn.innerHTML = APPLY_ENDED_LABEL[_lang]||APPLY_ENDED_LABEL.ko;
+  } else {
+    applyBtn.classList.remove('disabled');
+    applyBtn.innerHTML = `<span class="dot"></span>${APPLY_LABEL[_lang]||APPLY_LABEL.ko}`;
+  }
+  document.getElementById('detail-overlay').classList.add('open');
+}
+function closeDetail(){ document.getElementById('detail-overlay').classList.remove('open'); }
+function formatDate(dateStr){
+  const d = new Date(dateStr);
+  if(isNaN(d.getTime())) return dateStr;
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+}
+document.getElementById('detail-close').addEventListener('click', closeDetail);
+document.getElementById('detail-overlay').addEventListener('click', e=>{ if(e.target.id==='detail-overlay') closeDetail(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDetail(); });
+
+function renderLinked(){
+  const tbody = document.querySelector('#linked-table tbody');
+  if(!tbody) return; // 연계 사업 섹션은 메인페이지에서 제거됨
+  tbody.innerHTML = LINKED_PROGRAMS.map(l=>`
+    <tr><td>${escapeHtml(l.name)}</td><td>${escapeHtml(l.org)}</td><td><span class="badge-year">${l.period}</span></td></tr>
+  `).join('');
+}
+
+const STAT_LABELS = {
+  programs:{ko:'참여 프로그램',en:'Active Programs',vi:'Chương trình đang triển khai',uz:'Faol dasturlar',my:'လက်ရှိအစီအစဉ်များ',mn:'Идэвхтэй хөтөлбөрүүд'},
+  linked:{ko:'연계 정부·기관 사업',en:"Partner Gov't Programs",vi:'Chương trình liên kết chính phủ',uz:'Hamkor davlat dasturlari',my:'ချိတ်ဆက် အစိုးရအစီအစဉ်များ',mn:'Хамтарсан засгийн газрын хөтөлбөр'},
+  participants:{ko:'누적 참여 학생(명)',en:'Total Participating Students',vi:'Tổng số sinh viên tham gia',uz:'Ishtirok etgan talabalar soni',my:'ပါဝင်သည့် ကျောင်းသားစုစုပေါင်း',mn:'Оролцсон оюутны нийт тоо'},
+  placements:{ko:'취업·정주 연계 건수',en:'Employment & Settlement Cases',vi:'Số ca kết nối việc làm & định cư',uz:'Ish va turar joy bilan bogʻlangan holatlar',my:'အလုပ်အကိုင်နှင့် နေရာချထားမှု ဆက်စပ်မှု အရေအတွက်',mn:'Ажил эрхлэлт, суурьшлын холбоосын тоо'},
+};
+function renderStats(){
+  const el = document.getElementById('stats-grid');
+  const s = _stats || {};
+  const items = [
+    {label:STAT_LABELS.programs[_lang]||STAT_LABELS.programs.ko, val: s.programCount ?? _programs.length},
+    {label:STAT_LABELS.linked[_lang]||STAT_LABELS.linked.ko, val: s.linkedCount ?? LINKED_PROGRAMS.length},
+    {label:STAT_LABELS.participants[_lang]||STAT_LABELS.participants.ko, val: s.participants ?? '-'},
+    {label:STAT_LABELS.placements[_lang]||STAT_LABELS.placements.ko, val: s.placements ?? '-'},
+  ];
+  el.innerHTML = items.map(i=>`
+    <div class="stat-card"><div class="stat-num">${i.val}</div><div class="stat-label">${i.label}</div></div>
+  `).join('');
+}
+
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── 정적 문구 일괄 적용 ──
+function applyStaticText(){
+  document.documentElement.lang = _lang==='ko' ? 'ko' : (_lang==='en' ? 'en' : _lang);
+  Object.keys(I18N_UI).forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    const val = I18N_UI[id][_lang] || I18N_UI[id].ko;
+    if(val.indexOf('<')>=0) el.innerHTML = val; else el.textContent = val;
+  });
+}
+
+function renderAll(){
+  applyStaticText();
+  renderPathway();
+  renderAxisGrid();
+  renderFilters();
+  renderDream();
+  renderLinked();
+  renderStats();
+  chatApplyStaticText();
+}
+
+function setLanguage(lang){
+  _lang = lang;
+  try{ localStorage.setItem('cp_lang', lang); }catch(e){}
+  const sel = document.getElementById('lang-switcher');
+  if(sel) sel.value = lang;
+  renderAll();
+  track('language_change', {language: lang});
+}
+
+function initLangSwitcher(){
+  const sel = document.getElementById('lang-switcher');
+  if(!sel) return;
+  sel.innerHTML = LANGS.map(l=>`<option value="${l.code}">${l.label}</option>`).join('');
+  sel.value = _lang;
+  sel.addEventListener('change', ()=> setLanguage(sel.value));
+}
+
+// ── 초기 렌더 (Firebase 응답 전, 기본 데이터로 즉시 페인트) ──
+initLangSwitcher();
+renderAll();
+initChat();
+
+// ── Firebase 실시간 구독 (관리자 페이지에서 저장하면 여기 자동 반영) ──
+async function initFirebaseSync(){
+  if(!_cpdb) return;
+  try{
+    await _authReady;
+    _cpdb.ref('careerPathway/programs').on('value', snap=>{
+      const val = snap.val();
+      // val이 null(전체 삭제)이면 빈 배열로 반영, 객체면 값 배열로 변환
+      let arr = [];
+      if(Array.isArray(val)) arr = val.filter(Boolean);
+      else if(val && typeof val==='object') arr = Object.values(val).filter(Boolean);
+      // order 필드가 있으면 정렬 (없으면 원래 순서 유지)
+      arr.sort((a,b)=>((a&&a.order!=null?a.order:0)-(b&&b.order!=null?b.order:0)));
+      _programs = arr;
+      renderDream();
+      renderStats();
+    });
+    _cpdb.ref('careerPathway/stats').on('value', snap=>{
+      const val = snap.val();
+      if(val){ _stats = val; renderStats(); }
+    });
+  }catch(e){ console.warn('Firebase 동기화 실패, 기본 데이터로 표시합니다.', e); }
+}
+initFirebaseSync();
+</script>
+</body>
+</html>
